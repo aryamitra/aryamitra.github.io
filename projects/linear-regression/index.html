@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Linear Regression Visualizer</title>
+    
+    <style>
+        /* Modern, centered page setup */
+        body {
+            background-color: #111116; /* Matches your portfolio dark color */
+            color: #cccccc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevents ugly double scrollbars */
+            font-family: sans-serif;
+        }
+
+        /* Container that scales your canvas automatically */
+        .game-wrapper {
+        width: 86vw;       /* Squeezes the width to give your text room */
+        max-width: 1320px; 
+        aspect-ratio: 1366 / 768; 
+        position: relative;
+        padding: 10px;     /* Adds a safe defensive boundary around the text */
+    }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            image-rendering: optimizeSpeed;
+            touch-action: none;
+            border-radius: 8px; /* Smooth rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Nice floating shadow */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Responsive wrapper to prevent clipping -->
+    <div class="game-wrapper">
+        <canvas id="canvas" width="1366" height="768">
+            <p>Your browser doesn't support HTML5 canvas.</p>
+        </canvas>
+    </div>
+
+    <!-- Main Game Logic Script (Make sure underscores match) -->
+    <script type="text/javascript" src="regression_data/Lin_Reg_Playground.js?cachebust=1943008485"></script>
+    <script>window.onload = GameMaker_Init;</script>
+</body>
+</html>

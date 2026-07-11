@@ -1,0 +1,440 @@
+/* Modern & Clean CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 
+   Matte Cyberpunk Styling 
+   - Using a deep matte off-black/charcoal background (#0d0d11) 
+   - High-end monospace font family for that 'cyber' terminal feel
+*/
+body {
+    background-color: #0d0d11; 
+    color: #e2e8f0; 
+    font-family: 'Courier New', Courier, monospace, sans-serif;
+    line-height: 1.7;
+    padding: 4rem 2rem;
+}
+
+/* Split-screen layout matching the architecture of Soham's site */
+.portfolio-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr; 
+    gap: 6rem; /* Boosted gap slightly for cleaner breathing room */                        
+    width: 95%; /* Stretches the container wider across the glass */                       
+    max-width: 1500px; /* Raises the desktop ceiling limit */                
+    margin: 0 auto 0 0; 
+}
+
+
+
+/* ----------------------------------
+   LEFT SIDEBAR (Fixed / Sticky info)
+   ---------------------------------- */
+.sidebar {
+    position: fixed;
+    width: 280px;
+}
+
+/* Profile picture container matches your layout sketch */
+.profile-frame {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    background-color: #16161f;
+    border: 1px solid #bc34fa; /* Neon purple border line */
+    box-shadow: 0 0 15px rgba(188, 52, 250, 0.2); /* Soft purple matte glow */
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.profile-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(20%);
+}
+
+/* Row container: photo sits beside the name instead of stacked above it */
+.sidebar-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.name-block {
+    flex: 1;
+}
+
+.sidebar h1 {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    color: #ffffff;
+    margin-bottom: 0.8rem;
+}
+
+.sidebar h1 span {
+    display: block;
+    color: #5a5a68; /* Muted grey second line, like the reference */
+}
+
+/* Small divider line under the name, matching the reference layout */
+.name-divider {
+    width: 28px;
+    height: 2px;
+    background-color: #3a3a4a;
+    margin-bottom: 0.5rem;
+}
+
+/* Status tickers added from your request details */
+.status-tags {
+    margin: 1.5rem 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-item {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #a1a1aa;
+}
+
+/* The green pulsing active link indicator */
+.status-item.pulse::before {
+    content: "● ";
+    color: #39ff14; /* Neon green active terminal node */
+    animation: blink 2s infinite;
+}
+
+.status-item.pulse {
+    font-size: 0.65rem;
+}
+
+.status-item span.purple-text {
+    color: #bc34fa;
+    font-weight: bold;
+}
+
+/* Cyber maroon accent, styled to match the neon purple glow */
+.status-item span.maroon-text {
+    color: #c2294f;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(194, 41, 79, 0.5);
+}
+
+/* Navigation or Quick Links section inside the sidebar */
+.sidebar-nav {
+    margin-top: 3rem;
+    border-top: 1px dashed #27273a;
+    padding-top: 1.5rem;
+}
+
+.sidebar-nav a {
+    display: block;
+    color: #71717a;
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    transition: color 0.2s;
+}
+
+.sidebar-nav a:hover, .sidebar-nav a.active {
+    color: #bc34fa;
+}
+
+
+/* ----------------------------------
+   RIGHT CONTENT AREA (Scrollable info)
+   ---------------------------------- */
+.main-content {
+    grid-column-start: 2;
+}
+
+section {
+    margin-bottom: 4rem;
+}
+
+/* Classy, minimal section headers */
+h2 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #bc34fa;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    border-bottom: 1px solid #16161f;
+    padding-bottom: 0.5rem;
+}
+
+p {
+    color: #a1a1aa;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    max-width: 100%; /* Changed from 680px to 100% */
+}
+
+
+/* Branded text items array layout */
+.tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    color: #ffffff;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.tech-node::before {
+    content: "// ";
+    color: #bc34fa;
+}
+
+/* ----------------------------------
+   ACADEMIC / COURSEWORK SECTION
+   ---------------------------------- */
+.academic-tabs {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.academic-tab {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #71717a;
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+.academic-tab.active {
+    color: #bc34fa;
+    border-bottom: 2px solid #bc34fa;
+}
+
+.academic-group {
+    display: none;
+}
+
+.academic-group.active {
+    display: block;
+}
+
+.term-accordion {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #1e1e2f;
+}
+
+.term-item {
+    border-bottom: 1px solid #1e1e2f;
+}
+
+.term-header {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #a1a1aa;
+    font-family: 'Courier New', Courier, monospace, sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 1rem 1.5rem 1rem 0;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.term-header::after {
+    content: "+";
+    position: absolute;
+    right: 0.2rem;
+    top: 1rem;
+    color: #bc34fa;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.term-header.open::after {
+    transform: rotate(45deg); /* turns the + into an x to show it's expanded */
+}
+
+.term-header:hover,
+.term-header.open {
+    color: #ffffff;
+}
+
+.term-body {
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    transition: max-height 0.35s ease;
+}
+
+.term-body .course-row:first-child {
+    margin-top: 0.5rem;
+}
+
+.term-body {
+    padding-bottom: 1.2rem;
+}
+
+.course-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.course-code {
+    color: #bc34fa;
+    font-weight: bold;
+    font-size: 0.85rem;
+    min-width: 190px;
+}
+
+.course-name {
+    color: #a1a1aa;
+    font-size: 0.85rem;
+}
+
+.course-empty {
+    color: #71717a;
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+.course-note {
+    color: #71717a;
+    font-style: italic;
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+/* Projects Section matching the carousel style box array layout */
+.projects-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.nav-arrow {
+    background: none;
+    border: none;
+    color: #bc34fa;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 1rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    width: 100%;
+}
+
+.project-card {
+    background-color: #111116;
+    border: 1px solid #1e1e2f;
+    border-radius: 4px;
+    padding: 1.5rem;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.project-card:hover {
+    border-color: #bc34fa;
+    box-shadow: 0 0 10px rgba(188, 52, 250, 0.1);
+    transform: translateY(-2px);
+}
+
+.project-card h3 {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.project-card p {
+    font-size: 0.8rem;
+    color: #71717a;
+    line-height: 1.5;
+}
+
+.card-action {
+    font-size: 0.8rem;
+    color: #bc34fa;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1rem;
+}
+
+/* Action Buttons styling matching sketch row components */
+.footer-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #111116;
+    border: 1px solid #1e1e2f;
+    padding: 0.8rem 1.8rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    border-color: #bc34fa;
+    color: #bc34fa;
+    background-color: #161622;
+}
+
+/* Keyframe blink for active node marker */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Responsive configuration settings for standard screen scaling views */
+@media (max-width: 900px) {
+    .portfolio-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .sidebar {
+        position: relative;
+        width: 100%;
+    }
+    .main-content {
+        grid-column-start: 1;
+    }
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}

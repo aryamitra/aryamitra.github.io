@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arya Mitra | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="portfolio-layout">
+        
+        <!-- LEFT SIDEBAR CONTAINER -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="profile-frame">
+                    <!-- Keep profile.jpg in same folder directory root location -->
+                    <img src="profile.jpg" alt="Arya Mitra Profile">
+                </div>
+                <div class="name-block">
+                    <h1>Arya<br><span>Mitra</span></h1>
+                    <div class="name-divider"></div>
+                </div>
+            </div>
+            
+            <div class="status-tags">
+                <span class="status-item">Honors CS + Math Student at <span class="maroon-text">U</span>niversity of <span class="maroon-text">Mass</span>achusetts-<span class="maroon-text">Amherst</span></span>
+                <span class="status-item pulse">Open to Connect</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#about" class="active">// About</a>
+                <a href="#experience">// Experience</a>
+                <a href="#academic">// Academic</a>
+                <a href="#projects">// Projects</a>
+                <a href="#contact">// Links</a>
+            </nav>
+        </aside>
+
+        <!-- RIGHT MAIN SCROLL BLOCK CONTENT -->
+        <main class="main-content">
+            
+            <!-- About Section Box -->
+            <section id="about">
+                <h2>About</h2>
+                <p>
+                    Hi, I'm Arya. I'm starting my freshman year at UMass Amherst this fall for Computer Science.
+                <p>
+                    I like math and building things. I'm interested in AI/ML, game design, and pretty much anything that's math-heavy, honestly. Still figuring out exactly where I want to specialize, but I like the problem-solving side of CS more than any one specific application.
+                <p>
+                    Outside of academics, you'll probably find me practicing classical guitar or working out. Happy to connect with other CS students, people into ML or game dev, or anyone who wants to talk shop.    
+                </p>
+                
+                <div class="tech-list">
+                    <span class="tech-node">Python</span>
+                    <span class="tech-node">Java</span>
+                    <span class="tech-node">C#</span>
+                    <span class="tech-node">Spanish</span>
+                    <span class="tech-node">Classical Guitar</span>
+                    <span class="tech-node">Squash</span>
+                    <span class="tech-node">Gym & Health</span>
+                </div>
+            </section>
+
+            <!-- EXPERIENCE SECTION -->
+            <section id="experience">
+                <h2>Experience</h2>
+                <div class="timeline">
+
+                    <!-- Job 1: Math Tutor -->
+                    <div class="timeline-item">
+                        <div class="time-header">
+                            <span class="job-title">Private Math Tutor</span>
+                            <span class="job-date">Nov 2024 - Present</span>
+                        </div>
+                        <div class="company-name">Self-employed // Hybrid // New Canaan, CT</div>
+                        <p class="job-desc">
+                            Created personalized curriculum for advanced high school students in Pre-Calculus, Algebra II, Geometry, and Computer Science Principles. SAT tutoring resulted in an average improvement of 100+ points on SAT diagnostics.
+                        </p>
+                    </div>
+
+                    <!-- Job 2: AP CS TA -->
+                    <div class="timeline-item">
+                        <div class="time-header">
+                            <span class="job-title">AP Computer Science Principles TA</span>
+                            <span class="job-date">Aug 2025 - May 2026</span>
+                        </div>
+                        <div class="company-name">New Canaan High School // On-site</div>
+                        <p class="job-desc">
+                            Directed classroom instruction covering foundational algorithms, data structures, and big data analysis. Assumed full lecture responsibilities during an extended faculty medical leave.
+                        </p>
+                    </div>
+
+                    <!-- Job 3: Quant Intern -->
+                    <div class="timeline-item">
+                        <div class="time-header">
+                            <span class="job-title">Quantitative Research & SE Intern</span>
+                            <span class="job-date">Jun 2024 - Sep 2024</span>
+                        </div>
+                        <div class="company-name">CNM Partners LLC // Remote</div>
+                        <p class="job-desc">
+                            Engineered technical trading signal models and algorithmic strategies using Python to analyze financial market data. Programmed custom backtesting frameworks utilizing key indicators like RSI and Moving Averages.
+                        </p>
+                    </div>
+
+                    <!-- Job 4: Soccer Referee -->
+                    <div class="timeline-item">
+                        <div class="time-header">
+                            <span class="job-title">Soccer Referee</span>
+                            <span class="job-date">Sep 2023 - Nov 2025</span>
+                        </div>
+                        <div class="company-name">Connecticut State Referee Program // On-site</div>
+                        <p class="job-desc">
+                            Evaluated real-time athletic data and applied complex regulatory frameworks under high-pressure conditions. Executed rapid, objective decision-making matrices while managing on-field player communication.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ACADEMIC SECTION -->
+            <section id="academic">
+                <h2>Academic</h2>
+
+                <div class="academic-tabs">
+                    <span class="academic-tab active" data-group-target="college">College</span>
+                    <span class="academic-tab" data-group-target="highschool">High School</span>
+                </div>
+
+                <!-- COLLEGE GROUP -->
+                <div class="academic-group active" data-group="college">
+                    <div class="term-accordion">
+                        <div class="term-item">
+                            <button class="term-header" data-term="summer2026">Summer 2026</button>
+                            <div class="term-body" data-term="summer2026">
+                                <p class="course-note">Transfer coursework // CT State Community College</p>
+                                <div class="course-row"><span class="course-code">MATH 233</span><span class="course-name">Multivariate Calculus</span></div>
+                                <div class="course-row"><span class="course-code">MATH 235</span><span class="course-name">Intro Linear Algebra</span></div>
+                            </div>
+                        </div>
+                        <div class="term-item">
+                            <button class="term-header open" data-term="fall2026">Fall 2026</button>
+                            <div class="term-body" data-term="fall2026">
+                                <div class="course-row"><span class="course-code">CICS 210</span><span class="course-name">Data Structures</span></div>
+                                <div class="course-row"><span class="course-code">COMPSCI 198C</span><span class="course-name">Practicum: Introduction to the C Programming Language</span></div>
+                                <div class="course-row"><span class="course-code">HONORS 201H</span><span class="course-name">Ideas That Change the World</span></div>
+                                <div class="course-row"><span class="course-code">NUTRITN 130</span><span class="course-name">Nutrition for a Healthy Lifestyle</span></div>
+                                <p class="course-empty">+ likely one more course, TBD</p>
+                            </div>
+                        </div>
+                        <div class="term-item">
+                            <button class="term-header" data-term="spring2027">Spring 2027</button>
+                            <div class="term-body" data-term="spring2027">
+                                <p class="course-empty">Courses TBD.</p>
+                            </div>
+                        </div>
+                        <div class="term-item">
+                            <button class="term-header" data-term="fall2027">Fall 2027</button>
+                            <div class="term-body" data-term="fall2027">
+                                <p class="course-empty">Courses TBD.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HIGH SCHOOL GROUP -->
+                <div class="academic-group" data-group="highschool">
+                    <div class="term-accordion">
+                        <div class="term-item">
+                            <button class="term-header" data-term="hs1">2022 - 2023 (Freshman)</button>
+                            <div class="term-body" data-term="hs1">
+                                <div class="course-row"><span class="course-name">Freshman English</span></div>
+                                <div class="course-row"><span class="course-name">World History I</span></div>
+                                <div class="course-row"><span class="course-name">Honors Geometry</span></div>
+                                <div class="course-row"><span class="course-name">Honors Algebra II</span></div>
+                                <div class="course-row"><span class="course-name">Honors Biology (With Lab)</span></div>
+                                <div class="course-row"><span class="course-name">Spanish III</span></div>
+                                <div class="course-row"><span class="course-name">Honors Intro to Engineering Design</span></div>
+                            </div>
+                        </div>
+                        <div class="term-item">
+                            <button class="term-header" data-term="hs2">2023 - 2024 (Sophomore)</button>
+                            <div class="term-body" data-term="hs2">
+                                <div class="course-row"><span class="course-name">Sophomore English</span></div>
+                                <div class="course-row"><span class="course-name">World History II</span></div>
+                                <div class="course-row"><span class="course-name">Honors Precalculus</span></div>
+                                <div class="course-row"><span class="course-name">Honors Chemistry (With Lab)</span></div>
+                                <div class="course-row"><span class="course-name">Honors Spanish IV</span></div>
+                                <div class="course-row"><span class="course-name">AP Music Theory</span></div>
+                                <div class="course-row"><span class="course-name">CT Seal of Biliteracy – Spanish</span></div>
+                            </div>
+                        </div>
+                        <div class="term-item">
+                            <button class="term-header" data-term="hs3">2024 - 2025 (Junior)</button>
+                            <div class="term-body" data-term="hs3">
+                                <div class="course-row"><span class="course-name">AP English Language and Composition</span></div>
+                                <div class="course-row"><span class="course-name">US History</span></div>
+                                <div class="course-row"><span class="course-name">AP Calculus BC</span></div>
+                                <div class="course-row"><span class="course-name">AP Physics 1: Algebra-Based (With Lab)</span></div>
+                                <div class="course-row"><span class="course-name">AP Spanish Language and Culture</span></div>
+                                <div class="course-row"><span class="course-name">AP Computer Science A</span></div>
+                            </div>
+                        </div>
+                        <div class="term-item">
+                            <button class="term-header open" data-term="hs4">2025 - 2026 (Senior)</button>
+                            <div class="term-body" data-term="hs4">
+                                <div class="course-row"><span class="course-name">AP English Literature and Composition</span></div>
+                                <div class="course-row"><span class="course-name">AP Microeconomics / UConn Principles of Microeconomics</span></div>
+                                <div class="course-row"><span class="course-name">AP Comparative Government and Politics</span></div>
+                                <div class="course-row"><span class="course-name">AP Macroeconomics / UConn Principles of Macroeconomics</span></div>
+                                <div class="course-row"><span class="course-name">Honors Multivariable Calculus</span></div>
+                                <div class="course-row"><span class="course-name">AP Statistics / UConn Elementary Concepts of Statistics</span></div>
+                                <div class="course-row"><span class="course-name">AP Physics C: Mechanics &amp; E&amp;M (With Lab) / UConn General Physics I &amp; II</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Projects Layout Node Array -->
+            <section id="projects">
+                <h2>Projects</h2>
+                <div class="projects-container">
+                    <button class="nav-arrow" aria-label="Previous Project">&lt;</button>
+                    
+                    <div class="projects-grid">
+                        <div class="project-card">
+  <!-- 1. Project Title -->
+  <h3>Linear Regression Visualizer</h3>
+  
+  <!-- 2. Badges/Tags (Helps recruiters see your skills instantly) -->
+  <div class="project-tags">
+    <span class="tag">GameMaker</span>
+    <span class="tag">HTML5</span>
+    <span class="tag">Data Science</span>
+  </div>
+  
+  <!-- 3. Short Description -->
+  <p>An interactive tool built in GameMaker to visually explore linear regression datasets, plot points, and calculate lines of best fit in real time.</p>
+  
+  <!-- 4. Action Buttons -->
+  <div class="project-links">
+    <!-- Links to the subfolder we set up earlier -->
+    <a href="projects/linear-regression/index.html" class="btn-primary">Launch Project</a>
+  </div>
+</div>
+                    </div>
+
+                    <button class="nav-arrow" aria-label="Next Project">&gt;</button>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script>
+        // Switch between "College" and "High School" tabs
+        document.querySelectorAll('.academic-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.academic-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const target = this.dataset.groupTarget;
+                document.querySelectorAll('.academic-group').forEach(group => {
+                    group.classList.toggle('active', group.dataset.group === target);
+                });
+                // Recalculate the open term's height now that its group is visible again
+                document.querySelectorAll('.academic-group[data-group="' + target + '"] .term-header.open').forEach(header => {
+                    header.nextElementSibling.style.maxHeight = header.nextElementSibling.scrollHeight + 'px';
+                });
+            });
+        });
+
+        // Accordion: clicking a term header smoothly expands/collapses its course list.
+        // Only one term stays open per group at a time.
+        document.querySelectorAll('.term-header').forEach(header => {
+            header.addEventListener('click', function () {
+                const isOpen = this.classList.contains('open');
+                const accordion = this.closest('.term-accordion');
+
+                accordion.querySelectorAll('.term-header').forEach(h => {
+                    h.classList.remove('open');
+                    h.nextElementSibling.style.maxHeight = null;
+                });
+
+                if (!isOpen) {
+                    this.classList.add('open');
+                    this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // Set the initial height for whichever terms start open (closest current period)
+        document.querySelectorAll('.term-header.open').forEach(header => {
+            header.nextElementSibling.style.maxHeight = header.nextElementSibling.scrollHeight + 'px';
+        });
+    </script>
+
+</body>
+</html>
