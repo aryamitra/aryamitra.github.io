@@ -99,6 +99,7 @@ body {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    border-bottom: 1px dashed #27273a;
 }
 
 .status-item {
@@ -132,8 +133,7 @@ body {
 
 /* Navigation or Quick Links section inside the sidebar */
 .sidebar-nav {
-    margin-top: 3rem;
-    border-top: 1px dashed #27273a;
+    margin-top: 15rem;
     padding-top: 1.5rem;
 }
 
@@ -149,6 +149,52 @@ body {
 
 .sidebar-nav a:hover, .sidebar-nav a.active {
     color: #bc34fa;
+}
+/* Travel Status Container */
+.travel-status {
+  margin: 25px 0;
+  padding: 12px 15px;
+  background-color: rgba(0, 0, 0, 0.2); /* Soft dark terminal box background */
+  border-left: 3px solid #800020;        /* Maroon border accent matching UMass theme */
+  font-family: 'Courier New', Courier, monospace; /* Clean terminal font stack */
+}
+
+/* Header Text */
+.travel-header {
+  font-size: 0.85rem;
+  color: #888888;                      /* Dimmed code comment color */
+  margin-bottom: 6px;
+}
+
+/* Location Name */
+.travel-location {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;                      /* Bright white terminal output */
+  display: flex;
+  align-items: center;
+}
+
+/* Trip Dates */
+.travel-date {
+  font-size: 0.85rem;
+  color: #00ff66;                      /* Classic terminal green for dates */
+  margin-top: 4px;
+}
+
+/* Animated Blinking Cursor Effect */
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 2px;
+  background-color: #00ff66;           /* Green cursor */
+  margin-left: 6px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 
@@ -276,20 +322,21 @@ p {
 }
 
 .term-body {
-    max-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    transition: max-height 0.35s ease;
+  max-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: max-height 0.35s ease, padding 0.35s ease; /* Added padding transition */
+  padding-bottom: 0; /* Changed from 1.2rem to 0 so it closes perfectly */
 }
 
 .term-body .course-row:first-child {
     margin-top: 0.5rem;
 }
 
-.term-body {
-    padding-bottom: 1.2rem;
+.term-header.open + .term-body {
+  padding-bottom: 1.2rem;
 }
 
 .course-row {
@@ -299,10 +346,10 @@ p {
 }
 
 .course-code {
-    color: #bc34fa;
-    font-weight: bold;
-    font-size: 0.85rem;
-    min-width: 190px;
+  color: #bc34fa;
+  font-weight: bold;
+  font-size: 0.85rem;
+  flex: 0 0 190px; /* This locks the code width cleanly without stretching rows */
 }
 
 .course-name {
@@ -395,6 +442,28 @@ p {
     gap: 1rem;
     margin-top: 2rem;
 }
+.footer-metadata {
+  margin-top: auto;   /* Pushes the row to the very bottom of the sidebar */
+  padding: 15px 0 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;    /* Keeps layout clean if the screen shrinks */
+  font-family: 'Courier New', Courier, monospace; /* Consistent terminal font */
+  
+  /* 🔍 ADJUSTED THIS LINE TO MAKE TEXT TINIER */
+  font-size: 0.65rem; /* Decreased from 0.75rem to make it extra micro */
+  
+  color: #666666;     /* Subtle gray code text color */
+}
+/* Dividing Slashes styling rules */
+.meta-slash {
+  /* 🔍 INCREASED THE SECOND NUMBER FOR MORE SPACE */
+  margin: 0 15px;     /* The first number is top/bottom space, the second is left/right space */
+  
+  color: #800020;     /* Matches your maroon UMass campus theme */
+  font-weight: normal; /* Keeps the slash thin so it doesn't look bulky */
+}
 
 .btn {
     text-decoration: none;
@@ -437,4 +506,41 @@ p {
     .projects-grid {
         grid-template-columns: 1fr;
     }
+}
+/* Container sizing and alignment */
+.social-links {
+  display: flex;
+  gap: 1rem;       /* Clean spacing between the mini icons */
+  margin-top: 10rem;
+}
+
+/* Individual layout adjustments for links */
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* Designing the tiny icons */
+.social-links svg {
+  width: 14px;      /* Sharp, tiny structural dimension */
+  height: 14px;
+  fill: #71717a;    /* Matches your gray tag text */
+  transition: fill 0.2s ease-in-out, transform 0.2s ease;
+}
+
+/* Hover dynamic animations */
+.social-links a:hover svg {
+  fill: #bc34fa;    /* Shifts beautifully into your neon accent tone */
+  transform: scale(1.1); /* Extremely slight expansion to signal interactive response */
+}
+#sidebar-container-selector {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Stretches menu options up and forces status/socials down */
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
 }
