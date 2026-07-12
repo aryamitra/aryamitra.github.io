@@ -43,21 +43,47 @@
     </div>
   </div>
 
-  <!-- Inline Email Box inside the sidebar flow -->
-<div class="email-header">// CONTACT ME:</div>
-  <div class="sidebar-email-box">
-    <form id="sidebarEmailForm">
-      <div class="email-input-wrapper">
-        <input type="email" placeholder="Your email..." required>
-        <!-- Fullscreen Expand Button -->
-        <button type="button" class="btn-expand" id="openFullscreenBtn" title="Maximize">
-          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" fill="currentColor"/></svg>
-        </button>
-      </div>
-      <textarea placeholder="Leave a message..." rows="2" required></textarea>
-      <button type="submit" class="btn-send">Send Message</button>
-    </form>
-  </div>
+  <!-- THE ONE AND ONLY FORM FOR YOUR ENTIRE WEBSITE -->
+  <form id="unifiedEmailForm" action="https://formspree.io/f/xvzepbdd" method="POST">
+
+    <!-- Optional Subject Line for Formspree Dashboard Sorting -->
+    <input type="hidden" name="_subject" value="New Portfolio Message!">
+
+    <!-- 1. SIDEBAR VIEW -->
+    <div class="email-header">// CONTACT ME:</div> 
+    <div class="sidebar-email-box"> 
+      <div class="email-input-wrapper"> 
+        <input type="email" id="sharedEmail" name="email" placeholder="Your email..." required> 
+        
+        <!-- Fullscreen Expand Button --> 
+        <button type="button" class="btn-expand" id="openFullscreenBtn" title="Maximize"> 
+          <svg viewBox="0 0 24 24" width="14" height="14"> 
+            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" fill="currentColor"/> 
+          </svg> 
+        </button> 
+      </div> 
+      
+      <textarea id="sharedMessage" name="message" placeholder="Leave a message..." rows="2" required></textarea> 
+      <button type="submit" class="btn-send">Send Message</button> 
+    </div>
+
+        <!-- 2. THE POPUP MODAL (Fixed: removed 'required' from these two lines) -->
+    <div class="email-modal-overlay" id="emailModal"> 
+      <div class="email-modal-content"> 
+        <button type="button" class="btn-close-modal" id="closeFullscreenBtn">&times;</button> 
+        <h2>Send a Message</h2> 
+        
+        <!-- FIX: Removed required attribute from these tags -->
+        <input type="email" id="modalEmail" name="modal-email" placeholder="Your email address"> 
+        <textarea id="modalMessage" name="modal-message" placeholder="Write your full message here..." rows="8"></textarea> 
+        
+        <button type="submit" class="btn-send-large">Send Message</button> 
+      </div> 
+    </div>
+
+
+  </form> 
+  <!-- ==================== THE SINGLE FORM ENDS HERE ==================== -->
 
   <!-- New wrapper box for your bottom elements -->
   <div class="sidebar-footer">
@@ -89,18 +115,7 @@
   <div class="sidebar-divider-line"></div>
 </aside> <!-- Sidebar safely terminates right here -->
 
-<!-- FULLSCREEN OVERLAY MODAL (Isolated root block) -->
-<div class="email-modal-overlay" id="emailModal">
-  <div class="email-modal-content">
-    <button class="btn-close-modal" id="closeFullscreenBtn">&times;</button>
-    <h2>Send a Message</h2>
-    <form id="modalEmailForm">
-      <input type="email" placeholder="Your email address" required>
-      <textarea placeholder="Write your full message here..." rows="8" required></textarea>
-      <button type="submit" class="btn-send-large">Send Message</button>
-    </form>
-  </div>
-</div>
+
 
 
         <!-- RIGHT MAIN SCROLL BLOCK CONTENT -->

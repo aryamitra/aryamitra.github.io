@@ -519,6 +519,20 @@ p {
     border-radius: 4px;
     transition: all 0.2s;
 }
+/* Smooth transition animation for the success button state */
+.btn-send.success-state, .btn-send-large.success-state {
+    background-color: #2e7d32 !important; /* Elegant Green color */
+    color: #ffffff !important;
+    border-color: #2e7d32 !important;
+    font-weight: bold;
+    animation: buttonPulse 0.4s ease-in-out;
+}
+
+@keyframes buttonPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
 
 .btn:hover {
     border-color: #bc34fa;

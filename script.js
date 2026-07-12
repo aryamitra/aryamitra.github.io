@@ -91,50 +91,107 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 /* ==========================================
-   FULLSCREEN EMAIL MODAL LOGIC + FORM SYNC
+   PERFECT SINGLE-FORM MODAL TOGGLE, SYNC & ANIMATION AJAX
    ========================================== */
 document.addEventListener("DOMContentLoaded", () => {
-  // Elements for opening/closing modal
   const emailModal = document.getElementById('emailModal');
   const openFullscreenBtn = document.getElementById('openFullscreenBtn');
   const closeFullscreenBtn = document.getElementById('closeFullscreenBtn');
+  const unifiedForm = document.getElementById('unifiedEmailForm');
 
-  // Input elements from both layouts
-  const sidebarForm = document.getElementById('sidebarEmailForm');
-  const modalForm = document.getElementById('modalEmailForm');
+  // Input fields for syncing
+  const sidebarEmail = document.getElementById('sharedEmail');
+  const sidebarText = document.getElementById('sharedMessage');
+  const modalEmail = document.getElementById('modalEmail');
+  const modalText = document.getElementById('modalMessage');
 
-  if (sidebarForm && modalForm) {
-    const sidebarEmail = sidebarForm.querySelector('input[type="email"]');
-    const sidebarText = sidebarForm.querySelector('textarea');
-    const modalEmail = modalForm.querySelector('input[type="email"]');
-    const modalText = modalForm.querySelector('textarea');
+  // 1. Handle opening, closing, and text syncing
+  if (openFullscreenBtn && emailModal) {
+    openFullscreenBtn.addEventListener('click', () => {
+      if(modalEmail && sidebarEmail) modalEmail.value = sidebarEmail.value;
+      if(modalText && sidebarText) modalText.value = sidebarText.value;
+      emailModal.classList.add('is-active');
+    });
+  }
 
-    // Sync from Sidebar to Modal when maximizing
-    if (openFullscreenBtn && emailModal) {
-      openFullscreenBtn.addEventListener('click', () => {
-        modalEmail.value = sidebarEmail.value;
-        modalText.value = sidebarText.value;
-        emailModal.classList.add('is-active');
-      });
+  function closeModalAndSync() {
+    if(sidebarEmail && modalEmail) sidebarEmail.value = modalEmail.value;
+    if(sidebarText && modalText) sidebarText.value = modalText.value;
+    emailModal.classList.remove('is-active');
+  }
+
+  if (closeFullscreenBtn && emailModal) {
+    closeFullscreenBtn.addEventListener('click', closeModalAndSync);
+  }
+
+  window.addEventListener('click', (e) => {
+    if (e.target === emailModal) {
+      closeModalAndSync();
     }
+  });
 
-    // Sync from Modal back to Sidebar when closing
-    if (closeFullscreenBtn && emailModal) {
-      closeFullscreenBtn.addEventListener('click', () => {
-        sidebarEmail.value = modalEmail.value;
-        sidebarText.value = modalText.value;
-        emailModal.classList.remove('is-active');
-      });
-    }
-
-    // Also sync if clicking the dark overlay background to close
-    window.addEventListener('click', (e) => {
-      if (e.target === emailModal) {
-        sidebarEmail.value = modalEmail.value;
-        sidebarText.value = modalText.value;
-        emailModal.classList.remove('is-active');
+  // 2. Handle the silent Formspree submission with animations
+  if (unifiedForm) {
+    unifiedForm.addEventListener("submit", function(event) {
+      event.preventDefault(); // Stop page refresh
+      
+      // Target BOTH submit buttons so they both visually animate if open
+      const sidebarBtn = unifiedForm.querySelector('.btn-send');
+      const modalBtn = unifiedForm.querySelector('.btn-send-large');
+      
+      const originalSidebarText = sidebarBtn ? sidebarBtn.textContent : "Send Message";
+      const originalModalText = modalBtn ? modalBtn.textContent : "Send Message";
+      
+      // Put buttons into a loading state
+      if(sidebarBtn) { sidebarBtn.textContent = "Sending..."; sidebarBtn.disabled = true; }
+      if(modalBtn) { modalBtn.textContent = "Sending..."; modalBtn.disabled = true; }
+      
+      // Before submitting, ensure both sets of fields have the same data
+      if (emailModal.classList.contains('is-active')) {
+        if(sidebarEmail && modalEmail) sidebarEmail.value = modalEmail.value;
+        if(sidebarText && modalText) sidebarText.value = modalText.value;
+      } else {
+        if(modalEmail && sidebarEmail) modalEmail.value = sidebarEmail.value;
+        if(modalText && sidebarText) modalText.value = sidebarText.value;
       }
+
+      const data = new FormData(unifiedForm);
+
+      fetch(unifiedForm.action, {
+        method: unifiedForm.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          // 🎉 SUCCESS STATE TRIGGER (No more alert!)
+          if(sidebarBtn) { sidebarBtn.textContent = "Sent ✓"; sidebarBtn.classList.add('success-state'); }
+          if(modalBtn) { modalBtn.textContent = "Sent ✓"; modalBtn.classList.add('success-state'); }
+          
+          unifiedForm.reset();
+
+          // Wait 1.5 seconds, then close the fullscreen modal if it's open
+          setTimeout(() => {
+            if (emailModal) emailModal.classList.remove('is-active');
+          }, 1500);
+
+          // Wait 3 seconds, then turn buttons back to normal
+          setTimeout(() => {
+            if(sidebarBtn) { sidebarBtn.textContent = originalSidebarText; sidebarBtn.classList.remove('success-state'); sidebarBtn.disabled = false; }
+            if(modalBtn) { modalBtn.textContent = originalModalText; modalBtn.classList.remove('success-state'); modalBtn.disabled = false; }
+          }, 3000);
+
+        } else {
+          alert("Oops! There was a problem sending your message.");
+          if(sidebarBtn) { sidebarBtn.textContent = originalSidebarText; sidebarBtn.disabled = false; }
+          if(modalBtn) { modalBtn.textContent = originalModalText; modalBtn.disabled = false; }
+        }
+      }).catch(error => {
+        alert("Oops! There was a network error.");
+        if(sidebarBtn) { sidebarBtn.textContent = originalSidebarText; sidebarBtn.disabled = false; }
+        if(modalBtn) { modalBtn.textContent = originalModalText; modalBtn.disabled = false; }
+      });
     });
   }
 });
+
 
