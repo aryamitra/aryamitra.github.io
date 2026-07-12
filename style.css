@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'JetBrains Mono'; /* This is the nickname you will use in your code */
+    src: url('./JetBrainsMono-ExtraLight.woff2') format('woff2'); /* Change the filename to match yours exactly */
+    font-weight: normal;
+    font-style: normal;
+}
 /* Modern & Clean CSS Reset */
 * {
     margin: 0;
@@ -13,20 +19,25 @@
 body {
     background-color: #0d0d11; 
     color: #e2e8f0; 
-    font-family: 'Courier New', Courier, monospace, sans-serif;
+    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
     line-height: 1.7;
     padding: 4rem 2rem;
 }
 
 /* Split-screen layout matching the architecture of Soham's site */
 .portfolio-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr; 
-    gap: 6rem; /* Boosted gap slightly for cleaner breathing room */                        
-    width: 95%; /* Stretches the container wider across the glass */                       
-    max-width: 1500px; /* Raises the desktop ceiling limit */                
-    margin: 0 auto 0 0; 
+  display: grid;
+  grid-template-columns: 260px 1fr; /*  CHANGED: Set to 240px */
+  gap: 6rem;
+  width: 95%;
+  max-width: 1500px;
+  margin: 0 auto 0 0;
+  padding-left: 2rem;
 }
+
+
+
+
 
 
 
@@ -34,9 +45,19 @@ body {
    LEFT SIDEBAR (Fixed / Sticky info)
    ---------------------------------- */
 .sidebar {
-    position: fixed;
-    width: 280px;
+  position: fixed;
+  width: 260px; /*  CHANGED: Dropped from 280px to 240px */
+  height: calc(100vh - 5rem);
+  top: 4rem;
+  left: 2rem;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  
 }
+
+
 
 /* Profile picture container matches your layout sketch */
 .profile-frame {
@@ -65,6 +86,14 @@ body {
     margin-bottom: 2rem;
 }
 
+.sidebar-footer {
+  margin-top: auto;       /* The anchor trick! Pushes this whole block to the bottom edge */
+  display: flex;
+  flex-direction: column; /* Stacks the icons cleanly above the clock text */
+  gap: 12px;              /* Creates some breathing space between icons and text */
+}
+
+
 .name-block {
     flex: 1;
 }
@@ -90,12 +119,11 @@ body {
     width: 28px;
     height: 2px;
     background-color: #3a3a4a;
-    margin-bottom: 0.5rem;
+
 }
 
 /* Status tickers added from your request details */
 .status-tags {
-    margin: 1.5rem 0;
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -133,7 +161,7 @@ body {
 
 /* Navigation or Quick Links section inside the sidebar */
 .sidebar-nav {
-    margin-top: 15rem;
+    margin-top: 3rem;
     padding-top: 1.5rem;
 }
 
@@ -157,6 +185,7 @@ body {
   background-color: rgba(0, 0, 0, 0.2); /* Soft dark terminal box background */
   border-left: 3px solid #800020;        /* Maroon border accent matching UMass theme */
   font-family: 'Courier New', Courier, monospace; /* Clean terminal font stack */
+  margin-top: 3rem;
 }
 
 /* Header Text */
@@ -181,6 +210,19 @@ body {
   color: #00ff66;                      /* Classic terminal green for dates */
   margin-top: 4px;
 }
+.travel-itinerary {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1); /* Subtle divider line */
+}
+
+/* Individual Itinerary Items */
+.itinerary-item {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  color: #00ccff; /* Terminal blue accent for text */
+  line-height: 1.5;
+}
 
 /* Animated Blinking Cursor Effect */
 .terminal-cursor {
@@ -189,7 +231,7 @@ body {
   height: 2px;
   background-color: #00ff66;           /* Green cursor */
   margin-left: 6px;
-  animation: blink 1s infinite;
+  animation: blink 5s infinite;
 }
 
 @keyframes blink {
@@ -202,8 +244,10 @@ body {
    RIGHT CONTENT AREA (Scrollable info)
    ---------------------------------- */
 .main-content {
-    grid-column-start: 2;
+  grid-column-start: 2;
+  padding-top: 6rem; /*  CHANGED: Increased from 3.5rem to see a visible push */
 }
+
 
 section {
     margin-bottom: 4rem;
@@ -442,20 +486,18 @@ p {
     gap: 1rem;
     margin-top: 2rem;
 }
-.footer-metadata {
-  margin-top: auto;   /* Pushes the row to the very bottom of the sidebar */
-  padding: 15px 0 5px 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;    /* Keeps layout clean if the screen shrinks */
-  font-family: 'Courier New', Courier, monospace; /* Consistent terminal font */
-  
-  /* 🔍 ADJUSTED THIS LINE TO MAKE TEXT TINIER */
-  font-size: 0.65rem; /* Decreased from 0.75rem to make it extra micro */
-  
-  color: #666666;     /* Subtle gray code text color */
+.footer-metadata { 
+  /* DELETED: margin-top: auto; */
+  padding: 5px 0 5px 0;   /* Cleaned up top padding slightly */
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-start; 
+  flex-wrap: wrap;        /* Keeps layout clean if the screen shrinks */
+  font-family: 'Courier New', Courier, monospace; 
+  font-size: 0.65rem; 
+  color: #666666; 
 }
+
 /* Dividing Slashes styling rules */
 .meta-slash {
   /* 🔍 INCREASED THE SECOND NUMBER FOR MORE SPACE */
@@ -483,6 +525,15 @@ p {
     color: #bc34fa;
     background-color: #161622;
 }
+.sidebar-divider-line {
+  position: absolute;
+  top: 4rem;              /* Aligns with the top of your main content area */
+  right: -3rem;           /* Pushes it right into the empty gap space */
+  width: 1px;
+  height: 55vh;           /* Controls the vertical height of the line */
+  background: linear-gradient(to bottom, transparent 0%, #1e1e2f 15%, #1e1e2f 85%, transparent 100%);
+  pointer-events: none;   /* Ensures users can click through it safely */
+}
 
 /* Keyframe blink for active node marker */
 @keyframes blink {
@@ -491,28 +542,47 @@ p {
 }
 
 /* Responsive configuration settings for standard screen scaling views */
-@media (max-width: 900px) {
-    .portfolio-layout {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+@media (max-width: 900px) { 
+    .portfolio-layout { 
+        display: flex; /* CHANGED from grid to flex to support the sticky footer layout */
+        flex-direction: column;
+        gap: 2rem; 
+        padding-left: 0; 
+        min-height: 100vh; /* FORCES the layout wrapper to stretch the full height of the phone */
+    } 
+    .sidebar-divider-line {
+    display: none;
     }
-    .sidebar {
-        position: relative;
-        width: 100%;
+
+    .sidebar { 
+        position: relative; 
+        width: 100%; 
+        display: flex; /* Ensures the sidebar itself remains a flexbox container */
+        flex-direction: column;
+        height: auto; 
+        min-height: calc(100vh - 4rem); /* FORCES the sidebar block to fill the first screen view */
+        top: 0; 
+        left: 0; 
+        border-right: none; 
+    } 
+
+    .sidebar-footer {
+        margin-top: auto; /* SHOOTS the footer links down to the bottom of the sidebar screen */
+        padding-bottom: 2rem; /* ADDS safe spacing so the clock doesn't touch the bottom phone bezel */
     }
-    .main-content {
-        grid-column-start: 1;
-    }
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
+
+    .main-content { 
+        /* grid-column-start: 1; -> (No longer needed since we switched .portfolio-layout to Flexbox) */
+        margin-top: 0 !important; 
+    } 
+
+    .projects-grid { 
+        grid-template-columns: 1fr; 
+    } 
 }
-/* Container sizing and alignment */
-.social-links {
-  display: flex;
-  gap: 1rem;       /* Clean spacing between the mini icons */
-  margin-top: 10rem;
-}
+
+
+
 
 /* Individual layout adjustments for links */
 .social-links a {
@@ -538,9 +608,196 @@ p {
 #sidebar-container-selector {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Stretches menu options up and forces status/socials down */
+  justify-content: space-between;
   height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
+  width: 260px; /*  ADDED: Ensures this container doesn't stretch past 240px */
+}
+/* ==========================================================================
+   SIDEBAR EMAIL BOX & FULLSCREEN MODAL STYLING
+   ========================================================================== */
+
+/* Embedded Sidebar Email Container */
+.sidebar-email-box {
+  margin-top: 15px;
+  background-color: rgba(22, 22, 31, 0.4); /* Matches your .profile-frame background */
+  border: 1px solid #1e1e2f; /* Matches your course accordion borders */
+  border-radius: 4px;
+  padding: 10px;
+}
+
+/* Horizontal alignment wrapper for email and max button */
+.email-input-wrapper {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+/* Custom resets & styles for inputs and textareas to fit terminal aesthetic */
+.sidebar-email-box input,
+.sidebar-email-box textarea,
+.email-modal-content input,
+.email-modal-content textarea {
+  width: 100%;
+  background-color: #111116; /* Matches your project card matte background */
+  border: 1px solid #1e1e2f;
+  color: #e2e8f0;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.8rem;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+
+/* Focused glow matching your neon purple theme color */
+.sidebar-email-box input:focus,
+.sidebar-email-box textarea:focus,
+.email-modal-content input:focus,
+.email-modal-content textarea:focus {
+  outline: none;
+  border-color: #bc34fa;
+  box-shadow: 0 0 8px rgba(188, 52, 250, 0.3);
+}
+
+.sidebar-email-box textarea {
+  resize: none;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* Send message action button layout */
+.btn-send {
+  width: 100%;
+  background: none;
+  color: #ffffff;
+  border: 1px solid #1e1e2f;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-send:hover {
+  border-color: #bc34fa;
+  color: #bc34fa;
+  background-color: #161622;
+}
+
+/* Maximize button alignment adjustments */
+.btn-expand {
+  background-color: #111116;
+  border: 1px solid #1e1e2f;
+  border-radius: 4px;
+  padding: 0 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #71717a;
+  transition: all 0.2s ease;
+}
+
+.btn-expand:hover {
+  color: #bc34fa;
+  border-color: #bc34fa;
+}
+
+/* ---------------------------------- 
+   FULLSCREEN MODAL OVERLAY 
+---------------------------------- */
+.email-modal-overlay {
+  display: none; /* Hidden by default toggled through JS */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(13, 13, 17, 0.9); /* Deep matte overlay background shadow */
+  backdrop-filter: blur(4px); /* Clean glassmorphic blurring filter */
+  z-index: 10000; /* Locks window stacking over everything else */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toggled structural view layout configuration */
+.email-modal-overlay.is-active {
+  display: flex;
+}
+
+.email-modal-content {
+  background-color: #111116;
+  border: 1px solid #1e1e2f;
+  padding: 3rem;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.email-modal-content h2 {
+  border-bottom: 1px dashed #27273a;
+  margin-bottom: 2rem;
+}
+/* Contact Section Header Label Style */
+.email-header {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #888888; /* Dimmed code comment color matching your travel tracker header */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2rem; /* Creates breathing space below the travel tracker */
+  margin-bottom: 6px;
+}
+.email-modal-content input,
+.email-modal-content textarea {
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  margin-bottom: 1.2rem;
+}
+
+/* Large Fullscreen action button interface */
+.btn-send-large {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #111116;
+  border: 1px solid #1e1e2f;
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-send-large:hover {
+  border-color: #bc34fa;
+  color: #bc34fa;
+  background-color: #161622;
+}
+
+/* Exit close execution button */
+.btn-close-modal {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #71717a;
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.btn-close-modal:hover {
+  color: #bc34fa;
 }

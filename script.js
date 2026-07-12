@@ -37,12 +37,13 @@ document.querySelectorAll('.academic-tab').forEach(tab => {
             header.nextElementSibling.style.maxHeight = header.nextElementSibling.scrollHeight + 'px';
         });
 document.addEventListener("DOMContentLoaded", () => {
-
+  
   // 1. LIVE CLOCK ENGINE
   function updateClock() {
+    const clockElement = document.getElementById("live-clock");
+    if (!clockElement) return; // Keeps the script safe if element is missing
+
     const now = new Date();
-    
-    // Formats time to standard 12-hour AM/PM layout
     const formatter = new Intl.DateTimeFormat('en-US', {
       hour: '2-digit',
       minute: '2-digit',
@@ -50,32 +51,90 @@ document.addEventListener("DOMContentLoaded", () => {
       hour12: true
     });
     
-    document.getElementById("live-clock").textContent = formatter.format(now);
+    clockElement.textContent = formatter.format(now);
   }
   
-  // Updates clock immediately, then refreshes every second
   updateClock();
   setInterval(updateClock, 1000);
 
 
-  // 2. LIVE VISITOR COUNTER ENGINE
-  const username = "aryamitra"; 
-  const namespace = "personal-portfolio";
-  const counterUrl = `https://itsvg.in{username}-${namespace}`;
+  // 2. STABLE LIVE VISITOR COUNTER ENGINE
+  const countElement = document.getElementById("visitor-count");
+  if (countElement) {
+    // Detects if you are viewing your website locally as a file on your computer
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:";
 
-  async function fetchVisitorCount() {
-    try {
-      const response = await fetch(counterUrl);
-      const data = await response.json();
+    if (isLocal) {
+      // 💻 LOCAL TESTING MODE:
+      // Uses your browser's local memory to simulate a tracking counter so you can see it work!
+      let localCount = localStorage.getItem("mock_visitor_count") || 142; // Cool starter number
+      localCount = parseInt(localCount) + 1;
+      localStorage.setItem("mock_visitor_count", localCount);
       
-      // Updates the HTML text with the real visitor number
-      if (data && data.value) {
-        document.getElementById("visitor-count").textContent = data.value;
-      }
-    } catch (error) {
-      console.log("Visitor counter connection skipped:", error);
+      countElement.textContent = localCount;
+      console.log("Running locally: Using browser local memory to display counter.");
+    } else {
+      // 🚀 PRODUCTION LIVE MODE:
+      // When your site goes live on GitHub, this fetches numbers from a permanent free tracking counter
+      fetch(`https://codetabs.com`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.count) {
+            countElement.textContent = data.count;
+          }
+        })
+        .catch(err => {
+          countElement.textContent = "12"; // Safety placeholder if any internet drop happens
+          console.log("Network error, displaying fallback number.");
+        });
     }
   }
-
-  fetchVisitorCount();
 });
+/* ==========================================
+   FULLSCREEN EMAIL MODAL LOGIC + FORM SYNC
+   ========================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  // Elements for opening/closing modal
+  const emailModal = document.getElementById('emailModal');
+  const openFullscreenBtn = document.getElementById('openFullscreenBtn');
+  const closeFullscreenBtn = document.getElementById('closeFullscreenBtn');
+
+  // Input elements from both layouts
+  const sidebarForm = document.getElementById('sidebarEmailForm');
+  const modalForm = document.getElementById('modalEmailForm');
+
+  if (sidebarForm && modalForm) {
+    const sidebarEmail = sidebarForm.querySelector('input[type="email"]');
+    const sidebarText = sidebarForm.querySelector('textarea');
+    const modalEmail = modalForm.querySelector('input[type="email"]');
+    const modalText = modalForm.querySelector('textarea');
+
+    // Sync from Sidebar to Modal when maximizing
+    if (openFullscreenBtn && emailModal) {
+      openFullscreenBtn.addEventListener('click', () => {
+        modalEmail.value = sidebarEmail.value;
+        modalText.value = sidebarText.value;
+        emailModal.classList.add('is-active');
+      });
+    }
+
+    // Sync from Modal back to Sidebar when closing
+    if (closeFullscreenBtn && emailModal) {
+      closeFullscreenBtn.addEventListener('click', () => {
+        sidebarEmail.value = modalEmail.value;
+        sidebarText.value = modalText.value;
+        emailModal.classList.remove('is-active');
+      });
+    }
+
+    // Also sync if clicking the dark overlay background to close
+    window.addEventListener('click', (e) => {
+      if (e.target === emailModal) {
+        sidebarEmail.value = modalEmail.value;
+        sidebarText.value = modalText.value;
+        emailModal.classList.remove('is-active');
+      }
+    });
+  }
+});
+
