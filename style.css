@@ -137,15 +137,7 @@ body {
 }
 
 /* The green pulsing active link indicator */
-.status-item.pulse::before {
-    content: "● ";
-    color: #39ff14; /* Neon green active terminal node */
-    animation: blink 2s infinite;
-}
 
-.status-item.pulse {
-    font-size: 0.65rem;
-}
 
 .status-item span.purple-text {
     color: #bc34fa;
@@ -224,15 +216,6 @@ body {
   line-height: 1.5;
 }
 
-/* Animated Blinking Cursor Effect */
-.terminal-cursor {
-  display: inline-block;
-  width: 8px;
-  height: 2px;
-  background-color: #00ff66;           /* Green cursor */
-  margin-left: 6px;
-  animation: blink 5s infinite;
-}
 
 @keyframes blink {
   0%, 49% { opacity: 1; }
