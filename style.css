@@ -1,8 +1,24 @@
 @font-face {
-    font-family: 'JetBrains Mono'; /* This is the nickname you will use in your code */
-    src: url('./JetBrainsMono-ExtraLight.woff2') format('woff2'); /* Change the filename to match yours exactly */
-    font-weight: normal;
+    font-family: 'JetBrains Mono';
+    src: url('./JetBrainsMono/JetBrainsMono-Regular.woff2') format('woff2');
+    font-weight: 400;
     font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('./JetBrainsMono/JetBrainsMono-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./JetBrainsMono/JetBrainsMono-ExtraBold.woff2') format('woff2');
+  font-weight: 800; /* Distinct weight for ExtraBold */
+  font-style: normal;
+  font-display: swap;
 }
 /* Modern & Clean CSS Reset */
 * {
@@ -27,7 +43,7 @@ body {
 /* Split-screen layout matching the architecture of Soham's site */
 .portfolio-layout {
   display: grid;
-  grid-template-columns: 260px 1fr; /*  CHANGED: Set to 240px */
+  grid-template-columns: 300px 1fr;
   gap: 6rem;
   width: 95%;
   max-width: 1500px;
@@ -46,15 +62,37 @@ body {
    ---------------------------------- */
 .sidebar {
   position: fixed;
-  width: 260px; /*  CHANGED: Dropped from 280px to 240px */
+  width: 348px;    /* Widened so the scrollbar lines up with .sidebar-divider-line; content stays pinned to 300px via .sidebar-inner below */
   height: calc(100vh - 5rem);
   top: 4rem;
   left: 2rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #27273a transparent;
+}
+
+.sidebar-inner {
+  width: 300px;    /* Original sidebar content width - nothing inside moves or resizes */
+  height: 100%;
   padding-bottom: 10px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #27273a;
+  border-radius: 2px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 
@@ -83,7 +121,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 1.2rem;
-    margin-bottom: 2rem;
+    margin-bottom: clamp(0.5rem, 3vh, 2rem);
 }
 
 .sidebar-footer {
@@ -153,8 +191,8 @@ body {
 
 /* Navigation or Quick Links section inside the sidebar */
 .sidebar-nav {
-    margin-top: 3rem;
-    padding-top: 1.5rem;
+    margin-top: clamp(0.75rem, 5vh, 3rem);
+    padding-top: clamp(0.5rem, 2.5vh, 1.5rem);
 }
 
 .sidebar-nav a {
@@ -163,7 +201,7 @@ body {
     text-decoration: none;
     font-size: 0.9rem;
     text-transform: uppercase;
-    margin-bottom: 0.8rem;
+    margin-bottom: clamp(0.25rem, 1.3vh, 0.8rem);
     transition: color 0.2s;
 }
 
@@ -176,8 +214,7 @@ body {
   padding: 12px 15px;
   background-color: rgba(0, 0, 0, 0.2); /* Soft dark terminal box background */
   border-left: 3px solid #800020;        /* Maroon border accent matching UMass theme */
-  font-family: 'Courier New', Courier, monospace; /* Clean terminal font stack */
-  margin-top: 3rem;
+  margin-top: clamp(0.75rem, 5vh, 3rem);
 }
 
 /* Header Text */
@@ -210,16 +247,9 @@ body {
 
 /* Individual Itinerary Items */
 .itinerary-item {
-  font-family: 'Courier New', Courier, monospace;
   font-size: 0.85rem;
   color: #00ccff; /* Terminal blue accent for text */
   line-height: 1.5;
-}
-
-
-@keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
 }
 
 
@@ -254,6 +284,10 @@ p {
     font-size: 0.95rem;
     max-width: 100%; /* Changed from 680px to 100% */
 }
+.text-extrabold {
+  font-weight: 800;
+  color: #c2294f;
+}
 
 
 /* Branded text items array layout */
@@ -269,6 +303,28 @@ p {
 .tech-node::before {
     content: "// ";
     color: #bc34fa;
+}
+
+.skills-group {
+    margin-bottom: 1.5rem;
+}
+
+.list-header {
+    color: #a855f7;        /* Uses your purple accent color */
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+/* Style for your new interest nodes */
+.interest-node {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+    border-radius: 4px;
+    color: #cccccc; /* Slightly softer white/gray for hobbies */
+    font-size: 0.9rem;
 }
 
 /* ----------------------------------
@@ -319,7 +375,7 @@ p {
     background: none;
     border: none;
     color: #a1a1aa;
-    font-family: 'Courier New', Courier, monospace, sans-serif;
+    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -476,8 +532,7 @@ p {
   align-items: center; 
   justify-content: flex-start; 
   flex-wrap: wrap;        /* Keeps layout clean if the screen shrinks */
-  font-family: 'Courier New', Courier, monospace; 
-  font-size: 0.65rem; 
+  font-size: 0.65rem;
   color: #666666; 
 }
 
@@ -523,9 +578,9 @@ p {
     background-color: #161622;
 }
 .sidebar-divider-line {
-  position: absolute;
+  position: fixed;        /* Moved out of .sidebar so its own overflow-x:hidden can't clip this */
   top: 4rem;              /* Aligns with the top of your main content area */
-  right: -3rem;           /* Pushes it right into the empty gap space */
+  left: calc(2rem + 348px);   /* sidebar left offset + sidebar width - lines up exactly with the scrollbar */
   width: 1px;
   height: 55vh;           /* Controls the vertical height of the line */
   background: linear-gradient(to bottom, transparent 0%, #1e1e2f 15%, #1e1e2f 85%, transparent 100%);
@@ -551,17 +606,25 @@ p {
     display: none;
     }
 
-    .sidebar { 
-        position: relative; 
-        width: 100%; 
+    .sidebar {
+        position: relative;
+        width: 100%;
         display: flex; /* Ensures the sidebar itself remains a flexbox container */
         flex-direction: column;
-        height: auto; 
+        height: auto;
         min-height: calc(100vh - 4rem); /* FORCES the sidebar block to fill the first screen view */
-        top: 0; 
-        left: 0; 
-        border-right: none; 
-    } 
+        top: 0;
+        left: 0;
+        border-right: none;
+    }
+
+    .sidebar-inner {
+        width: 100%;      /* Desktop pins this to 300px for the scrollbar trick; mobile just wants full width */
+        height: auto;
+        min-height: calc(100vh - 4rem); /* Keeps the sidebar-footer margin-top:auto trick working here too */
+        display: flex;
+        flex-direction: column;
+    }
 
     .sidebar-footer {
         margin-top: auto; /* SHOOTS the footer links down to the bottom of the sidebar screen */
@@ -573,20 +636,27 @@ p {
         margin-top: 0 !important; 
     } 
 
-    .projects-grid { 
-        grid-template-columns: 1fr; 
-    } 
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 
 
-
 /* Individual layout adjustments for links */
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .social-links a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  padding: 4px;        /* Bigger tap target than the raw 14px glyph */
+  margin: -4px;         /* ...without changing the visual gap between icons */
 }
 
 /* Designing the tiny icons */
@@ -594,13 +664,21 @@ p {
   width: 14px;      /* Sharp, tiny structural dimension */
   height: 14px;
   fill: #71717a;    /* Matches your gray tag text */
-  transition: fill 0.2s ease-in-out, transform 0.2s ease;
+  transition: fill 0.2s ease-in-out, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Hover dynamic animations */
+/* The LeetCode brand mark doesn't fill its viewBox as fully as the others,
+   so it reads visually smaller at matched pixel dimensions; nudged up to compensate.
+   No fill here - it inherits from .social-links svg above so hover stays in sync. */
+.leetcode-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Hover dynamic animations (damped spring easing so it doesn't feel abrupt at this size) */
 .social-links a:hover svg {
   fill: #bc34fa;    /* Shifts beautifully into your neon accent tone */
-  transform: scale(1.1); /* Extremely slight expansion to signal interactive response */
+  transform: scale(1.15);
 }
 #sidebar-container-selector {
   display: flex;
@@ -610,7 +688,7 @@ p {
   position: fixed;
   left: 0;
   top: 0;
-  width: 260px; /*  ADDED: Ensures this container doesn't stretch past 240px */
+  width: 300px;
 }
 /* ==========================================================================
    SIDEBAR EMAIL BOX & FULLSCREEN MODAL STYLING
@@ -618,7 +696,8 @@ p {
 
 /* Embedded Sidebar Email Container */
 .sidebar-email-box {
-  margin-top: 15px;
+  margin-top: clamp(6px, 2.5vh, 15px);
+  margin-bottom: clamp(0.75rem, 3vh, 1.5rem); /* Guarantees breathing room above the socials/footer */
   background-color: rgba(22, 22, 31, 0.4); /* Matches your .profile-frame background */
   border: 1px solid #1e1e2f; /* Matches your course accordion borders */
   border-radius: 4px;
@@ -641,7 +720,7 @@ p {
   background-color: #111116; /* Matches your project card matte background */
   border: 1px solid #1e1e2f;
   color: #e2e8f0;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
   font-size: 0.8rem;
   padding: 6px 8px;
   border-radius: 4px;
@@ -669,7 +748,7 @@ p {
   background: none;
   color: #ffffff;
   border: 1px solid #1e1e2f;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -743,12 +822,11 @@ p {
 }
 /* Contact Section Header Label Style */
 .email-header {
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
   font-size: 0.85rem;
   color: #888888; /* Dimmed code comment color matching your travel tracker header */
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-top: 2rem; /* Creates breathing space below the travel tracker */
+  margin-top: clamp(0.75rem, 3.5vh, 2rem); /* Creates breathing space below the travel tracker */
   margin-bottom: 6px;
 }
 .email-modal-content input,
@@ -770,7 +848,7 @@ p {
   text-transform: uppercase;
   letter-spacing: 1px;
   border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
   cursor: pointer;
   transition: all 0.2s ease;
 }
