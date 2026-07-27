@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'JetBrains Mono';
-    src: url('./JetBrainsMono/JetBrainsMono-Regular.woff2') format('woff2');
+    src: url('../fonts/JetBrainsMono/JetBrainsMono-Regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -8,14 +8,14 @@
 
 @font-face {
     font-family: 'JetBrains Mono';
-    src: url('./JetBrainsMono/JetBrainsMono-Bold.woff2') format('woff2');
+    src: url('../fonts/JetBrainsMono/JetBrainsMono-Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
 }
 @font-face {
   font-family: 'JetBrains Mono';
-  src: url('./JetBrainsMono/JetBrainsMono-ExtraBold.woff2') format('woff2');
+  src: url('../fonts/JetBrainsMono/JetBrainsMono-ExtraBold.woff2') format('woff2');
   font-weight: 800; /* Distinct weight for ExtraBold */
   font-style: normal;
   font-display: swap;
@@ -52,7 +52,9 @@ body {
 }
 
 
-
+html {
+  scroll-behavior: smooth;
+}
 
 
 
@@ -264,6 +266,7 @@ body {
 
 section {
     margin-bottom: 4rem;
+    scroll-margin-top: 4rem; /* breathing room above header when jumped to via sidebar anchor links */
 }
 
 /* Classy, minimal section headers */
@@ -451,6 +454,114 @@ p {
     font-style: italic;
     font-size: 0.8rem;
     margin-bottom: 0.8rem;
+}
+
+/* ----------------------------------
+   ATHLETICS / GUITAR SECTIONS
+   Reuses .time-header / .job-title / .job-date / .company-name / .job-desc
+   from the Experience timeline so entries read as one consistent system.
+   .media-entry / .media-frame / .media-info / .media-col are the shared,
+   activity-agnostic layout primitives; .guitar-* classes below are additive
+   modifiers scoped to the Guitar section only.
+   ---------------------------------- */
+.media-entry {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.media-col {
+    flex: 0 0 280px;
+}
+
+.media-frame {
+    border: 1px solid #1e1e2f;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #111116;
+}
+
+.media-frame img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.media-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.media-caption {
+    margin-top: 0.6rem;
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #71717a;
+    text-align: center;
+}
+
+/* Gives stacked photos within the same .media-col (e.g. Squash's two images) breathing room */
+.media-caption + .media-frame {
+    margin-top: 1.5rem;
+}
+
+/* Small citation-style callout under a .job-desc, e.g. an award writeup */
+.award-note {
+    margin-top: 0.5rem;
+    padding: 12px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-left: 3px solid #800020;
+}
+
+.award-note .list-header {
+    margin-bottom: 0.4rem;
+}
+
+.award-desc {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #a1a1aa;
+    margin-bottom: 0;
+}
+
+/* Guitar section: clip row sits above the write-up, full width, instead of beside it */
+.guitar-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Clips are portrait phone recordings (9:16), laid out side by side; wraps on narrow screens */
+.guitar-videos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.guitar-video-block {
+    flex: 0 1 220px;
+    max-width: 220px;
+}
+
+.guitar-video video {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    display: block;
+    background-color: #000000;
+}
+
+@media (max-width: 900px) {
+    .media-entry {
+        flex-direction: column;
+    }
+    .media-col {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 320px;
+    }
 }
 
 /* Projects Section matching the carousel style box array layout */
