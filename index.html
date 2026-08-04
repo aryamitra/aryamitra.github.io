@@ -6,11 +6,26 @@
     <title>Arya Mitra | Portfolio</title>
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+      // Applied before first paint so the page never flashes the wrong theme on load.
+      (function () {
+        if (localStorage.getItem('portfolio-theme') === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
 </head>
 <body>
 
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" aria-pressed="false">
+      <svg class="theme-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12 3A9 9 0 0 0 12 21Z" fill="currentColor"/>
+      </svg>
+    </button>
+
     <div class="portfolio-layout">
-        
+
         <!-- LEFT SIDEBAR CONTAINER -->
 <aside class="sidebar">
  <div class="sidebar-inner">
@@ -25,7 +40,7 @@
   </div>
 
   <div class="status-tags">
-    <span class="status-item">Honors CS + Math Student at <span class="maroon-text">U</span>niversity of <span class="maroon-text">Mass</span>achusetts-<span class="maroon-text">Amherst</span></span>
+    <span class="status-item">Honors CS + Math Student at <span class="accent-text">U</span>niversity of <span class="accent-text">Mass</span>achusetts-<span class="accent-text">Amherst</span></span>
   </div>
 
   <nav class="sidebar-nav">
@@ -135,9 +150,9 @@
                 <p>
                     Hi, I'm Arya. I'm starting my freshman year at UMass Amherst this fall for Computer Science and Mathematics.
                 <p>
-                    I like math and building things. I'm interested in AI/ML, game design, and pretty much anything that's math-heavy, honestly. Still figuring out exactly where I want to specialize, but I like the problem-solving side of CS more than any one specific application.
+                    I like math and building things. I'm interested in AI/ML, game design, cybersecurity, quantum computing, and pretty much anything that's math-heavy, honestly. Still figuring out exactly where I want to specialize, but I like the problem-solving side of CS more than any one specific application.
                 <p>
-                    Outside of academics, you'll probably find me practicing classical guitar or working out. Happy to connect with other CS students, people into ML or game dev, or anyone who wants to talk shop.    
+                    Outside of academics, you'll probably find me practicing classical guitar or working out. Happy to connect with other students, people into tech, or anyone who wants to talk shop.    
                 </p>
                 
                 <div class="skills-group">
@@ -159,7 +174,7 @@
                     <div class="timeline-item">
                         <div class="time-header">
                             <span class="job-title">Private Tutor</span>
-                            <span class="job-date">Nov 2024 - Present</span>
+                            <span class="job-date">nov 2024 - present</span>
                         </div>
                         <div class="company-name">Self-employed // Hybrid // New Canaan, CT</div>
                         <p class="job-desc">
@@ -171,7 +186,7 @@
                     <div class="timeline-item">
                         <div class="time-header">
                             <span class="job-title">AP Computer Science Principles TA</span>
-                            <span class="job-date">Aug 2025 - May 2026</span>
+                            <span class="job-date">aug 2025 - may 2026</span>
                         </div>
                         <div class="company-name">New Canaan High School // On-site</div>
                         <p class="job-desc">
@@ -183,7 +198,7 @@
                     <div class="timeline-item">
                         <div class="time-header">
                             <span class="job-title">Quantitative Research & SE Intern</span>
-                            <span class="job-date">Jun 2024 - Sep 2024</span>
+                            <span class="job-date">jun 2024 - sep 2024</span>
                         </div>
                         <div class="company-name">CNM Partners LLC // Remote</div>
                         <p class="job-desc">
@@ -195,7 +210,7 @@
                     <div class="timeline-item">
                         <div class="time-header">
                             <span class="job-title">Soccer Referee</span>
-                            <span class="job-date">Sep 2023 - Nov 2025</span>
+                            <span class="job-date">sep 2023 - nov 2025</span>
                         </div>
                         <div class="company-name">Connecticut State Referee Program // On-site</div>
                         <p class="job-desc">
@@ -211,8 +226,8 @@
                 <h2>Academic</h2>
 
                 <div class="academic-tabs">
-                    <span class="academic-tab active" data-group-target="college">College</span>
-                    <span class="academic-tab" data-group-target="highschool">High School</span>
+                    <button type="button" class="academic-tab active" data-group-target="college">College</button>
+                    <button type="button" class="academic-tab" data-group-target="highschool">High School</button>
                 </div>
 
                 <!-- COLLEGE GROUP -->
@@ -331,11 +346,11 @@
                     <div class="media-info">
                         <div class="time-header">
                             <span class="job-title">Varsity Squash</span>
-                            <span class="job-date">2 Years</span>
+                            <span class="job-date">5 Years</span>
                         </div>
                         <div class="company-name">New Canaan High School // Team Captain</div>
                         <p class="job-desc">
-                            Competed for two years on the Varsity squash team, developing the footwork, court IQ, and competitive discipline that high-level squash demands. Named <span class="text-extrabold">Team Captain</span>, responsible for running practices, mentoring newer players, and setting the standard for team culture on and off the court.
+                            Competed for two years on the Varsity squash team at NCHS + 3 years on other teams, developing the footwork, court IQ, and competitive discipline that high-level squash demands. Named <span class="text-extrabold">Team Captain</span>, responsible for running practices, mentoring newer players, and setting the standard for team culture on and off the court.
                         </p>
                         <div class="award-note">
                             <div class="list-header">// Schmidt Cup Leadership Award</div>
@@ -373,7 +388,7 @@
                     <div class="media-info">
                         <div class="time-header">
                             <span class="job-title">Spanish Classical Guitar</span>
-                            <span class="job-date">Ongoing</span>
+                            <span class="job-date">ongoing</span>
                         </div>
                         <div class="company-name">Self-Directed Practice</div>
                         <p class="job-desc">
