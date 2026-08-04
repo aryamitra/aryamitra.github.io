@@ -81,26 +81,11 @@
         </button> 
       </div> 
       
-      <textarea id="sharedMessage" name="message" placeholder="Leave a message..." rows="2" required></textarea> 
-      <button type="submit" class="btn-send">Send Message</button> 
+      <textarea id="sharedMessage" name="message" placeholder="Leave a message..." rows="2" required></textarea>
+      <button type="submit" class="btn-send">Send Message</button>
     </div>
 
-        <!-- 2. THE POPUP MODAL (Fixed: removed 'required' from these two lines) -->
-    <div class="email-modal-overlay" id="emailModal"> 
-      <div class="email-modal-content"> 
-        <button type="button" class="btn-close-modal" id="closeFullscreenBtn">&times;</button> 
-        <h2>Send a Message</h2> 
-        
-        <!-- FIX: Removed required attribute from these tags -->
-        <input type="email" id="modalEmail" name="modal-email" placeholder="Your email address"> 
-        <textarea id="modalMessage" name="modal-message" placeholder="Write your full message here..." rows="8"></textarea> 
-        
-        <button type="submit" class="btn-send-large">Send Message</button> 
-      </div> 
-    </div>
-
-
-  </form> 
+  </form>
   <!-- ==================== THE SINGLE FORM ENDS HERE ==================== -->
 
   <!-- New wrapper box for your bottom elements -->
@@ -435,6 +420,20 @@
 
     </div>
 
+    <!-- Fullscreen contact modal - lives at the body level (not nested in .sidebar) so it
+         reliably stacks above the rest of the page; its fields stay part of the shared
+         form via the form="unifiedEmailForm" attribute instead of DOM nesting. -->
+    <div class="email-modal-overlay" id="emailModal">
+      <div class="email-modal-content">
+        <button type="button" class="btn-close-modal" id="closeFullscreenBtn">&times;</button>
+        <h2>Send a Message</h2>
+
+        <input type="email" id="modalEmail" name="modal-email" placeholder="Your email address" form="unifiedEmailForm">
+        <textarea id="modalMessage" name="modal-message" placeholder="Write your full message here..." rows="8" form="unifiedEmailForm"></textarea>
+
+        <button type="submit" class="btn-send-large" form="unifiedEmailForm">Send Message</button>
+      </div>
+    </div>
 
         <script src="assets/js/script.js"></script>
 
