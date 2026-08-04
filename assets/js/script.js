@@ -137,7 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Target BOTH submit buttons so they both visually animate if open
       const sidebarBtn = unifiedForm.querySelector('.btn-send');
-      const modalBtn = unifiedForm.querySelector('.btn-send-large');
+      // .btn-send-large lives outside <form> now (linked via form="unifiedEmailForm"
+      // so it still submits this form), so it can't be found with unifiedForm.querySelector.
+      const modalBtn = document.querySelector('.btn-send-large');
       
       const originalSidebarText = sidebarBtn ? sidebarBtn.textContent : "Send Message";
       const originalModalText = modalBtn ? modalBtn.textContent : "Send Message";
