@@ -194,4 +194,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+/* ==========================================
+   LIGHT / DARK THEME TOGGLE
+   ========================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const THEME_KEY = "portfolio-theme";
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById("themeToggle");
+  if (!toggleBtn) return;
+
+  function syncButton(theme) {
+    const isLight = theme === "light";
+    toggleBtn.setAttribute("aria-pressed", String(isLight));
+    toggleBtn.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+  }
+
+  // The inline <head> script already set data-theme on <html> before paint;
+  // this just syncs the button's a11y state to whatever it landed on.
+  syncButton(root.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+  toggleBtn.addEventListener("click", () => {
+    const nextTheme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    if (nextTheme === "light") {
+      root.setAttribute("data-theme", "light");
+    } else {
+      root.removeAttribute("data-theme");
+    }
+    localStorage.setItem(THEME_KEY, nextTheme);
+    syncButton(nextTheme);
+  });
+});
 

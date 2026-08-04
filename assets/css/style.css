@@ -20,27 +20,150 @@
   font-style: normal;
   font-display: swap;
 }
-/* Modern & Clean CSS Reset */
+
+/* --- Design Tokens ---
+   Two palettes, swapped by [data-theme] on <html>: Dark (default) uses
+   Thistle / Lavender Purple / Deep Lilac / Deep Space Blue / Evergreen;
+   Light uses Lavender Veil / Lavender Veil / Mauve / Wisteria / Dusty
+   Lavender. Every rule in this file reads these custom properties instead
+   of a literal color, so the two blocks below are the only places a theme
+   is actually defined.
+
+   Roles stay constant across both themes:
+     --color-bg / --color-panel      surfaces (page vs. elevated card)
+     --color-text / --color-text-dim body copy vs. de-emphasized text
+     --color-text-strong             max-contrast text (headings, job titles)
+     --color-accent                  readable accent text (~4.5:1+): h2,
+                                      nav, labels
+     --color-accent-muted            decorative-only accent (borders, glows,
+                                      hover fills) - only needs ~3:1
+     --color-accent-soft             secondary decorative accent (border-left
+                                      bars, dividers)
+   --color-accent (dark) is a lightened tint of --color-accent-muted; in
+   light mode it's a darkened, saturated Wisteria so it stays legible
+   against the pale surfaces. --color-text / --color-text-dim are similarly
+   derived tints of the palette, tuned so body copy clears AA on both
+   surface colors in each theme.
+
+   NOTE: .status-item .accent-text (the maroon "UMass" highlight) is
+   intentionally hardcoded to #c2294f, not a token - it must not change
+   between themes.
+   ---------------------------------- */
+:root {
+  --color-bg: #031211;
+  --color-panel: #081621;
+  --color-panel-tint: rgba(16, 43, 63, 0.4);
+  --color-hover-bg: #1c2f4f;
+
+  --color-text: #9494ad;
+  --color-text-dim: #7a7690;
+  --color-text-strong: #e2cfea;
+
+  --color-accent: #b185da;
+  --color-accent-muted: #a06cd5;
+  --color-accent-soft: #6247aa;
+  --color-accent-tint: rgba(160, 108, 213, 0.1);
+
+  --color-border: rgba(160, 108, 213, 0.18);
+  --color-border-strong: rgba(160, 108, 213, 0.4);
+  --color-glow: rgba(160, 108, 213, 0.3);
+}
+
+:root[data-theme="light"] {
+  --color-bg: #f3e0ec;
+  --color-panel: #ead5e6;
+  --color-panel-tint: rgba(202, 156, 225, 0.22);
+  --color-hover-bg: #f2befc;
+
+  --color-text: #5b5466;
+  --color-text-dim: #685f74;
+  --color-text-strong: #3d3547;
+
+  --color-accent: #6b3fa0;
+  --color-accent-muted: #ca9ce1;
+  --color-accent-soft: #685f74;
+  --color-accent-tint: rgba(202, 156, 225, 0.22);
+
+  --color-border: rgba(104, 95, 116, 0.22);
+  --color-border-strong: rgba(104, 95, 116, 0.45);
+  --color-glow: rgba(202, 156, 225, 0.4);
+}
+
+/* --- Reset --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* 
-   Matte Cyberpunk Styling 
-   - Using a deep matte off-black/charcoal background (#0d0d11) 
-   - High-end monospace font family for that 'cyber' terminal feel
-*/
+/* --- Base --- */
 body {
-    background-color: #0d0d11; 
-    color: #e2e8f0; 
+    background-color: var(--color-bg);
+    color: var(--color-text);
     font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
     line-height: 1.7;
     padding: 4rem 2rem;
 }
 
-/* Split-screen layout matching the architecture of Soham's site */
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- Theme Toggle ---
+   Fixed to the viewport's top-right corner so it stays reachable regardless
+   of scroll position or which two-column breakpoint is active. The icon is
+   a single circle split down the middle, filled on the left; flipping
+   [data-theme] mirrors it horizontally so the filled half swaps sides,
+   showing at a glance which half (dark/light) is currently active.
+   ---------------------------------- */
+.theme-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 2rem;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--color-accent-muted);
+  color: var(--color-text-strong);
+  background-color: var(--color-hover-bg);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-accent-muted);
+  outline-offset: 2px;
+}
+
+.theme-toggle-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.4s ease;
+}
+
+[data-theme="light"] .theme-toggle-icon {
+  transform: scaleX(-1);
+}
+
+@media (max-width: 900px) {
+  .theme-toggle {
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+/* --- Layout --- */
 .portfolio-layout {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -51,17 +174,7 @@ body {
   padding-left: 2rem;
 }
 
-
-html {
-  scroll-behavior: smooth;
-}
-
-
-
-
-/* ----------------------------------
-   LEFT SIDEBAR (Fixed / Sticky info)
-   ---------------------------------- */
+/* --- Sidebar --- */
 .sidebar {
   position: fixed;
   width: 348px;    /* Widened so the scrollbar lines up with .sidebar-divider-line; content stays pinned to 300px via .sidebar-inner below */
@@ -72,7 +185,7 @@ html {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #27273a transparent;
+  scrollbar-color: var(--color-border-strong) transparent;
 }
 
 .sidebar-inner {
@@ -89,7 +202,7 @@ html {
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background: #27273a;
+  background: var(--color-border-strong);
   border-radius: 2px;
 }
 
@@ -97,16 +210,14 @@ html {
   background: transparent;
 }
 
-
-
-/* Profile picture container matches your layout sketch */
+/* --- Sidebar: Profile & Name --- */
 .profile-frame {
     width: 90px;
     height: 90px;
     flex-shrink: 0;
-    background-color: #16161f;
-    border: 1px solid #bc34fa; /* Neon purple border line */
-    box-shadow: 0 0 15px rgba(188, 52, 250, 0.2); /* Soft purple matte glow */
+    background-color: var(--color-panel);
+    border: 1px solid var(--color-accent-muted);
+    box-shadow: 0 0 15px var(--color-glow);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -133,7 +244,6 @@ html {
   gap: 12px;              /* Creates some breathing space between icons and text */
 }
 
-
 .name-block {
     flex: 1;
 }
@@ -145,53 +255,43 @@ html {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     line-height: 1.3;
-    color: #ffffff;
+    color: var(--color-text-strong);
     margin-bottom: 0.8rem;
 }
 
 .sidebar h1 span {
     display: block;
-    color: #5a5a68; /* Muted grey second line, like the reference */
+    color: var(--color-text-dim); /* Muted second line, like the reference */
 }
 
 /* Small divider line under the name, matching the reference layout */
 .name-divider {
     width: 28px;
     height: 2px;
-    background-color: #3a3a4a;
-
+    background-color: var(--color-accent-soft);
 }
 
-/* Status tickers added from your request details */
+/* --- Sidebar: Status & Nav --- */
 .status-tags {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 1px dashed #27273a;
+    border-bottom: 1px dashed var(--color-border);
 }
 
 .status-item {
     display: block;
     margin-bottom: 0.4rem;
-    color: #a1a1aa;
+    color: var(--color-text);
 }
 
-/* The green pulsing active link indicator */
-
-
-.status-item span.purple-text {
-    color: #bc34fa;
-    font-weight: bold;
-}
-
-/* Cyber maroon accent, styled to match the neon purple glow */
-.status-item span.maroon-text {
+/* Inline emphasis for proper nouns within the status line (e.g. "UMass Amherst") */
+.status-item .accent-text {
     color: #c2294f;
     font-weight: bold;
-    text-shadow: 0 0 6px rgba(194, 41, 79, 0.5);
+    text-shadow: 0 0 6px rgba(194, 41, 79, 0.5); /* fixed maroon glow - stays identical in both themes, not a token */
 }
 
-/* Navigation or Quick Links section inside the sidebar */
 .sidebar-nav {
     margin-top: clamp(0.75rem, 5vh, 3rem);
     padding-top: clamp(0.5rem, 2.5vh, 1.5rem);
@@ -199,7 +299,7 @@ html {
 
 .sidebar-nav a {
     display: block;
-    color: #71717a;
+    color: var(--color-text-dim);
     text-decoration: none;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -207,62 +307,359 @@ html {
     transition: color 0.2s;
 }
 
-.sidebar-nav a:hover, .sidebar-nav a.active {
-    color: #bc34fa;
+.sidebar-nav a:hover,
+.sidebar-nav a:focus-visible,
+.sidebar-nav a.active {
+    color: var(--color-accent);
 }
-/* Travel Status Container */
+
+.sidebar-nav a:focus-visible {
+    outline: 2px solid var(--color-accent-muted);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* --- Sidebar: Travel Status --- */
 .travel-status {
   margin: 25px 0;
   padding: 12px 15px;
-  background-color: rgba(0, 0, 0, 0.2); /* Soft dark terminal box background */
-  border-left: 3px solid #800020;        /* Maroon border accent matching UMass theme */
+  background-color: var(--color-panel-tint);
+  border-left: 3px solid var(--color-accent-soft);
   margin-top: clamp(0.75rem, 5vh, 3rem);
 }
 
-/* Header Text */
 .travel-header {
   font-size: 0.85rem;
-  color: #888888;                      /* Dimmed code comment color */
+  color: var(--color-text-dim);
   margin-bottom: 6px;
 }
 
-/* Location Name */
 .travel-location {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #ffffff;                      /* Bright white terminal output */
+  color: var(--color-text-strong);
   display: flex;
   align-items: center;
 }
 
-/* Trip Dates */
 .travel-date {
   font-size: 0.85rem;
-  color: #00ff66;                      /* Classic terminal green for dates */
+  color: var(--color-text-strong);
   margin-top: 4px;
 }
+
 .travel-itinerary {
   margin-top: 12px;
   padding-top: 10px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.1); /* Subtle divider line */
+  border-top: 1px dashed var(--color-border);
 }
 
-/* Individual Itinerary Items */
 .itinerary-item {
   font-size: 0.85rem;
-  color: #00ccff; /* Terminal blue accent for text */
+  color: var(--color-text);
   line-height: 1.5;
 }
 
-
-/* ----------------------------------
-   RIGHT CONTENT AREA (Scrollable info)
-   ---------------------------------- */
-.main-content {
-  grid-column-start: 2;
-  padding-top: 6rem; /*  CHANGED: Increased from 3.5rem to see a visible push */
+/* --- Sidebar: Contact Form --- */
+.email-header {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: clamp(0.75rem, 3.5vh, 2rem);
+  margin-bottom: 6px;
 }
 
+.sidebar-email-box {
+  margin-top: clamp(6px, 2.5vh, 15px);
+  margin-bottom: clamp(0.75rem, 3vh, 1.5rem);
+  background-color: var(--color-panel-tint);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.email-input-wrapper {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.sidebar-email-box input,
+.sidebar-email-box textarea,
+.email-modal-content input,
+.email-modal-content textarea {
+  width: 100%;
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-strong);
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+
+.sidebar-email-box input:focus,
+.sidebar-email-box textarea:focus,
+.email-modal-content input:focus,
+.email-modal-content textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-muted);
+  box-shadow: 0 0 8px var(--color-glow);
+}
+
+.sidebar-email-box textarea {
+  resize: none;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.btn-send {
+  width: 100%;
+  background: none;
+  color: var(--color-text-strong);
+  border: 1px solid var(--color-border-strong);
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-send:hover,
+.btn-send:focus-visible {
+  border-color: var(--color-accent-muted);
+  color: var(--color-accent);
+  background-color: var(--color-hover-bg);
+}
+
+.btn-send:focus-visible {
+  outline: 2px solid var(--color-accent-muted);
+  outline-offset: 2px;
+}
+
+.btn-expand {
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  padding: 0 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-dim);
+  transition: all 0.2s ease;
+}
+
+.btn-expand:hover,
+.btn-expand:focus-visible {
+  color: var(--color-accent);
+  border-color: var(--color-accent-muted);
+}
+
+.btn-expand:focus-visible {
+  outline: 2px solid var(--color-accent-muted);
+  outline-offset: 2px;
+}
+
+/* Smooth transition animation for the success button state */
+.btn-send.success-state,
+.btn-send-large.success-state {
+    background-color: #2e7d32 !important; /* Universal "success" green - kept independent of the decorative palette */
+    color: #ffffff !important;
+    border-color: #2e7d32 !important;
+    font-weight: bold;
+    animation: buttonPulse 0.4s ease-in-out;
+}
+
+@keyframes buttonPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* --- Contact Modal --- */
+.email-modal-overlay {
+  display: none; /* Hidden by default, toggled through JS */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(6, 39, 38, 0.92); /* Evergreen-tinted overlay */
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.email-modal-overlay.is-active {
+  display: flex;
+}
+
+.email-modal-content {
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border);
+  padding: 3rem;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.email-modal-content h2 {
+  border-bottom: 1px dashed var(--color-border-strong);
+  margin-bottom: 2rem;
+}
+
+.email-modal-content input,
+.email-modal-content textarea {
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  margin-bottom: 1.2rem;
+}
+
+.btn-send-large {
+  text-decoration: none;
+  color: var(--color-text-strong);
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border-strong);
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-send-large:hover,
+.btn-send-large:focus-visible {
+  border-color: var(--color-accent-muted);
+  color: var(--color-accent);
+  background-color: var(--color-hover-bg);
+}
+
+.btn-send-large:focus-visible {
+  outline: 2px solid var(--color-accent-muted);
+  outline-offset: 2px;
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.btn-close-modal:hover,
+.btn-close-modal:focus-visible {
+  color: var(--color-accent);
+}
+
+.btn-close-modal:focus-visible {
+  outline: 2px solid var(--color-accent-muted);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* --- Sidebar: Footer & Social --- */
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 4px;        /* Bigger tap target than the raw 14px glyph */
+  margin: -4px;         /* ...without changing the visual gap between icons */
+  border-radius: 4px;
+}
+
+.social-links svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--color-text-dim);
+  transition: fill 0.2s ease-in-out, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* The LeetCode brand mark doesn't fill its viewBox as fully as the others,
+   so it reads visually smaller at matched pixel dimensions; nudged up to compensate.
+   No fill here - it inherits from .social-links svg above so hover stays in sync. */
+.leetcode-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.social-links a:hover svg,
+.social-links a:focus-visible svg {
+  fill: var(--color-accent-muted);
+  transform: scale(1.15);
+}
+
+.social-links a:focus-visible {
+  outline: 2px solid var(--color-accent-muted);
+  outline-offset: 2px;
+}
+
+.footer-metadata {
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;        /* Keeps layout clean if the screen shrinks */
+  font-size: 0.65rem;
+  color: var(--color-text-dim);
+}
+
+.meta-copyright,
+.visitor-counter {
+  color: var(--color-text-dim);
+}
+
+#visitor-count {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.meta-slash {
+  margin: 0 15px;
+  color: var(--color-accent-muted);
+  font-weight: normal;
+}
+
+/* --- Sidebar Divider --- */
+.sidebar-divider-line {
+  position: fixed;        /* Moved out of .sidebar so its own overflow-x:hidden can't clip this */
+  top: 4rem;
+  left: calc(2rem + 348px);   /* sidebar left offset + sidebar width - lines up exactly with the scrollbar */
+  width: 1px;
+  height: 55vh;
+  background: linear-gradient(to bottom, transparent 0%, var(--color-border-strong) 15%, var(--color-border-strong) 85%, transparent 100%);
+  pointer-events: none;
+}
+
+/* --- Main Content / Typography --- */
+.main-content {
+  grid-column-start: 2;
+  padding-top: 6rem;
+}
 
 section {
     margin-bottom: 4rem;
@@ -274,65 +671,118 @@ h2 {
     font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 4px;
-    color: #bc34fa;
+    color: var(--color-accent);
     margin-bottom: 1.5rem;
     font-weight: bold;
-    border-bottom: 1px solid #16161f;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 0.5rem;
 }
 
 p {
-    color: #a1a1aa;
+    color: var(--color-text);
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
-    max-width: 100%; /* Changed from 680px to 100% */
+    max-width: 100%;
 }
+
 .text-extrabold {
   font-weight: 800;
-  color: #c2294f;
+  color: var(--color-text-strong);
 }
 
+/* --- About --- */
+.skills-group {
+    margin-bottom: 1.5rem;
+}
 
-/* Branded text items array layout */
+.list-header {
+    color: var(--color-accent);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
 .tech-list {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
-    color: #ffffff;
+    color: var(--color-text-strong);
     font-size: 0.9rem;
     margin-top: 1rem;
 }
 
 .tech-node::before {
     content: "// ";
-    color: #bc34fa;
+    color: var(--color-accent);
 }
 
-.skills-group {
-    margin-bottom: 1.5rem;
-}
-
-.list-header {
-    color: #a855f7;        /* Uses your purple accent color */
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-}
-
-/* Style for your new interest nodes */
-.interest-node {
-    display: inline-block;
-    padding: 4px 8px;
-    margin: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
-    border-radius: 4px;
-    color: #cccccc; /* Slightly softer white/gray for hobbies */
-    font-size: 0.9rem;
-}
-
-/* ----------------------------------
-   ACADEMIC / COURSEWORK SECTION
+/* --- Experience / Timeline ---
+   .time-header / .job-title / .job-date / .company-name / .job-desc are the
+   shared entry primitives, reused as-is by the Athletics & Guitar sections
+   below so every activity entry on the site reads as one consistent system.
    ---------------------------------- */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+    margin-top: 1.5rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--color-border);
+}
+
+.timeline-item {
+    position: relative;
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -1.6rem;
+    top: 0.35rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--color-accent-muted);
+    box-shadow: 0 0 6px var(--color-glow);
+}
+
+.time-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.job-title {
+  color: var(--color-text-strong);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.job-date {
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.company-name {
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.6rem;
+}
+
+.job-desc {
+  margin-bottom: 0;
+}
+
+/* --- Academic --- */
 .academic-tabs {
     display: flex;
     gap: 2rem;
@@ -340,17 +790,31 @@ p {
 }
 
 .academic-tab {
+    background: none;
+    border: none;
+    font-family: inherit;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #71717a;
-    padding-bottom: 0.5rem;
+    color: var(--color-text-dim);
+    padding: 0 0 0.5rem;
     cursor: pointer;
+    transition: color 0.2s;
+}
+
+.academic-tab:hover,
+.academic-tab:focus-visible {
+    color: var(--color-text-strong);
+}
+
+.academic-tab:focus-visible {
+    outline: 2px solid var(--color-accent-muted);
+    outline-offset: 2px;
 }
 
 .academic-tab.active {
-    color: #bc34fa;
-    border-bottom: 2px solid #bc34fa;
+    color: var(--color-accent);
+    border-bottom: 2px solid var(--color-accent-muted);
 }
 
 .academic-group {
@@ -364,11 +828,11 @@ p {
 .term-accordion {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid #1e1e2f;
+    border-top: 1px solid var(--color-border);
 }
 
 .term-item {
-    border-bottom: 1px solid #1e1e2f;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .term-header {
@@ -377,7 +841,7 @@ p {
     text-align: left;
     background: none;
     border: none;
-    color: #a1a1aa;
+    color: var(--color-text);
     font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -393,7 +857,7 @@ p {
     position: absolute;
     right: 0.2rem;
     top: 1rem;
-    color: #bc34fa;
+    color: var(--color-accent);
     font-weight: bold;
     transition: transform 0.3s ease;
 }
@@ -403,8 +867,14 @@ p {
 }
 
 .term-header:hover,
+.term-header:focus-visible,
 .term-header.open {
-    color: #ffffff;
+    color: var(--color-text-strong);
+}
+
+.term-header:focus-visible {
+    outline: 2px solid var(--color-accent-muted);
+    outline-offset: -2px;
 }
 
 .term-body {
@@ -413,8 +883,8 @@ p {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  transition: max-height 0.35s ease, padding 0.35s ease; /* Added padding transition */
-  padding-bottom: 0; /* Changed from 1.2rem to 0 so it closes perfectly */
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  padding-bottom: 0;
 }
 
 .term-body .course-row:first-child {
@@ -432,34 +902,31 @@ p {
 }
 
 .course-code {
-  color: #bc34fa;
+  color: var(--color-accent);
   font-weight: bold;
   font-size: 0.85rem;
   flex: 0 0 190px; /* This locks the code width cleanly without stretching rows */
 }
 
 .course-name {
-    color: #a1a1aa;
+    color: var(--color-text);
     font-size: 0.85rem;
 }
 
 .course-empty {
-    color: #71717a;
+    color: var(--color-text-dim);
     font-style: italic;
     font-size: 0.85rem;
 }
 
 .course-note {
-    color: #71717a;
+    color: var(--color-text-dim);
     font-style: italic;
     font-size: 0.8rem;
     margin-bottom: 0.8rem;
 }
 
-/* ----------------------------------
-   ATHLETICS / GUITAR SECTIONS
-   Reuses .time-header / .job-title / .job-date / .company-name / .job-desc
-   from the Experience timeline so entries read as one consistent system.
+/* --- Athletics & Guitar (shared media layout) ---
    .media-entry / .media-frame / .media-info / .media-col are the shared,
    activity-agnostic layout primitives; .guitar-* classes below are additive
    modifiers scoped to the Guitar section only.
@@ -475,10 +942,10 @@ p {
 }
 
 .media-frame {
-    border: 1px solid #1e1e2f;
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     overflow: hidden;
-    background-color: #111116;
+    background-color: var(--color-panel);
 }
 
 .media-frame img {
@@ -498,7 +965,7 @@ p {
     margin-bottom: 0;
     font-size: 0.8rem;
     font-style: italic;
-    color: #71717a;
+    color: var(--color-text-dim);
     text-align: center;
 }
 
@@ -511,8 +978,8 @@ p {
 .award-note {
     margin-top: 0.5rem;
     padding: 12px 15px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-left: 3px solid #800020;
+    background-color: var(--color-panel-tint);
+    border-left: 3px solid var(--color-accent-soft);
 }
 
 .award-note .list-header {
@@ -522,7 +989,7 @@ p {
 .award-desc {
     font-size: 0.85rem;
     font-style: italic;
-    color: #a1a1aa;
+    color: var(--color-text);
     margin-bottom: 0;
 }
 
@@ -553,18 +1020,7 @@ p {
     background-color: #000000;
 }
 
-@media (max-width: 900px) {
-    .media-entry {
-        flex-direction: column;
-    }
-    .media-col {
-        flex-basis: auto;
-        width: 100%;
-        max-width: 320px;
-    }
-}
-
-/* Projects Section matching the carousel style box array layout */
+/* --- Projects --- */
 .projects-container {
     display: flex;
     align-items: center;
@@ -575,10 +1031,22 @@ p {
 .nav-arrow {
     background: none;
     border: none;
-    color: #bc34fa;
+    color: var(--color-accent);
     font-size: 1.8rem;
     cursor: pointer;
     padding: 1rem;
+    transition: color 0.2s ease;
+}
+
+.nav-arrow:hover,
+.nav-arrow:focus-visible {
+    color: var(--color-text-strong);
+}
+
+.nav-arrow:focus-visible {
+    outline: 2px solid var(--color-accent-muted);
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 .projects-grid {
@@ -589,8 +1057,8 @@ p {
 }
 
 .project-card {
-    background-color: #111116;
-    border: 1px solid #1e1e2f;
+    background-color: var(--color-panel);
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     padding: 1.5rem;
     min-height: 200px;
@@ -601,14 +1069,14 @@ p {
 }
 
 .project-card:hover {
-    border-color: #bc34fa;
-    box-shadow: 0 0 10px rgba(188, 52, 250, 0.1);
+    border-color: var(--color-accent-muted);
+    box-shadow: 0 0 10px var(--color-glow);
     transform: translateY(-2px);
 }
 
 .project-card h3 {
     font-size: 1rem;
-    color: #ffffff;
+    color: var(--color-text-strong);
     margin-bottom: 0.6rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -616,114 +1084,95 @@ p {
 
 .project-card p {
     font-size: 0.8rem;
-    color: #71717a;
+    color: var(--color-text-dim);
     line-height: 1.5;
 }
 
-.card-action {
-    font-size: 0.8rem;
-    color: #bc34fa;
-    text-decoration: none;
-    font-weight: bold;
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    color: var(--color-accent);
+    background-color: var(--color-accent-tint);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    padding: 3px 8px;
+}
+
+.project-links {
     margin-top: 1rem;
 }
 
-/* Action Buttons styling matching sketch row components */
-.footer-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-.footer-metadata { 
-  /* DELETED: margin-top: auto; */
-  padding: 5px 0 5px 0;   /* Cleaned up top padding slightly */
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-start; 
-  flex-wrap: wrap;        /* Keeps layout clean if the screen shrinks */
-  font-size: 0.65rem;
-  color: #666666; 
-}
-
-/* Dividing Slashes styling rules */
-.meta-slash {
-  /* 🔍 INCREASED THE SECOND NUMBER FOR MORE SPACE */
-  margin: 0 15px;     /* The first number is top/bottom space, the second is left/right space */
-  
-  color: #800020;     /* Matches your maroon UMass campus theme */
-  font-weight: normal; /* Keeps the slash thin so it doesn't look bulky */
-}
-
-.btn {
+/* --- Buttons --- */
+.btn-primary {
+    display: inline-block;
     text-decoration: none;
-    color: #ffffff;
-    background-color: #111116;
-    border: 1px solid #1e1e2f;
-    padding: 0.8rem 1.8rem;
-    font-size: 0.85rem;
+    color: var(--color-accent);
+    background-color: transparent;
+    border: 1px solid var(--color-border-strong);
+    padding: 0.6rem 1.4rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     border-radius: 4px;
-    transition: all 0.2s;
-}
-/* Smooth transition animation for the success button state */
-.btn-send.success-state, .btn-send-large.success-state {
-    background-color: #2e7d32 !important; /* Elegant Green color */
-    color: #ffffff !important;
-    border-color: #2e7d32 !important;
-    font-weight: bold;
-    animation: buttonPulse 0.4s ease-in-out;
+    transition: all 0.2s ease;
 }
 
-@keyframes buttonPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+.btn-primary:hover,
+.btn-primary:focus-visible {
+    border-color: var(--color-accent-muted);
+    color: var(--color-text-strong);
+    background-color: var(--color-hover-bg);
 }
 
-.btn:hover {
-    border-color: #bc34fa;
-    color: #bc34fa;
-    background-color: #161622;
-}
-.sidebar-divider-line {
-  position: fixed;        /* Moved out of .sidebar so its own overflow-x:hidden can't clip this */
-  top: 4rem;              /* Aligns with the top of your main content area */
-  left: calc(2rem + 348px);   /* sidebar left offset + sidebar width - lines up exactly with the scrollbar */
-  width: 1px;
-  height: 55vh;           /* Controls the vertical height of the line */
-  background: linear-gradient(to bottom, transparent 0%, #1e1e2f 15%, #1e1e2f 85%, transparent 100%);
-  pointer-events: none;   /* Ensures users can click through it safely */
+.btn-primary:focus-visible {
+    outline: 2px solid var(--color-accent-muted);
+    outline-offset: 2px;
 }
 
-/* Keyframe blink for active node marker */
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+/* --- Responsive --- */
+@media (max-width: 1150px) and (min-width: 901px) {
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-/* Responsive configuration settings for standard screen scaling views */
-@media (max-width: 900px) { 
-    .portfolio-layout { 
-        display: flex; /* CHANGED from grid to flex to support the sticky footer layout */
+@media (max-width: 900px) {
+    .media-entry {
         flex-direction: column;
-        gap: 2rem; 
-        padding-left: 0; 
-        min-height: 100vh; /* FORCES the layout wrapper to stretch the full height of the phone */
-    } 
+    }
+    .media-col {
+        flex-basis: auto;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .portfolio-layout {
+        display: flex; /* Switches from grid to flex to support the sidebar's sticky-footer trick when it's no longer position:fixed */
+        flex-direction: column;
+        gap: 2rem;
+        padding-left: 0;
+        min-height: 100vh; /* Forces the layout wrapper to stretch the full height of the phone */
+    }
+
     .sidebar-divider-line {
-    display: none;
+        display: none;
     }
 
     .sidebar {
         position: relative;
         width: 100%;
-        display: flex; /* Ensures the sidebar itself remains a flexbox container */
+        display: flex;
         flex-direction: column;
         height: auto;
-        min-height: calc(100vh - 4rem); /* FORCES the sidebar block to fill the first screen view */
+        min-height: calc(100vh - 4rem); /* Forces the sidebar block to fill the first screen view */
         top: 0;
         left: 0;
         border-right: none;
@@ -738,252 +1187,19 @@ p {
     }
 
     .sidebar-footer {
-        margin-top: auto; /* SHOOTS the footer links down to the bottom of the sidebar screen */
-        padding-bottom: 2rem; /* ADDS safe spacing so the clock doesn't touch the bottom phone bezel */
+        margin-top: auto; /* Shoots the footer links down to the bottom of the sidebar screen */
+        padding-bottom: 2rem; /* Safe spacing so the clock doesn't touch the bottom phone bezel */
     }
 
-    .main-content { 
-        /* grid-column-start: 1; -> (No longer needed since we switched .portfolio-layout to Flexbox) */
-        margin-top: 0 !important; 
-    } 
+    .main-content {
+        margin-top: 0 !important;
+    }
 
     .projects-grid {
         grid-template-columns: 1fr;
     }
-}
 
-
-
-/* Individual layout adjustments for links */
-.social-links {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.social-links a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  padding: 4px;        /* Bigger tap target than the raw 14px glyph */
-  margin: -4px;         /* ...without changing the visual gap between icons */
-}
-
-/* Designing the tiny icons */
-.social-links svg {
-  width: 14px;      /* Sharp, tiny structural dimension */
-  height: 14px;
-  fill: #71717a;    /* Matches your gray tag text */
-  transition: fill 0.2s ease-in-out, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* The LeetCode brand mark doesn't fill its viewBox as fully as the others,
-   so it reads visually smaller at matched pixel dimensions; nudged up to compensate.
-   No fill here - it inherits from .social-links svg above so hover stays in sync. */
-.leetcode-link svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* Hover dynamic animations (damped spring easing so it doesn't feel abrupt at this size) */
-.social-links a:hover svg {
-  fill: #bc34fa;    /* Shifts beautifully into your neon accent tone */
-  transform: scale(1.15);
-}
-#sidebar-container-selector {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 300px;
-}
-/* ==========================================================================
-   SIDEBAR EMAIL BOX & FULLSCREEN MODAL STYLING
-   ========================================================================== */
-
-/* Embedded Sidebar Email Container */
-.sidebar-email-box {
-  margin-top: clamp(6px, 2.5vh, 15px);
-  margin-bottom: clamp(0.75rem, 3vh, 1.5rem); /* Guarantees breathing room above the socials/footer */
-  background-color: rgba(22, 22, 31, 0.4); /* Matches your .profile-frame background */
-  border: 1px solid #1e1e2f; /* Matches your course accordion borders */
-  border-radius: 4px;
-  padding: 10px;
-}
-
-/* Horizontal alignment wrapper for email and max button */
-.email-input-wrapper {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-
-/* Custom resets & styles for inputs and textareas to fit terminal aesthetic */
-.sidebar-email-box input,
-.sidebar-email-box textarea,
-.email-modal-content input,
-.email-modal-content textarea {
-  width: 100%;
-  background-color: #111116; /* Matches your project card matte background */
-  border: 1px solid #1e1e2f;
-  color: #e2e8f0;
-  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
-  font-size: 0.8rem;
-  padding: 6px 8px;
-  border-radius: 4px;
-}
-
-/* Focused glow matching your neon purple theme color */
-.sidebar-email-box input:focus,
-.sidebar-email-box textarea:focus,
-.email-modal-content input:focus,
-.email-modal-content textarea:focus {
-  outline: none;
-  border-color: #bc34fa;
-  box-shadow: 0 0 8px rgba(188, 52, 250, 0.3);
-}
-
-.sidebar-email-box textarea {
-  resize: none;
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-
-/* Send message action button layout */
-.btn-send {
-  width: 100%;
-  background: none;
-  color: #ffffff;
-  border: 1px solid #1e1e2f;
-  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 6px 0;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-send:hover {
-  border-color: #bc34fa;
-  color: #bc34fa;
-  background-color: #161622;
-}
-
-/* Maximize button alignment adjustments */
-.btn-expand {
-  background-color: #111116;
-  border: 1px solid #1e1e2f;
-  border-radius: 4px;
-  padding: 0 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #71717a;
-  transition: all 0.2s ease;
-}
-
-.btn-expand:hover {
-  color: #bc34fa;
-  border-color: #bc34fa;
-}
-
-/* ---------------------------------- 
-   FULLSCREEN MODAL OVERLAY 
----------------------------------- */
-.email-modal-overlay {
-  display: none; /* Hidden by default toggled through JS */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(13, 13, 17, 0.9); /* Deep matte overlay background shadow */
-  backdrop-filter: blur(4px); /* Clean glassmorphic blurring filter */
-  z-index: 10000; /* Locks window stacking over everything else */
-  align-items: center;
-  justify-content: center;
-}
-
-/* Toggled structural view layout configuration */
-.email-modal-overlay.is-active {
-  display: flex;
-}
-
-.email-modal-content {
-  background-color: #111116;
-  border: 1px solid #1e1e2f;
-  padding: 3rem;
-  width: 90%;
-  max-width: 600px;
-  border-radius: 4px;
-  position: relative;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-}
-
-.email-modal-content h2 {
-  border-bottom: 1px dashed #27273a;
-  margin-bottom: 2rem;
-}
-/* Contact Section Header Label Style */
-.email-header {
-  font-size: 0.85rem;
-  color: #888888; /* Dimmed code comment color matching your travel tracker header */
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: clamp(0.75rem, 3.5vh, 2rem); /* Creates breathing space below the travel tracker */
-  margin-bottom: 6px;
-}
-.email-modal-content input,
-.email-modal-content textarea {
-  font-size: 0.9rem;
-  padding: 10px 12px;
-  margin-bottom: 1.2rem;
-}
-
-/* Large Fullscreen action button interface */
-.btn-send-large {
-  text-decoration: none;
-  color: #ffffff;
-  background-color: #111116;
-  border: 1px solid #1e1e2f;
-  width: 100%;
-  padding: 0.8rem;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-send-large:hover {
-  border-color: #bc34fa;
-  color: #bc34fa;
-  background-color: #161622;
-}
-
-/* Exit close execution button */
-.btn-close-modal {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  color: #71717a;
-  font-size: 1.8rem;
-  cursor: pointer;
-  line-height: 1;
-  transition: color 0.2s ease;
-}
-
-.btn-close-modal:hover {
-  color: #bc34fa;
+    body {
+        padding: 2rem 1.25rem;
+    }
 }
