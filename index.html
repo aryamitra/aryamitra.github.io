@@ -16,13 +16,6 @@
 </head>
 <body>
 
-    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" aria-pressed="false">
-      <svg class="theme-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
-        <path d="M12 3A9 9 0 0 0 12 21Z" fill="currentColor"/>
-      </svg>
-    </button>
-
     <div class="portfolio-layout">
 
 
@@ -48,13 +41,15 @@
     <a href="#academic">// Academic</a>
     <a href="#athletics">// Athletics</a>
     <a href="#guitar">// Guitar</a>
+    <!--
     <a href="#projects">// Projects</a>
+    -->
   </nav>
 
   <div class="travel-status">
     <div class="travel-header">// Where I'll Be:</div>
     <div class="travel-location">St Louis, MO</div>
-    <div class="travel-date">Jul 28 - Aug 11</div>
+    <div class="travel-date">Jul 28 - Aug 15</div>
     <div class="travel-itinerary">
       <div class="itinerary-item">• Open for coffee chats!</div>
     </div>
@@ -106,6 +101,15 @@
       <a href="https://leetcode.com/u/Mythic245/" target="_blank" aria-label="LeetCode" class="leetcode-link">
         <svg viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
       </a>
+      <!-- Theme Toggle: lives here in the DOM so it can flow inline with the
+           social icons on mobile; position:fixed keeps it pinned top-right
+           on desktop regardless of DOM placement. -->
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" aria-pressed="false">
+        <svg class="theme-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M12 3A9 9 0 0 0 12 21Z" fill="currentColor"/>
+        </svg>
+      </button>
     </div>
 
     <div class="footer-metadata">
@@ -180,7 +184,7 @@
                     <!-- Job 3: Quant Intern -->
                     <div class="timeline-item">
                         <div class="time-header">
-                            <span class="job-title">Quantitative Research & SE Intern</span>
+                            <span class="job-title">Quantitative Research & SWE Intern</span>
                             <span class="job-date">jun 2024 - sep 2024</span>
                         </div>
                         <div class="company-name">CNM Partners LLC // Remote</div>
@@ -382,7 +386,10 @@
                 </div>
             </section>
 
-            <!-- Projects Layout Node Array -->
+            <!-- Mobile-only copyright line; mirrors the .accent-text treatment used for "UMass-Amherst" in the sidebar -->
+            <div class="mobile-copyright">© 2026 Arya Mitra</div>
+
+            <!-- Projects Layout Node Array
             <section id="projects">
                 <h2>Projects</h2>
                 <div class="projects-container">
@@ -390,34 +397,34 @@
                     
                     <div class="projects-grid">
                         <div class="project-card">
-  <!-- 1. Project Title -->
-  <h3>Linear Regression Visualizer</h3>
-  
-  <!-- 2. Badges/Tags (Helps recruiters see your skills instantly) -->
-  <div class="project-tags">
-    <span class="tag">GameMaker</span>
-    <span class="tag">HTML5</span>
-    <span class="tag">Data Science</span>
-  </div>
-  
-  <!-- 3. Short Description -->
-  <p>An interactive tool built in GameMaker to visually explore linear regression datasets, plot points, and calculate lines of best fit in real time.</p>
-  
-  <!-- 4. Action Buttons -->
-  <div class="project-links">
-    <!-- Links to the subfolder we set up earlier -->
-    <a href="projects/linear-regression/index.html" class="btn-primary">Launch Project</a>
-  </div>
-</div>
-                    </div>
-
-                    <button class="nav-arrow" aria-label="Next Project">&gt;</button>
+                 1. Project Title 
+                <h3>Linear Regression Visualizer</h3>
+                
+                 2. Badges/Tags (Helps recruiters see your skills instantly) 
+                <div class="project-tags">
+                    <span class="tag">GameMaker</span>
+                    <span class="tag">HTML5</span>
+                    <span class="tag">Data Science</span>
                 </div>
-            </section>
+                
+                3. Short Description 
+                <p>An interactive tool built in GameMaker to visually explore linear regression datasets, plot points, and calculate lines of best fit in real time.</p>
+                
+                4. Action Buttons 
+                <div class="project-links">
+                     Links to the subfolder we set up earlier 
+                    <a href="projects/linear-regression/index.html" class="btn-primary">Launch Project</a>
+                </div>
+                </div>
+                                    </div>
 
-        </main>
+                                    <button class="nav-arrow" aria-label="Next Project">&gt;</button>
+                                </div>
+                            </section>
 
-    </div>
+                        </main>
+
+                    </div> -->
 
     <!-- Fullscreen contact modal - lives at the body level (not nested in .sidebar) so it
          reliably stacks above the rest of the page; its fields stay part of the shared
