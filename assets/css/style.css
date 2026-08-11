@@ -158,8 +158,7 @@ html {
 
 @media (max-width: 900px) {
   .theme-toggle {
-    top: 1rem;
-    right: 1rem;
+    position: static;   /* Drops out of the fixed corner to flow inline with the social icons */
   }
 }
 
@@ -291,6 +290,18 @@ html {
     font-weight: bold;
     text-shadow: 0 0 6px rgba(194, 41, 79, 0.5); /* fixed maroon glow - stays identical in both themes, not a token */
 }
+
+/* Mobile-only copyright line, styled to match .accent-text above; desktop
+   already shows a copyright in the sidebar footer so this stays hidden there. */
+.mobile-copyright 
+    {
+        display: block;
+        text-align: right;
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #c2294f;
+        text-shadow: 0 0 6px rgba(194, 41, 79, 0.5);
+    }
 
 .sidebar-nav {
     margin-top: clamp(0.75rem, 5vh, 3rem);
@@ -1172,7 +1183,6 @@ p {
         display: flex;
         flex-direction: column;
         height: auto;
-        min-height: calc(100vh - 4rem); /* Forces the sidebar block to fill the first screen view */
         top: 0;
         left: 0;
         border-right: none;
@@ -1181,18 +1191,52 @@ p {
     .sidebar-inner {
         width: 100%;      /* Desktop pins this to 300px for the scrollbar trick; mobile just wants full width */
         height: auto;
-        min-height: calc(100vh - 4rem); /* Keeps the sidebar-footer margin-top:auto trick working here too */
         display: flex;
         flex-direction: column;
     }
 
-    .sidebar-footer {
-        margin-top: auto; /* Shoots the footer links down to the bottom of the sidebar screen */
-        padding-bottom: 2rem; /* Safe spacing so the clock doesn't touch the bottom phone bezel */
+    /* Hidden on mobile: nav links, travel status, and the contact form all
+       drop out so the icon row (next visible child after status-tags) sits
+       directly under the status line instead of at the bottom of the screen. */
+    .sidebar-nav,
+    .travel-status,
+    #unifiedEmailForm {
+        display: none;
     }
+
+    .sidebar-footer {
+        margin-top: 1.5rem;   /* No longer pinned to the screen bottom - just breathing room under status-tags */
+        padding-bottom: 1.5rem;
+        gap: 16px;
+    }
+
+    .social-links {
+        gap: 26px;
+    }
+
+    .social-links svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .leetcode-link svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .meta-copyright,
+    .meta-slash:has(+ .meta-copyright) {
+        display: none;
+    }
+
+    
 
     .main-content {
         margin-top: 0 !important;
+        padding-top: 0;   /* Desktop's 6rem offset (to clear the fixed sidebar) leaves dead space now that the sidebar is compact */
+    }
+    .footer-metadata{
+      font-size: 0.85rem;
     }
 
     .projects-grid {
