@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       // 🚀 PRODUCTION LIVE MODE:
       // When your site goes live on GitHub, this fetches numbers from a permanent free tracking counter
-      fetch(`https://codetabs.com`)
+      fetch(`https://counterapi.dev`)
         .then(response => response.json())
         .then(data => {
           if (data && data.count) {
