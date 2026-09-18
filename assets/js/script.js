@@ -60,40 +60,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. STABLE LIVE VISITOR COUNTER ENGINE
   const countElement = document.getElementById("visitor-count");
-if (countElement) {
-  // Detects if you are viewing your website locally as a file on your computer
-  const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:";
+  if (countElement) {
+    // Detects if you are viewing your website locally as a file on your computer
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:";
 
-  if (isLocal) {
-    // 💻 LOCAL TESTING MODE:
-    // Uses your browser's local memory to simulate a tracking counter so you can see it work!
-    let localCount = localStorage.getItem("mock_visitor_count") || 142; // Cool starter number
-    localCount = parseInt(localCount) + 1;
-    localStorage.setItem("mock_visitor_count", localCount);
-    
-    countElement.textContent = localCount;
-    console.log("Running locally: Using browser local memory to display counter.");
-  } else {
-    // 🚀 PRODUCTION LIVE MODE:
-    // Switched from CodeTabs to here/now API endpoint
-    // NOTE: Replace 'yourwebsite.com' with your actual live domain name
-    const currentDomain = window.location.hostname; 
-    
-    fetch(`https://herenow.fyi{currentDomain}`)
-      .then(response => response.json())
-      .then(data => {
-        // here/now returns 'now' for real-time users and 'here' for all-time unique users
-        if (data && typeof data.now !== 'undefined') {
-          countElement.textContent = data.now; 
-        }
-      })
-      .catch(err => {
-        countElement.textContent = "12"; // Safe live fallback for a real-time counter
-        console.log("Network error, displaying fallback number.", err);
-      });
+    if (isLocal) {
+      // 💻 LOCAL TESTING MODE:
+      // Uses your browser's local memory to simulate a tracking counter so you can see it work!
+      let localCount = localStorage.getItem("mock_visitor_count") || 142; // Cool starter number
+      localCount = parseInt(localCount) + 1;
+      localStorage.setItem("mock_visitor_count", localCount);
+      
+      countElement.textContent = localCount;
+      console.log("Running locally: Using browser local memory to display counter.");
+    } else {
+      // 🚀 PRODUCTION LIVE MODE:
+      // When your site goes live on GitHub, this fetches numbers from a permanent free tracking counter
+      fetch(`https://codetabs.com`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.count) {
+            countElement.textContent = data.count;
+          }
+        })
+        .catch(err => {
+          countElement.textContent = "12"; // Safety placeholder if any internet drop happens
+          console.log("Network error, displaying fallback number.");
+        });
+    }
   }
-}
-
+});
 /* ==========================================
    PERFECT SINGLE-FORM MODAL TOGGLE, SYNC & ANIMATION AJAX
    ========================================== */
