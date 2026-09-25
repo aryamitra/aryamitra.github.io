@@ -58,36 +58,41 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(updateClock, 1000);
 
 
-  // 2. STABLE LIVE VISITOR COUNTER ENGINE
+  // 2. LIVE "ONLINE" COUNTER (Supabase Realtime Presence)
+  // Every open tab joins one shared presence channel; the count is the number
+  // of distinct visitor keys in it. Tabs share one visitor id via localStorage
+  // so opening the site twice in one browser still counts as one person.
+  // The publishable key is meant to be public - it's safe to ship in client code.
   const countElement = document.getElementById("visitor-count");
-  if (countElement) {
-    // Detects if you are viewing your website locally as a file on your computer
-    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:";
-
-    if (isLocal) {
-      // 💻 LOCAL TESTING MODE:
-      // Uses your browser's local memory to simulate a tracking counter so you can see it work!
-      let localCount = localStorage.getItem("mock_visitor_count") || 142; // Cool starter number
-      localCount = parseInt(localCount) + 1;
-      localStorage.setItem("mock_visitor_count", localCount);
-      
-      countElement.textContent = localCount;
-      console.log("Running locally: Using browser local memory to display counter.");
-    } else {
-      // 🚀 PRODUCTION LIVE MODE:
-      // When your site goes live on GitHub, this fetches numbers from a permanent free tracking counter
-      fetch(`https://codetabs.com`)
-        .then(response => response.json())
-        .then(data => {
-          if (data && data.count) {
-            countElement.textContent = data.count;
-          }
-        })
-        .catch(err => {
-          countElement.textContent = "12"; // Safety placeholder if any internet drop happens
-          console.log("Network error, displaying fallback number.");
-        });
+  const SUPABASE_URL = "https://qfyklfboysoyaxoxsifm.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_OP8XpAXcQNPyirZqE_DsYQ_8-gNp94a";
+  if (countElement && window.supabase) {
+    let visitorId;
+    try {
+      visitorId = localStorage.getItem("presence-id");
+      if (!visitorId) {
+        visitorId = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2));
+        localStorage.setItem("presence-id", visitorId);
+      }
+    } catch (e) {
+      visitorId = String(Math.random()).slice(2);
     }
+
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    const channel = client.channel("online-visitors", {
+      config: { presence: { key: visitorId } },
+    });
+
+    channel
+      .on("presence", { event: "sync" }, () => {
+        const n = Object.keys(channel.presenceState()).length;
+        countElement.textContent = Math.max(n, 1);
+      })
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") channel.track({ joined_at: Date.now() });
+      });
+
+    window.addEventListener("pagehide", () => client.removeChannel(channel));
   }
 });
 /* ==========================================
@@ -227,3 +232,61 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+/* ==========================================
+   IMAGE LIGHTBOX
+   ========================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("imageModalImg");
+  const modalCaption = document.getElementById("imageModalCaption");
+  const closeBtn = document.getElementById("closeImageBtn");
+  if (!modal || !modalImg) return;
+
+  let lastFocused = null;
+
+  function openImage(img) {
+    lastFocused = img;
+    modalImg.src = img.currentSrc || img.src;
+    modalImg.alt = img.alt;
+    // Prefer the visible caption under the photo; fall back to its alt text
+    const frame = img.closest(".media-frame");
+    const caption = frame && frame.nextElementSibling && frame.nextElementSibling.classList.contains("media-caption")
+      ? frame.nextElementSibling.textContent.trim()
+      : "";
+    modalCaption.textContent = caption;
+    modal.classList.add("is-active");
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
+  }
+
+  function closeImage() {
+    if (!modal.classList.contains("is-active")) return;
+    modal.classList.remove("is-active");
+    document.body.style.overflow = "";
+    modalImg.src = "";
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll(".media-frame img, .profile-frame img").forEach(img => {
+    img.classList.add("zoomable");
+    img.tabIndex = 0;
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", "View larger: " + img.alt);
+    img.addEventListener("click", () => openImage(img));
+    img.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openImage(img);
+      }
+    });
+  });
+
+  closeBtn.addEventListener("click", closeImage);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeImage();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeImage();
+  });
+});

@@ -467,6 +467,17 @@ Resolved customer issues with patience and professionalism.
       </div>
     </div>
 
+    <!-- Image lightbox - any .media-frame / profile photo opens here, same
+         blurred overlay + close button as the contact modal above. -->
+    <div class="email-modal-overlay image-modal-overlay" id="imageModal" role="dialog" aria-modal="true" aria-label="Image preview">
+      <div class="image-modal-content">
+        <button type="button" class="btn-close-modal" id="closeImageBtn" aria-label="Close image">&times;</button>
+        <img id="imageModalImg" src="" alt="">
+        <p class="image-modal-caption" id="imageModalCaption"></p>
+      </div>
+    </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="assets/js/script.js"></script>
 
 </body>
