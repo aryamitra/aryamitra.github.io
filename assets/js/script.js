@@ -218,12 +218,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // The inline <head> script already set data-theme on <html> before paint;
   // this just syncs the button's a11y state to whatever it landed on.
-  syncButton(root.getAttribute("data-theme") === "light" ? "light" : "dark");
+  syncButton(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
 
   toggleBtn.addEventListener("click", () => {
-    const nextTheme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-    if (nextTheme === "light") {
-      root.setAttribute("data-theme", "light");
+    const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    if (nextTheme === "dark") {
+      root.setAttribute("data-theme", "dark");
     } else {
       root.removeAttribute("data-theme");
     }
