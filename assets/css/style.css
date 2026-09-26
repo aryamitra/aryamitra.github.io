@@ -1135,9 +1135,11 @@ p {
     border-radius: 4px;
 }
 
+/* auto-fit: as many columns as fit at >= 280px each, so cards never get
+   squeezed narrow; drops to a single column when the content area is tight. */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 1.2rem;
     width: 100%;
 }
@@ -1172,6 +1174,14 @@ p {
     font-size: 0.8rem;
     color: var(--color-text-dim);
     line-height: 1.5;
+}
+
+.project-status {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-accent-soft);
+    margin: -0.3rem 0 0.8rem;
 }
 
 .project-tags {
@@ -1224,12 +1234,6 @@ p {
 }
 
 /* --- Responsive --- */
-@media (max-width: 1150px) and (min-width: 901px) {
-    .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
 @media (max-width: 900px) {
     .media-entry {
         flex-direction: column;
@@ -1312,10 +1316,6 @@ p {
     }
     .footer-metadata{
       font-size: 0.85rem;
-    }
-
-    .projects-grid {
-        grid-template-columns: 1fr;
     }
 
     body {

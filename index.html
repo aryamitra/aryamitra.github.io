@@ -32,7 +32,7 @@
   </div>
 
   <div class="status-tags">
-    <span class="status-item">Hnrs CS Student at <span class="accent-text">UMass-Amherst</span></span>
+    <span class="status-item">Hnrs CS + Math @ <span class="accent-text">UMass-Amherst</span></span>
   </div>
 
   <nav class="sidebar-nav">
@@ -137,9 +137,11 @@
             <section id="about">
                 <h2>About</h2>
                 <p>
-                    Hi, I'm Arya. I'm starting my freshman year at UMass Amherst this fall for Computer Science along with being a member of the Commonwealth Honors College.
+                    Hi, I'm Arya. I have my freshman year at UMass Amherst this fall for Computer Science and Math along with being a member of the Commonwealth Honors College.
                 <p>
-                    I'm mainly drawn to math-heavy topics within CS such as cybersecurity, AI/ML, game design, and quantum computing.
+                    Professionally, I'm mainly drawn to math-heavy topics within CS such as cybersecurity, AI/ML, game design, and Quantitative Finance.
+                <p>
+                I also like tinkering with hardware and software on my own setup. I've been experimenting with local LLMs and Linux on my custom-built desktop and a few Raspberry Pis.
                 <p>
                     Outside of academics, you'll probably find me practicing classical guitar, working out, or cooking something. Looking forward to meeting everyone on campus!
                 </p>
@@ -342,54 +344,61 @@ Resolved customer issues with patience and professionalism.
             <section id="projects">
                 <h2>Projects</h2>
                 <div class="projects-container">
+                    <!-- Carousel arrows hidden until there are enough projects to scroll through.
                     <button class="nav-arrow" aria-label="Previous Project">&lt;</button>
+                    -->
                     
                     <div class="projects-grid">
                         <div class="project-card">
-                <h3>UMass Campus Job Matcher</h3>
+                            <div class="project-body">
+                                <h3>UMass Campus Job Matcher</h3>
+                                
 
-                <div class="project-tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">FastAPI</span>
-                    <span class="tag">NLP</span>
-                    <span class="tag">Supabase</span>
-                    <span class="tag">Web Scraping</span>
-                </div>
+                                <div class="project-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">FastAPI</span>
+                                    <span class="tag">NLP</span>
+                                    <span class="tag">Supabase</span>
+                                    <span class="tag">Web Scraping</span>
+                                </div>
+                                <div class="project-status">Work In Progress</div>
 
-                <p>Work In Progress. A resume-driven job search for UMass student employment. Scrapes campus
-                    postings, embeds them with Sentence Transformers, and ranks matches by
-                    semantic similarity via pgvector, with filters for pay, hours, and job type.</p>
+                                <p>A resume-driven search tool for UMass student employment. 
+                                    It scrapes campus postings, embeds them with Sentence 
+                                    Transformers, and ranks matches by semantic similarity 
+                                    using pgvector, with filters for pay, hours, and job type. 
+                                    Built after finding the UMass job board difficult to navigate.</p>
+                            </div>
 
-                <div class="project-links">
-                    <a href="https://github.com/aryamitra/umass-job-overlay" class="btn-primary" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-                </div>
-                </div>
+                            <div class="project-links">
+                                <a href="https://github.com/aryamitra/umass-job-overlay" class="btn-primary" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+                            </div>
+                        </div>
+
                         <div class="project-card">
-                 
-                <h3>Linear Regression Visualizer</h3>
-                
-        
-                <div class="project-tags">
-                    <span class="tag">GameMaker</span>
-                    <span class="tag">HTML5</span>
-                    <span class="tag">Data Science</span>
-                </div>
-                
-                
-                <p>An interactive tool built in GameMaker to visually explore linear regression, 
-                    plot points, and calculate lines of best fit in real time.</p>
-                
-                
-                <div class="project-links">
-                    
-                    <a href="projects/linear-regression/index.html" class="btn-primary">Launch Project</a>
-                </div>
-                </div>
+                            <div class="project-body">
+                                <h3>Linear Regression Visualizer</h3>
 
-                        
-                                    </div>
+                                <div class="project-tags">
+                                    <span class="tag">GameMaker</span>
+                                    <span class="tag">HTML5</span>
+                                    <span class="tag">Linear Algebra</span>
+                                </div>
 
-                                    <button class="nav-arrow" aria-label="Next Project">&gt;</button>
+                                <p>Plot data points and watch the line of best fit recalculate in real time! 
+                                    Inspired by this summer's Deltarune chapter release, which is built in GameMaker, 
+                                    and a chance to apply what I learned in linear algebra.</p>
+                            </div>
+
+                            <div class="project-links">
+                                <a href="projects/linear-regression/index.html" class="btn-primary">Launch Project</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--
+                    <button class="nav-arrow" aria-label="Next Project">&gt;</button>
+                    -->
                                 </div>
                             </section>
 
