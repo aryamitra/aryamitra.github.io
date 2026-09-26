@@ -22,10 +22,10 @@
 }
 
 /* --- Design Tokens ---
-   Two palettes, swapped by [data-theme] on <html>: Dark (default) uses
-   Thistle / Lavender Purple / Deep Lilac / Deep Space Blue / Evergreen;
-   Light uses Lavender Veil / Lavender Veil / Mauve / Wisteria / Dusty
-   Lavender. Every rule in this file reads these custom properties instead
+   Two palettes, swapped by [data-theme] on <html>: Light (default) uses
+   Lavender Veil / Lavender Veil / Mauve / Wisteria / Dusty Lavender;
+   Dark uses Thistle / Lavender Purple / Deep Lilac / Deep Space Blue / Evergreen.
+   Every rule in this file reads these custom properties instead
    of a literal color, so the two blocks below are the only places a theme
    is actually defined.
 
@@ -50,6 +50,26 @@
    between themes.
    ---------------------------------- */
 :root {
+  --color-bg: #e8e5da;
+  --color-panel: #f7f4ef;
+  --color-panel-tint: rgba(155, 126, 70, 0.15);
+  --color-hover-bg: #ede8df;
+
+  --color-text: #304c89;
+  --color-text-dim: #846c5b;
+  --color-text-strong: #304c89;
+
+  --color-accent: #9b7e46;
+  --color-accent-muted: #9eb7e5;
+  --color-accent-soft: #846c5b;
+  --color-accent-tint: rgba(155, 126, 70, 0.12);
+
+  --color-border: rgba(155, 126, 70, 0.18);
+  --color-border-strong: rgba(155, 126, 70, 0.3);
+  --color-glow: rgba(155, 126, 70, 0.2);
+}
+
+:root[data-theme="dark"] {
   --color-bg: #031211;
   --color-panel: #081621;
   --color-panel-tint: rgba(16, 43, 63, 0.4);
@@ -67,26 +87,6 @@
   --color-border: rgba(160, 108, 213, 0.18);
   --color-border-strong: rgba(160, 108, 213, 0.4);
   --color-glow: rgba(160, 108, 213, 0.3);
-}
-
-:root[data-theme="light"] {
-  --color-bg: #f3e0ec;
-  --color-panel: #ead5e6;
-  --color-panel-tint: rgba(202, 156, 225, 0.22);
-  --color-hover-bg: #f2befc;
-
-  --color-text: #5b5466;
-  --color-text-dim: #685f74;
-  --color-text-strong: #3d3547;
-
-  --color-accent: #6b3fa0;
-  --color-accent-muted: #ca9ce1;
-  --color-accent-soft: #685f74;
-  --color-accent-tint: rgba(202, 156, 225, 0.22);
-
-  --color-border: rgba(104, 95, 116, 0.22);
-  --color-border-strong: rgba(104, 95, 116, 0.45);
-  --color-glow: rgba(202, 156, 225, 0.4);
 }
 
 /* --- Reset --- */
@@ -219,12 +219,14 @@ html {
     box-shadow: 0 0 15px var(--color-glow);
     border-radius: 4px;
     overflow: hidden;
+    
 }
 
 .profile-frame img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 10%;
     filter: grayscale(20%);
 }
 
