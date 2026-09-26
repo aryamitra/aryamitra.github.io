@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script>
       (function () {
-        if (localStorage.getItem('portfolio-theme') === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
+        if (localStorage.getItem('portfolio-theme') === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
       })();
     </script>
@@ -346,6 +346,25 @@ Resolved customer issues with patience and professionalism.
                     
                     <div class="projects-grid">
                         <div class="project-card">
+                <h3>UMass Campus Job Matcher</h3>
+
+                <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">FastAPI</span>
+                    <span class="tag">NLP</span>
+                    <span class="tag">Supabase</span>
+                    <span class="tag">Web Scraping</span>
+                </div>
+
+                <p>Work In Progress. A resume-driven job search for UMass student employment. Scrapes campus
+                    postings, embeds them with Sentence Transformers, and ranks matches by
+                    semantic similarity via pgvector, with filters for pay, hours, and job type.</p>
+
+                <div class="project-links">
+                    <a href="https://github.com/aryamitra/umass-job-overlay" class="btn-primary" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+                </div>
+                </div>
+                        <div class="project-card">
                  
                 <h3>Linear Regression Visualizer</h3>
                 
@@ -366,6 +385,8 @@ Resolved customer issues with patience and professionalism.
                     <a href="projects/linear-regression/index.html" class="btn-primary">Launch Project</a>
                 </div>
                 </div>
+
+                        
                                     </div>
 
                                     <button class="nav-arrow" aria-label="Next Project">&gt;</button>
