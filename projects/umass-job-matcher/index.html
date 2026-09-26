@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UMass Campus Job Matcher – Demo</title>
+  <link rel="icon" href="../../assets/images/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/jobs.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body class="min-h-screen bg-stone-50 text-stone-800 antialiased">
+  <header class="border-b border-stone-200 bg-white">
+    <div class="mx-auto flex max-w-3xl items-center gap-3 px-4 py-5">
+      <div class="brand-bar h-8 w-1.5 rounded-full"></div>
+      <h1 class="text-xl font-semibold tracking-tight">
+        UMass <span class="text-maroon">Campus Job Matcher</span>
+      </h1>
+      <a href="../../index.html#projects" class="ml-auto shrink-0 text-sm font-medium text-stone-500 hover:text-maroon">← Portfolio</a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+    <div class="mx-auto max-w-3xl">
+    <!-- Demo notice: this build ranks bundled sample postings in the browser
+         instead of calling the FastAPI / Supabase backend. -->
+    <p class="mb-4 rounded-xl border border-maroon bg-white px-4 py-3 text-sm text-stone-600">
+      <span class="font-semibold text-maroon">Demo mode.</span>
+      Matches come from ~25 sample postings ranked in your browser. The full version scrapes live UMass
+      listings and ranks them with sentence embeddings and pgvector.
+    </p>
+
+    <!-- Manual filters. Sent with every request so each "Load More" page is filtered
+         server-side; changing one re-runs the current search. -->
+    <section id="filters" aria-label="Job filters" class="mb-4 grid grid-cols-1 gap-3 rounded-2xl border border-stone-200 bg-white p-4 shadow-sm sm:grid-cols-3">
+      <label class="block">
+        <span class="mb-1 block text-xs font-medium text-stone-500">Job Type</span>
+        <select id="filter-job-type" class="filter-input w-full rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+          <option value="all">All</option>
+          <option value="on_campus">On-Campus</option>
+          <option value="off_campus">Off-Campus</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="mb-1 block text-xs font-medium text-stone-500">Funding Type</span>
+        <select id="filter-funding" class="filter-input w-full rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+          <option value="all">All</option>
+          <option value="work_study">Work-Study</option>
+          <option value="non_work_study">Non Work-Study</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="mb-1 block text-xs font-medium text-stone-500">Minimum Pay Rate</span>
+        <select id="filter-min-pay" class="filter-input w-full rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+          <option value="">Any</option>
+          <option value="15">$15+/hr</option>
+          <option value="16">$16+/hr</option>
+          <option value="17">$17+/hr</option>
+          <option value="18">$18+/hr</option>
+          <option value="20">$20+/hr</option>
+          <option value="25">$25+/hr</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm sm:p-6">
+      <!-- Multi-file resume upload: PDF / DOCX / TXT are parsed to text in the browser
+           (js/app.js → parseFile) and combined with anything pasted below. -->
+      <span class="mb-2 block text-sm font-medium text-stone-600">Upload your resume</span>
+      <label id="dropzone" for="resume-files" class="dropzone flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-stone-200 bg-stone-50 px-4 py-6 text-center">
+        <svg class="h-6 w-6 text-stone-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="text-sm text-stone-600"><span class="font-semibold text-maroon">Choose files</span> or drag and drop</span>
+        <span class="text-xs text-stone-400">PDF, DOCX or TXT · multiple files allowed · up to 10 MB each</span>
+        <input id="resume-files" type="file" multiple accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" class="sr-only" />
+      </label>
+      <ul id="file-list" class="mt-3 space-y-2" aria-live="polite"></ul>
+
+      <label for="resume" class="mb-2 mt-5 block text-sm font-medium text-stone-600">…or paste resume text</label>
+      <textarea
+        id="resume"
+        rows="8"
+        placeholder="e.g. I know Java and Python, want a tech job troubleshooting systems..."
+        class="resume-input w-full resize-y rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm leading-relaxed placeholder:text-stone-400"
+      ></textarea>
+      <div class="mt-4 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <div class="flex items-center gap-4">
+          <button id="sample-btn" type="button" class="text-sm font-medium text-maroon hover:underline">Try a sample resume</button>
+          <p class="hidden text-xs text-stone-400 sm:block">Tip: ⌘/Ctrl + Enter to search</p>
+        </div>
+        <button id="match-btn" class="btn-maroon inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-sm">
+          <svg id="btn-spinner" class="hidden h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"></circle>
+            <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+          </svg>
+          <span id="btn-label">Find Matches</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="status" class="mt-8 hidden text-center text-sm" aria-live="polite"></section>
+    </div>
+
+    <!-- LinkedIn-style results: a scrollable list of compact job cards (left) and
+         the full posting for the selected card (right). Below `lg` the detail
+         pane becomes a full-screen sheet that opens when a card is tapped. -->
+    <section id="results-layout" class="jobs-layout mt-8 hidden" aria-label="Matching jobs">
+      <aside class="jobs-list-pane">
+        <div class="jobs-list-header">
+          <h2 class="text-sm font-semibold text-stone-900">Your matches</h2>
+          <p id="results-meta" class="text-xs text-stone-500" aria-live="polite"></p>
+        </div>
+        <div id="jobs-list-scroll" class="jobs-list-scroll">
+          <ul id="results" role="listbox" aria-label="Job results" class="jobs-list"></ul>
+          <!-- Pagination: each click fetches the next page from /api/match and appends it. -->
+          <div class="flex justify-center p-4">
+            <button id="load-more-btn" class="hidden inline-flex items-center gap-2 rounded-lg border border-maroon bg-white px-5 py-2 text-sm font-medium text-maroon transition hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-60">
+              <svg id="load-more-spinner" class="hidden h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"></circle>
+                <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+              </svg>
+              <span id="load-more-label">Load More Jobs</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <section id="job-detail" class="job-detail-pane" aria-live="polite" aria-label="Job details" tabindex="-1">
+        <div class="job-detail-empty">Select a job to see its details.</div>
+      </section>
+    </section>
+    <p>
+      
+    </p>
+  </main>
+</body>
+</html>
