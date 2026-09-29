@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================
-   LIGHT / DARK THEME TOGGLE
+   THEME CYCLER (light > ember > dark > navy)
    ========================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const THEME_KEY = "portfolio-theme";
@@ -210,25 +210,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("themeToggle");
   if (!toggleBtn) return;
 
-  function syncButton(theme) {
-    const isLight = theme === "light";
-    toggleBtn.setAttribute("aria-pressed", String(isLight));
-    toggleBtn.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+  // Ordered lightest to darkest; "light" is the default (no data-theme attribute).
+  const THEMES = ["light", "ember", "dark", "navy"];
+
+  function applyTheme(theme) {
+    if (theme === "light") {
+      root.removeAttribute("data-theme");
+    } else {
+      root.setAttribute("data-theme", theme);
+    }
+    const next = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+    toggleBtn.setAttribute("aria-label", `Switch to ${next} theme`);
   }
 
   // The inline <head> script already set data-theme on <html> before paint;
-  // this just syncs the button's a11y state to whatever it landed on.
-  syncButton(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
+  // this just syncs the button's a11y label to whatever it landed on.
+  const current = root.getAttribute("data-theme");
+  applyTheme(THEMES.includes(current) ? current : "light");
 
   toggleBtn.addEventListener("click", () => {
-    const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    if (nextTheme === "dark") {
-      root.setAttribute("data-theme", "dark");
-    } else {
-      root.removeAttribute("data-theme");
-    }
+    const cur = root.getAttribute("data-theme");
+    const idx = THEMES.indexOf(THEMES.includes(cur) ? cur : "light");
+    const nextTheme = THEMES[(idx + 1) % THEMES.length];
+    applyTheme(nextTheme);
     localStorage.setItem(THEME_KEY, nextTheme);
-    syncButton(nextTheme);
   });
 });
 
