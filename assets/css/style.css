@@ -22,9 +22,7 @@
 }
 
 /* --- Design Tokens ---
-   Four palettes, swapped by [data-theme] on <html> and cycled lightest to
-   darkest by the toggle: light (default, no attribute), ember,
-   dark, navy. Light (default) uses
+   Two palettes, swapped by [data-theme] on <html>: Light (default) uses
    Lavender Veil / Lavender Veil / Mauve / Wisteria / Dusty Lavender;
    Dark uses Thistle / Lavender Purple / Deep Lilac / Deep Space Blue / Evergreen.
    Every rule in this file reads these custom properties instead
@@ -91,52 +89,6 @@
   --color-glow: rgba(160, 108, 213, 0.3);
 }
 
-/* Ember: #1f0d01 page and #2b1203 cards (filled in below the palette's
-   darkest 462003), 462003 hover, FF8300 accent, C66500 / A34C31 for
-   decoration. Text tints are filled in from 78665A up to a warm cream. */
-:root[data-theme="ember"] {
-  --color-bg: #1f0d01;
-  --color-panel: #2b1203;
-  --color-panel-tint: rgba(105, 58, 30, 0.35);
-  --color-hover-bg: #462003;
-
-  --color-text: #e3c8b2;
-  --color-text-dim: #a8917f;
-  --color-text-strong: #ffe9d4;
-
-  --color-accent: #ff8300;
-  --color-accent-muted: #c66500;
-  --color-accent-soft: #a34c31;
-  --color-accent-tint: rgba(255, 131, 0, 0.09);
-
-  --color-border: rgba(255, 131, 0, 0.18);
-  --color-border-strong: rgba(255, 131, 0, 0.4);
-  --color-glow: rgba(237, 95, 25, 0.3);
-}
-
-/* Navy: Black page / Prussian Blue cards / Deep Twilight hover / Navy +
-   Navy Electric for decoration. Periwinkle tints are filled in for readable
-   text and accents since the palette's own colors are too dark for that. */
-:root[data-theme="navy"] {
-  --color-bg: #02010a;
-  --color-panel: #04052e;
-  --color-panel-tint: rgba(34, 0, 124, 0.35);
-  --color-hover-bg: #140152;
-
-  --color-text: #b4b6e8;
-  --color-text-dim: #8083c2;
-  --color-text-strong: #ebecff;
-
-  --color-accent: #8a8cff;
-  --color-accent-muted: #4a3fd6;
-  --color-accent-soft: #22007c;
-  --color-accent-tint: rgba(74, 63, 214, 0.14);
-
-  --color-border: rgba(110, 112, 255, 0.2);
-  --color-border-strong: rgba(110, 112, 255, 0.45);
-  --color-glow: rgba(13, 0, 164, 0.5);
-}
-
 /* --- Reset --- */
 * {
     margin: 0;
@@ -200,10 +152,9 @@ html {
   transition: transform 0.4s ease;
 }
 
-:root:not([data-theme]) .theme-toggle-icon { transform: scaleX(-1); }
-:root[data-theme="ember"] .theme-toggle-icon { transform: rotate(-45deg); }
-:root[data-theme="dark"] .theme-toggle-icon { transform: none; }
-:root[data-theme="navy"] .theme-toggle-icon { transform: rotate(90deg); }
+:root:not([data-theme="dark"]) .theme-toggle-icon {
+  transform: scaleX(-1);
+}
 
 @media (max-width: 900px) {
   .theme-toggle {
@@ -1229,7 +1180,7 @@ p {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--color-text-dim);
+    color: var(--color-accent-soft);
     margin: -0.3rem 0 0.8rem;
 }
 
