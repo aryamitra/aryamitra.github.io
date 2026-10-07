@@ -119,6 +119,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // "Request a Demo" opens the fullscreen modal with a prefilled message
+  const requestDemoBtn = document.getElementById('requestDemoBtn');
+  if (requestDemoBtn && emailModal) {
+    requestDemoBtn.addEventListener('click', () => {
+      if (modalEmail && sidebarEmail) modalEmail.value = sidebarEmail.value;
+      if (modalText) {
+        modalText.value = "Hi Arya,\n\nCan you send me a demo of your UMass job overlay?\n\nThanks!";
+        if (sidebarText) sidebarText.value = modalText.value;
+      }
+      emailModal.classList.add('is-active');
+      if (modalEmail && !modalEmail.value) modalEmail.focus();
+    });
+  }
+
   function closeModalAndSync() {
     if(sidebarEmail && modalEmail) sidebarEmail.value = modalEmail.value;
     if(sidebarText && modalText) sidebarText.value = modalText.value;

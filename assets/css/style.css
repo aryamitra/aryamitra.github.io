@@ -1268,6 +1268,8 @@ p {
     letter-spacing: 1px;
     border-radius: 4px;
     transition: all 0.2s ease;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 .btn-primary:hover,
