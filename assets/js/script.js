@@ -119,15 +119,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const DEMO_TEMPLATE = "Hi Arya,\n\nCan you send me a demo of your UMass job overlay?\n\nThanks!";
+
   // "Request a Demo" opens the fullscreen modal with a prefilled message
   const requestDemoBtn = document.getElementById('requestDemoBtn');
   if (requestDemoBtn && emailModal) {
     requestDemoBtn.addEventListener('click', () => {
       if (modalEmail && sidebarEmail) modalEmail.value = sidebarEmail.value;
-      if (modalText) {
-        modalText.value = "Hi Arya,\n\nCan you send me a demo of your UMass job overlay?\n\nThanks!";
-        if (sidebarText) sidebarText.value = modalText.value;
-      }
+      if (modalText) modalText.value = DEMO_TEMPLATE;
       emailModal.classList.add('is-active');
       if (modalEmail && !modalEmail.value) modalEmail.focus();
     });
@@ -135,7 +134,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closeModalAndSync() {
     if(sidebarEmail && modalEmail) sidebarEmail.value = modalEmail.value;
-    if(sidebarText && modalText) sidebarText.value = modalText.value;
+    // Untouched template -> leave the sidebar form clean
+    if(sidebarText && modalText) sidebarText.value = (modalText.value === DEMO_TEMPLATE) ? '' : modalText.value;
     emailModal.classList.remove('is-active');
   }
 
@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ==========================================
-   THEME CYCLER (light > ember > dark > navy)
+   LIGHT / DARK THEME TOGGLE
    ========================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const THEME_KEY = "portfolio-theme";
@@ -224,30 +224,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("themeToggle");
   if (!toggleBtn) return;
 
-  // Ordered lightest to darkest; "light" is the default (no data-theme attribute).
-  const THEMES = ["light", "ember", "dark", "navy"];
-
-  function applyTheme(theme) {
-    if (theme === "light") {
-      root.removeAttribute("data-theme");
-    } else {
-      root.setAttribute("data-theme", theme);
-    }
-    const next = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
-    toggleBtn.setAttribute("aria-label", `Switch to ${next} theme`);
+  function syncButton(theme) {
+    const isLight = theme === "light";
+    toggleBtn.setAttribute("aria-pressed", String(isLight));
+    toggleBtn.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
   }
 
   // The inline <head> script already set data-theme on <html> before paint;
-  // this just syncs the button's a11y label to whatever it landed on.
-  const current = root.getAttribute("data-theme");
-  applyTheme(THEMES.includes(current) ? current : "light");
+  // this just syncs the button's a11y state to whatever it landed on.
+  syncButton(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
 
   toggleBtn.addEventListener("click", () => {
-    const cur = root.getAttribute("data-theme");
-    const idx = THEMES.indexOf(THEMES.includes(cur) ? cur : "light");
-    const nextTheme = THEMES[(idx + 1) % THEMES.length];
-    applyTheme(nextTheme);
+    const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    if (nextTheme === "dark") {
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.removeAttribute("data-theme");
+    }
     localStorage.setItem(THEME_KEY, nextTheme);
+    syncButton(nextTheme);
   });
 });
 
