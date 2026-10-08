@@ -25,7 +25,7 @@
     artist.title = t.artist;
     card.href = t.url || "https://open.spotify.com";
     card.classList.toggle("playing", !!t.isPlaying);
-    status.textContent = t.isPlaying ? "Now Playing" : "Last Played";
+    status.textContent = t.isPlaying ? "I'm listening to" : "I last listened to";
     card.hidden = false;
   }
 
