@@ -35,6 +35,19 @@
     <span class="status-item">Hnrs CS + Math @ <span class="accent-text">UMass-Amherst</span></span>
   </div>
 
+  <!-- Spotify now-playing card: stays hidden until assets/js/spotify.js gets data from the worker -->
+  <a class="spotify-card" id="spotifyCard" href="#" target="_blank" rel="noopener" hidden>
+    <img class="spotify-art" id="spotifyArt" alt="" width="52" height="52">
+    <div class="spotify-info">
+      <div class="spotify-label">
+        <svg class="spotify-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-.99-.12-1.11-.6-.12-.48.12-.99.6-1.11 4.38-1.32 9.78-.66 13.5 1.62.36.18.54.78.21 1.17zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
+        <span id="spotifyStatus">Now Playing</span>
+      </div>
+      <div class="spotify-title" id="spotifyTitle"></div>
+      <div class="spotify-artist" id="spotifyArtist"></div>
+    </div>
+  </a>
+
   <nav class="sidebar-nav">
     <a href="#about">// About</a>
     <a href="#academic">// Academic</a>
@@ -136,13 +149,11 @@
             <!-- About Section Box -->
             <section id="about">
                 <h2>About</h2>
-                <p>
-                    Hi, I'm Arya. I have my freshman year at UMass Amherst this fall for Computer Science and Math along with being a member of the Commonwealth Honors College.
-                <p>
-                    Professionally, I'm mainly drawn to math-heavy topics within CS such as cybersecurity, AI/ML, game design, and Quantitative Finance.
-                <p>
-        
-                    Outside of academics, you'll probably find me practicing classical guitar, working out, or cooking something. Looking forward to meeting everyone on campus!
+                <p>Hi, I'm Arya! 
+                <p>I'm a freshman at UMass Amherst studying Computer Science and Math, and I'm part of the Commonwealth Honors College.
+                <p>I’m mainly drawn to math-heavy parts of CS, like AI/ML, quantitative finance, and backend gaming, like path tracing and frame generation. I also like the people-facing side, like client management and startups.
+                <p>Outside of class, you'll probably find me practicing classical guitar, working out, climbing, or cooking something.
+                <p>If you ever want to grab food, hit me up!
                 </p>
                 <div class="skills-group">
                     <div class="list-header">// TECHNICAL STACK</div>
@@ -509,6 +520,7 @@ Resolved customer issues with patience and professionalism.
 
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="assets/js/script.js"></script>
+        <script src="assets/js/spotify.js"></script>
 
 </body>
 </html>
