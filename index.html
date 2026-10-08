@@ -14,6 +14,11 @@
     <script>
       (function () {
         try {
+          if (sessionStorage.getItem('splash-return')) {
+            document.documentElement.classList.add('splash-returning');
+          }
+        } catch (e) {}
+        try {
           if (localStorage.getItem('portfolio-theme') === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
           }
@@ -31,9 +36,18 @@
     </button>
 
     <main class="splash-main">
-        <h1 class="splash-name">Arya <span>Mitra</span></h1>
-        <div class="splash-divider"></div>
-        <p class="splash-tagline">Hnrs CS + Math @ UMass Amherst</p>
+        <div class="splash-card">
+          <div class="splash-card-inner">
+            <h1 class="splash-name">Arya <span>Mitra</span></h1>
+            <div class="splash-divider"></div>
+            <p class="splash-tagline">Hnrs CS + Math @ UMass Amherst</p>
+            <p class="splash-email">contact@aryamitra.me</p>
+          </div>
+          <!-- Back of the card: the live portfolio, loaded now so it is ready when the card flips -->
+          <div class="splash-card-back" aria-hidden="true">
+            <iframe src="/portfolio" title="" tabindex="-1"></iframe>
+          </div>
+        </div>
 
         <nav class="splash-links" aria-label="Elsewhere">
             <a href="https://github.com/aryamitra" target="_blank" rel="noopener">github</a>
@@ -43,6 +57,52 @@
         <a class="splash-enter" href="/portfolio">Proceed to main site <span class="arrow" aria-hidden="true">→</span></a>
     </main>
 
+    <script>
+      (function () {
+        var link = document.querySelector('.splash-enter');
+        var card = document.querySelector('.splash-card');
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Shared by the outgoing and returning animations: the card's zoom target.
+        function setTargets() {
+          var r = card.getBoundingClientRect();
+          var vw = window.innerWidth, vh = window.innerHeight;
+          var iframe = card.querySelector('iframe');
+          // The iframe is laid out at full viewport size, then shrunk to fit the card back.
+          // The card's own (non-uniform) zoom ends at exactly the inverse, so the site lands 1:1.
+          iframe.style.transform = 'scale(' + r.width / vw + ',' + r.height / vh + ')';
+          card.style.setProperty('--dx', (vw / 2 - (r.left + r.width / 2)) + 'px');
+          card.style.setProperty('--dy', (vh / 2 - (r.top + r.height / 2)) + 'px');
+          card.style.setProperty('--sx', vw / r.width);
+          card.style.setProperty('--sy', vh / r.height);
+        }
+
+        // Arriving via the portfolio's back button: play the flip in reverse
+        var returning = false;
+        try {
+          returning = !!sessionStorage.getItem('splash-return');
+          sessionStorage.removeItem('splash-return');
+        } catch (e) {}
+        if (returning && !reduced) {
+          setTargets();
+          document.body.classList.add('returning');
+          card.addEventListener('animationend', function () {
+            document.body.classList.remove('returning');
+          }, { once: true });
+        }
+        document.documentElement.classList.remove('splash-returning');
+
+        link.addEventListener('click', function (e) {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+          if (reduced) return;
+          e.preventDefault();
+          if (document.body.classList.contains('leaving')) return;
+          setTargets();
+          document.body.classList.add('leaving');
+          setTimeout(function () { window.location.href = link.href; }, 1200);
+        });
+      })();
+    </script>
     <script>
       (function () {
         var root = document.documentElement;

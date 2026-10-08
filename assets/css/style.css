@@ -162,6 +162,43 @@ html {
   }
 }
 
+/* --- Back link: plain text, fixed top-right on every viewport size --- */
+.back-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 2rem;
+  z-index: 1001;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-btn:hover,
+.back-btn:focus-visible {
+  color: var(--color-text-strong);
+  outline: none;
+}
+
+/* Desktop: the back link sits just left of the theme toggle (toggle is 40px wide at right: 2rem) */
+@media (min-width: 901px) {
+  .back-btn {
+    right: calc(2rem + 40px + 1rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .back-btn {
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
 /* --- Layout --- */
 .portfolio-layout {
   display: grid;

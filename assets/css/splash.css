@@ -8,21 +8,63 @@ body.splash {
 }
 
 .splash-main {
+  padding: 1.5rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  padding: 2rem;
+}
+
+/* Always pinned top-left, including at mobile widths */
+body.splash .theme-toggle {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  right: auto;
+}
+
+/* Standard business card: 3.5in x 2in (7:4).
+   Padding is the classic 0.25in margin = 3.5in / 14 = 7.143% of card width on
+   every side, so margins are visually equal; type scales with the card (cqw). */
+.splash-card {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 7 / 4;
+  background: var(--color-panel);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.splash-card-inner {
+  height: 100%;
+  padding: 7.143cqw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5cqw;
   text-align: center;
 }
 
+.splash-card-inner > * {
+  margin: 0;
+}
+
+.splash-email {
+  color: var(--color-text-dim);
+  font-size: max(11px, 3.3cqw);
+}
+
 .splash-name {
-  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-size: 9cqw;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-text-strong);
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .splash-name span {
@@ -30,33 +72,20 @@ body.splash {
 }
 
 .splash-divider {
-  width: 32px;
+  width: 7.6cqw;
   height: 2px;
   background: var(--color-accent);
 }
 
 .splash-tagline {
   color: var(--color-text-dim);
-  font-size: 0.95rem;
-}
-
-.splash-tagline::after {
-  content: "_";
-  color: var(--color-accent);
-  animation: splash-blink 1.1s steps(1) infinite;
-}
-
-@keyframes splash-blink {
-  50% { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .splash-tagline::after { animation: none; }
+  font-size: max(11px, 3.3cqw);
 }
 
 .splash-links {
+  margin-top: 1.25rem;
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
   font-size: 0.85rem;
 }
 
@@ -76,13 +105,13 @@ body.splash {
 }
 
 .splash-enter {
-  margin-top: 1.5rem;
-  padding: 0.7rem 1.4rem;
+  margin-top: 1rem;
+  padding: 0.6rem 1.1rem;
   color: var(--color-accent);
   background: var(--color-panel);
   border: 1px solid var(--color-border-strong);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -104,4 +133,94 @@ body.splash {
 .splash-enter:hover .arrow,
 .splash-enter:focus-visible .arrow {
   transform: translateX(4px);
+}
+
+.splash-card-back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: rotateY(180deg); /* un-mirrors the back once the card has flipped */
+}
+
+.splash-card-back iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  border: 0;
+  transform-origin: 0 0;
+}
+
+/* --- Leave animation: the card flips over to reveal the site on its back --- */
+body.splash.leaving,
+body.splash.returning {
+  overflow: hidden;
+}
+
+body.splash.leaving .splash-links,
+body.splash.leaving .splash-enter,
+body.splash.leaving .theme-toggle {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+body.splash.leaving .splash-card,
+body.splash.returning .splash-card {
+  z-index: 10;
+  animation: card-flip-zoom 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+body.splash.leaving .splash-card-inner,
+body.splash.returning .splash-card-inner {
+  animation: card-front-out 1.2s linear forwards;
+}
+
+body.splash.leaving .splash-card-back,
+body.splash.returning .splash-card-back {
+  animation: card-back-in 1.2s linear forwards;
+}
+
+/* Coming back from the site: the same animations, played in reverse */
+body.splash.returning .splash-card,
+body.splash.returning .splash-card-inner,
+body.splash.returning .splash-card-back {
+  animation-direction: reverse;
+}
+
+body.splash.returning .splash-links,
+body.splash.returning .splash-enter,
+body.splash.returning .theme-toggle {
+  animation: splash-fade-in 0.4s ease 1s backwards;
+}
+
+/* Hidden until the return animation has been set up (see index.html) */
+html.splash-returning body.splash:not(.returning) .splash-main {
+  visibility: hidden;
+}
+
+@keyframes splash-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes card-flip-zoom {
+  0% {
+    transform: translate(0, 0) perspective(1400px) rotateY(0deg) scale(1, 1);
+  }
+  100% {
+    transform: translate(var(--dx, 0), var(--dy, 0)) perspective(1400px) rotateY(180deg) scale(var(--sx, 1), var(--sy, 1));
+  }
+}
+
+@keyframes card-front-out {
+  0%, 45% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes card-back-in {
+  0%, 49% { opacity: 0; }
+  50%, 100% { opacity: 1; }
 }
