@@ -1,0 +1,107 @@
+/* Splash page: reuses the design tokens + fonts from style.css */
+body.splash {
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.splash-name {
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+  line-height: 1.1;
+}
+
+.splash-name span {
+  color: var(--color-accent-soft);
+}
+
+.splash-divider {
+  width: 32px;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+.splash-tagline {
+  color: var(--color-text-dim);
+  font-size: 0.95rem;
+}
+
+.splash-tagline::after {
+  content: "_";
+  color: var(--color-accent);
+  animation: splash-blink 1.1s steps(1) infinite;
+}
+
+@keyframes splash-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-tagline::after { animation: none; }
+}
+
+.splash-links {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.splash-links a {
+  color: var(--color-accent);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.splash-links a::before {
+  content: "// ";
+}
+
+.splash-links a:hover,
+.splash-links a:focus-visible {
+  color: var(--color-text-strong);
+}
+
+.splash-enter {
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.4rem;
+  color: var(--color-accent);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border-strong);
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.splash-enter:hover,
+.splash-enter:focus-visible {
+  background: var(--color-hover-bg);
+  border-color: var(--color-accent-muted);
+  box-shadow: 0 0 12px var(--color-glow);
+  outline: none;
+}
+
+.splash-enter .arrow {
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.splash-enter:hover .arrow,
+.splash-enter:focus-visible .arrow {
+  transform: translateX(4px);
+}

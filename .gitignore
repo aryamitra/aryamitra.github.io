@@ -1,1 +1,3 @@
 .claude/
+# Cloudflare Wrangler local cache (contains account ID/email)
+.wrangler/
