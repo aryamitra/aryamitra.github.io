@@ -17,8 +17,10 @@
 </head>
 <body class="flex min-h-screen flex-col bg-stone-50 text-stone-800 antialiased">
   <header class="border-b border-stone-200 bg-white">
-    <div class="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-4 text-center">
-      
+    <div class="relative mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-4 text-center">
+      <!-- Back link, same as "← Portfolio" on the linear regression project -->
+      <a href="/portfolio#projects" aria-label="Back to portfolio" class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-medium text-stone-500 hover:text-maroon focus-visible:text-maroon">←<span class="hidden sm:inline"> Portfolio</span></a>
+
       <div class="min-w-0">
         <h1 class="text-lg font-semibold leading-tight tracking-tight">
           UMass <span class="text-maroon">Campus Job Matcher</span>
