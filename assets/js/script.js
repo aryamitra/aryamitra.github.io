@@ -149,6 +149,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && emailModal && emailModal.classList.contains('is-active')) {
+      closeModalAndSync();
+    }
+  });
+
   // 2. Handle the silent Formspree submission with animations
   if (unifiedForm) {
     unifiedForm.addEventListener("submit", function(event) {
