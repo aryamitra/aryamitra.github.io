@@ -162,7 +162,7 @@ html {
   }
 }
 
-/* --- Back link: plain text, fixed top-right on every viewport size --- */
+/* --- Back link: plain text, fixed top-right on desktop, top of page on mobile --- */
 .back-btn {
   position: fixed;
   top: 1.5rem;
@@ -194,6 +194,7 @@ html {
 
 @media (max-width: 900px) {
   .back-btn {
+    position: absolute;   /* Pinned to the top of the page so it scrolls away instead of floating over content */
     top: 1rem;
     right: 1rem;
   }
