@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Content Security Policy: only this site, Tailwind's CDN, cdnjs (file parsers), jsdelivr (transformers.js and its
+       WebAssembly runtime), Hugging Face (model files) and Supabase (job data). frame-ancestors can't be set in a meta tag,
+       so also send `Content-Security-Policy: frame-ancestors 'none'` from your host. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://fgocjegvvpkbgptigqzc.supabase.co https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co https://*.hf.co; worker-src blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'none'" />
+  <meta name="referrer" content="no-referrer" />
+  <title>UMass Campus Job Matcher</title>
+  <link rel="preload" href="assets/fonts/josefin-sans/JosefinSans-Variable.ttf" as="font" type="font/ttf" crossorigin />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/matcher.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body class="flex min-h-screen flex-col bg-stone-50 text-stone-800 antialiased">
+  <header class="border-b border-stone-200 bg-white">
+    <div class="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-4 text-center">
+      
+      <div class="min-w-0">
+        <h1 class="text-lg font-semibold leading-tight tracking-tight">
+          UMass <span class="text-maroon">Campus Job Matcher</span>
+        </h1>
+        <p class="text-xs text-stone-500">Powered by <a href="https://aryamitra.me" target="_blank" rel="noopener noreferrer" class="font-medium text-stone-700 hover:text-maroon">Arya Mitra</a></p>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full flex-1 max-w-7xl px-4 py-8 sm:py-10">
+    <!-- Three columns like the wireframe: how it works + privacy (left), resume (centre),
+         dealbreakers (right). Below lg they stack: resume, dealbreakers, how it works, privacy. -->
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)_minmax(0,1fr)] lg:items-start lg:gap-6">
+      <div class="order-3 flex min-w-0 flex-col gap-4 lg:order-1 lg:gap-6">
+        <section class="panel p-4">
+          <h2 class="panel-title">How it works</h2>
+          <ol class="mt-3 space-y-3 text-sm text-stone-600">
+            <li class="flex gap-3"><span class="step-num">1</span><span>Upload or paste your resume. Files are read in your browser.</span></li>
+            <li class="flex gap-3"><span class="step-num">2</span><span>Your text is embedded and compared against UMass student job postings that are still listed and open.</span></li>
+            <li class="flex gap-3"><span class="step-num">3</span><span>Browse ranked matches and see <em>why</em> each one fits. Mark bad fits to improve the ranking, then apply or email the contact directly.</span></li>
+          </ol>
+        </section>
+
+        <section id="privacy" class="panel p-4">
+          <h2 class="panel-title">Privacy</h2>
+          <ul class="mt-3 space-y-2 text-sm text-stone-600">
+            <li><strong class="font-semibold text-stone-800">Nothing is saved on our end.</strong> There are no accounts and no database of users. Your resume text never leaves your browser: it is turned into a list of numbers on your device, and only those numbers are sent to look up matching jobs.</li>
+            <li>Your filters, saved jobs, application tracker and "not a fit" feedback are saved <strong class="font-semibold text-stone-800">only on your device, by this site</strong> (in the browser's site storage). Nobody else can see them, and they are never sold or shared.</li>
+            <li>Job data comes from UMass's public Student Employment board.</li>
+          </ul>
+          <button id="clear-data" type="button" class="mt-3 rounded-sm border border-stone-300 bg-white px-3 py-1.5 text-xs font-semibold text-stone-700 hover:border-maroon hover:text-maroon">Clear my saved filters, tracker &amp; feedback</button>
+        </section>
+      </div>
+
+      <div class="order-1 min-w-0 lg:order-2">
+      <section class="panel min-w-0 p-4 sm:p-6">
+        <h2 class="panel-title mb-4">Your resume</h2>
+        <!-- Multi-file resume upload: PDF / DOCX / TXT are parsed to text in the browser
+             (js/app.js → parseFile) and combined with anything pasted below. -->
+        <span class="mb-2 block text-sm font-medium text-stone-600">Upload files</span>
+        <label id="dropzone" for="resume-files" class="dropzone flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-stone-200 bg-stone-50 px-4 py-6 text-center">
+          <svg class="h-6 w-6 text-stone-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="text-sm text-stone-600"><span class="font-semibold text-maroon">Choose files</span> or drag and drop</span>
+          <span class="text-xs text-stone-400">PDF, DOCX or TXT · multiple files allowed · up to 10 MB each</span>
+          <input id="resume-files" type="file" multiple accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" class="sr-only" />
+        </label>
+        <ul id="file-list" class="mt-3 space-y-2" aria-live="polite"></ul>
+
+        <label for="resume" class="mb-2 mt-5 block text-sm font-medium text-stone-600">…or paste resume text</label>
+        <textarea
+          id="resume"
+          rows="8"
+          placeholder="e.g. I know Java and Python, want a tech job troubleshooting systems..."
+          class="resume-input w-full resize-y rounded-md border border-stone-200 bg-stone-50 p-4 text-sm leading-relaxed placeholder:text-stone-400"
+        ></textarea>
+        <div class="mt-4 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <p class="text-xs text-stone-400">No resume? Leave it empty and click the button to just browse every job. <span class="hidden sm:inline">Tip: press ⌘/Ctrl + Enter to search.</span></p>
+          <button id="match-btn" class="btn-maroon inline-flex shrink-0 whitespace-nowrap items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold shadow-sm">
+            <svg id="btn-spinner" class="hidden h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"></circle>
+              <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+            </svg>
+            <span id="btn-label">Find Matches</span>
+          </button>
+        </div>
+      </section>
+      </div>
+
+      <div class="order-2 min-w-0 lg:order-3">
+        <section id="filters" aria-label="Job filters" class="panel grid grid-cols-1 gap-3 p-4 sm:grid-cols-3 lg:grid-cols-1">
+          <div class="sm:col-span-3 lg:col-span-1">
+            <div class="flex items-center justify-between">
+              <h2 class="panel-title">Filters</h2>
+              <button id="reset-filters" type="button" class="text-xs font-medium text-stone-500 hover:text-maroon">Reset</button>
+            </div>
+            <p class="mt-1 text-xs text-stone-500"></p>
+          </div>
+          <label class="block sm:col-span-3 lg:col-span-1">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Search Keywords</span>
+            <input id="filter-keywords" type="text" maxlength="200" placeholder="e.g. tutor, python (jobs must mention all)" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Job Type</span>
+            <select id="filter-job-type" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="all">All</option>
+              <option value="on_campus">On-Campus</option>
+              <option value="off_campus">Off-Campus</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Work Mode</span>
+            <select id="filter-remote" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="all">Any</option>
+              <option value="remote_only">Remote / hybrid only</option>
+              <option value="in_person_only">In-person only</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">City</span>
+            <input id="filter-city" type="text" maxlength="60" placeholder="e.g. Amherst" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Funding Type</span>
+            <select id="filter-funding" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="all">All</option>
+              <option value="work_study">Work-Study</option>
+              <option value="non_work_study">Non Work-Study</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Minimum Pay Rate</span>
+            <select id="filter-min-pay" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="">Any</option>
+              <option value="15">$15+/hr</option>
+              <option value="16">$16+/hr</option>
+              <option value="17">$17+/hr</option>
+              <option value="18">$18+/hr</option>
+              <option value="20">$20+/hr</option>
+              <option value="25">$25+/hr</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Min Hours per Week</span>
+            <select id="filter-min-hours" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="">Any</option>
+              <option value="5">At least 5</option>
+              <option value="10">At least 10</option>
+              <option value="15">At least 15</option>
+              <option value="20">At least 20</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Max Hours per Week</span>
+            <select id="filter-max-hours" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="">Any</option>
+              <option value="5">Up to 5</option>
+              <option value="10">Up to 10</option>
+              <option value="15">Up to 15</option>
+              <option value="20">Up to 20</option>
+              <option value="30">Up to 30</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Bus Route</span>
+            <select id="filter-bus-route" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="all">Any</option>
+              <option value="on_route">On a bus route only</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Hiring Period</span>
+            <select id="filter-hiring-period" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm">
+              <option value="all">Any</option>
+              <option value="fall_only">Fall semester only</option>
+              <option value="spring_only">Spring semester only</option>
+              <option value="summer">Summer</option>
+              <option value="academic_year">Academic year</option>
+              <option value="entire_year">Entire year</option>
+            </select>
+          </label>
+          <label class="block sm:col-span-2 lg:col-span-1">
+            <span class="mb-1 block text-xs font-medium text-stone-500">Exclude Keywords</span>
+            <input id="filter-exclude" type="text" maxlength="200" placeholder="e.g. driving, night shift, cleaning" class="filter-input w-full rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm" />
+          </label>
+          <label class="flex items-start gap-2 text-sm text-stone-600 sm:col-span-3 lg:col-span-1">
+            <input id="filter-listed-pay" type="checkbox" class="mt-1 h-4 w-4 accent-[#881c1c]" />
+            <span>Only jobs that list a pay rate <span class="block text-xs text-stone-400">Otherwise unlisted pay shows as an estimated $15 (MA minimum).</span></span>
+          </label>
+          <p id="filter-summary" class="hidden text-xs text-stone-500 sm:col-span-3 lg:col-span-1" aria-live="polite"></p>
+        </section>
+      </div>
+    </div>
+    </div>
+
+    <section id="status" class="mt-8 hidden text-center text-sm" aria-live="polite"></section>
+
+    <!-- LinkedIn-style results: a scrollable list of compact job cards (left) and
+         the full posting for the selected card (right). Below `lg` the detail
+         pane becomes a full-screen sheet that opens when a card is tapped. -->
+    <section id="results-layout" class="jobs-layout mt-8 hidden" aria-label="Matching jobs">
+      <aside class="jobs-list-pane">
+        <div class="jobs-list-header">
+          <div class="flex items-center justify-between gap-2">
+            <h2 id="results-title" class="text-sm font-semibold text-stone-900">Your matches</h2>
+            <label class="flex items-center gap-1.5 text-xs text-stone-500">
+              Sort
+              <select id="sort-by" class="mini-select">
+                <option value="relevance">Best match</option>
+                <option value="newest">Newest</option>
+                <option value="pay_high">Highest pay</option>
+                <option value="hours_low">Fewest hours</option>
+              </select>
+            </label>
+          </div>
+          <p id="results-meta" class="text-xs text-stone-500" aria-live="polite"></p>
+        </div>
+        <div id="jobs-list-scroll" class="jobs-list-scroll">
+          <ul id="results" role="listbox" aria-label="Job results" class="jobs-list"></ul>
+          <!-- Pagination: each click appends the next page of the current results (js/matcher.js). -->
+          <div id="load-more-sentinel" class="flex flex-col items-center gap-2 p-4">
+            <button id="load-more-btn" class="hidden inline-flex items-center gap-2 rounded-md border border-maroon bg-white px-5 py-2 text-sm font-medium text-maroon transition hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-60">
+              <svg id="load-more-spinner" class="hidden h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"></circle>
+                <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+              </svg>
+              <span id="load-more-label">Load More Jobs</span>
+            </button>
+            <p id="load-more-error" class="hidden text-center text-xs text-red-600" role="alert"></p>
+          </div>
+        </div>
+      </aside>
+
+      <section id="job-detail" class="job-detail-pane" aria-live="polite" aria-label="Job details" tabindex="-1">
+        <div class="job-detail-empty">Select a job to see its details.</div>
+      </section>
+    </section>
+
+    <!-- Application tracker + "not a fit" list. Both live only in this browser's local storage. -->
+    <section id="tracker-panel" class="panel mt-8 hidden p-4 sm:p-6" aria-label="My applications">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="panel-title">My applications</h2>
+          <p class="mt-1 text-xs text-stone-500">Saved only on your device. Employers aren't notified and nothing is sent anywhere.</p>
+        </div>
+        <button id="tracker-export" type="button" class="rounded-sm border border-maroon bg-white px-3 py-1.5 text-xs font-semibold text-maroon hover:bg-stone-50">Export CSV</button>
+      </div>
+      <ul id="tracker-list" class="mt-4 divide-y divide-stone-100"></ul>
+    </section>
+
+    <section id="rejected-panel" class="panel mt-4 hidden p-4 sm:p-6" aria-label="Jobs marked not a fit">
+      <h2 class="panel-title">Marked "not a fit" <span id="rejected-count" class="font-normal text-stone-400"></span></h2>
+      <p class="mt-1 text-xs text-stone-500">These are hidden from your results, and the ones marked as the wrong kind of work push similar jobs down. Restore one to undo.</p>
+      <ul id="rejected-list" class="mt-3 divide-y divide-stone-100"></ul>
+    </section>
+  </main>
+
+  <footer class="border-t border-stone-200 bg-white">
+    <div class="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-5 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
+      <p>UMass Campus Job Matcher · Not affiliated with UMass Amherst</p>
+      <p>Powered by <a href="https://aryamitra.me" target="_blank" rel="noopener noreferrer" class="font-medium text-stone-700 hover:text-maroon">Arya Mitra</a></p>
+    </div>
+  </footer>
+</body>
+</html>

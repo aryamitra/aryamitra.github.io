@@ -1,0 +1,298 @@
+/* UMass brand tokens. Tailwind (CDN) handles layout/spacing; these classes
+   supply the maroon accents so no JS Tailwind config is needed. */
+:root {
+  --maroon: #881c1c;
+  --maroon-dark: #6e1616;
+  --maroon-soft: #f5e1e1;
+  --maroon-tint: #fbf3f3;
+}
+
+/* Josefin Sans (SIL OFL, see assets/fonts/josefin-sans/OFL.txt). The variable
+   files cover every weight 100-700; the per-weight files in static/ are only
+   loaded by browsers without variable-font support. */
+@font-face {
+  font-family: "Josefin Sans";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("../assets/fonts/josefin-sans/JosefinSans-Variable.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Josefin Sans";
+  font-style: italic;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("../assets/fonts/josefin-sans/JosefinSans-Italic-Variable.ttf") format("truetype");
+}
+@supports not (font-variation-settings: normal) {
+  @font-face { font-family: "Josefin Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-Regular.ttf") format("truetype"); }
+  @font-face { font-family: "Josefin Sans"; font-style: italic; font-weight: 400; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-Italic.ttf") format("truetype"); }
+  @font-face { font-family: "Josefin Sans"; font-style: normal; font-weight: 500; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-Medium.ttf") format("truetype"); }
+  @font-face { font-family: "Josefin Sans"; font-style: italic; font-weight: 500; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-MediumItalic.ttf") format("truetype"); }
+  @font-face { font-family: "Josefin Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-SemiBold.ttf") format("truetype"); }
+  @font-face { font-family: "Josefin Sans"; font-style: italic; font-weight: 600; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-SemiBoldItalic.ttf") format("truetype"); }
+  @font-face { font-family: "Josefin Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-Bold.ttf") format("truetype"); }
+  @font-face { font-family: "Josefin Sans"; font-style: italic; font-weight: 700; font-display: swap; src: url("../assets/fonts/josefin-sans/static/JosefinSans-BoldItalic.ttf") format("truetype"); }
+}
+
+/* Josefin Sans has a small x-height; a slightly larger root keeps Tailwind's rem sizes readable. */
+html { font-size: 106.25%; }
+
+body {
+  font-family: "Josefin Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+.text-maroon { color: var(--maroon); }
+.border-maroon { border-color: var(--maroon); }
+.brand-bar { background: var(--maroon); }
+
+/* Button */
+.btn-maroon {
+  background: var(--maroon);
+  color: #fff;
+  transition: background-color 150ms ease;
+}
+.btn-maroon:hover { background: var(--maroon-dark); }
+.btn-maroon:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--maroon-soft); }
+.btn-maroon:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Resume textarea */
+.resume-input:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 4px var(--maroon-soft);
+}
+
+.rank-dot {
+  background: var(--maroon-tint);
+  color: var(--maroon);
+}
+
+.score-bar { background: var(--maroon); }
+
+/* Input-area cards and their section headings. */
+.panel {
+  background: #fff;
+  border: 1px solid #e7e5e4;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+.panel-title {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e7e5e4;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1c1917;
+}
+
+/* Numbered steps in the "How it works" panel. */
+.step-num {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--maroon-tint);
+  color: var(--maroon);
+}
+
+/* Match badge tiers */
+.badge-high { background: var(--maroon); color: #fff; }
+.badge-mid  { background: var(--maroon-soft); color: var(--maroon-dark); }
+.badge-low  { background: #f5f5f4; color: #57534e; }
+
+/* Attribute tags (category, pay, work-study, location, hours) */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #e7e5e4;
+  color: #57534e;
+  background: #fafaf9;
+}
+.tag-accent {
+  border-color: var(--maroon-soft);
+  color: var(--maroon);
+  background: var(--maroon-tint);
+}
+
+/* Match explanation and listing-trust tags */
+.tag-good { border-color: #bbf7d0; color: #166534; background: #f0fdf4; }
+.tag-warn { border-color: #fde68a; color: #92400e; background: #fffbeb; }
+.tag-bad  { border-color: #fecaca; color: #991b1b; background: #fef2f2; }
+
+/* Tracker / feedback controls */
+.mini-select {
+  border: 1px solid #d6d3d1;
+  border-radius: 0.25rem;
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: #44403c;
+}
+.mini-select:focus { outline: none; border-color: var(--maroon); box-shadow: 0 0 0 3px var(--maroon-soft); }
+.status-dot { display: inline-block; height: 0.5rem; width: 0.5rem; border-radius: 9999px; background: #a8a29e; }
+.status-dot[data-status="saved"] { background: #a8a29e; }
+.status-dot[data-status="applied"] { background: #2563eb; }
+.status-dot[data-status="interviewing"] { background: #d97706; }
+.status-dot[data-status="offer"] { background: #16a34a; }
+.status-dot[data-status="not_selected"] { background: #dc2626; }
+
+/* Filter controls share the textarea's focus treatment. */
+.filter-input:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 4px var(--maroon-soft);
+}
+
+/* Resume drop zone. .is-dragover is toggled by the drag events in app.js. */
+.dropzone { transition: border-color 150ms ease, background-color 150ms ease; }
+.dropzone:hover,
+.dropzone.is-dragover {
+  border-color: var(--maroon);
+  background: var(--maroon-tint);
+}
+.dropzone:focus-within { box-shadow: 0 0 0 4px var(--maroon-soft); }
+
+/* ---- Two-pane results (LinkedIn-style) ------------------------------------
+   Both panes share one viewport-tall box and scroll independently, so the list
+   and the selected posting stay side by side however long either gets. */
+.jobs-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 1024px) {
+  .jobs-layout {
+    grid-template-columns: minmax(300px, 2fr) minmax(0, 3fr);
+    height: calc(100vh - 2rem);
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+.jobs-list-pane,
+.job-detail-pane {
+  background: #fff;
+  border: 1px solid #e7e5e4;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+.jobs-list-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.jobs-list-header {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #e7e5e4;
+}
+.jobs-list-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain; /* like LinkedIn: the wheel never leaks to the page from a pane */
+}
+.jobs-list { margin: 0; padding: 0; list-style: none; }
+
+/* Compact job card in the sidebar. */
+.job-item {
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #f5f5f4;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.job-item:hover { background: #fafaf9; }
+.job-item:focus-visible { outline: 2px solid var(--maroon); outline-offset: -2px; }
+.job-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--maroon);
+  transform: scaleY(0);
+  transition: transform 150ms ease;
+}
+.job-item[aria-selected="true"] { background: var(--maroon-tint); }
+.job-item[aria-selected="true"]::before { transform: scaleY(1); }
+.job-item[aria-selected="true"] .job-item-title { color: var(--maroon); }
+.job-item-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1c1917;
+  overflow-wrap: anywhere;
+}
+.job-item:hover .job-item-title { text-decoration: underline; }
+
+/* Full posting pane. */
+.job-detail-pane {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.job-detail-pane:focus { outline: none; }
+.job-detail-empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  min-height: 12rem;
+  padding: 2rem;
+  font-size: 0.875rem;
+  color: #a8a29e;
+}
+.job-detail-desc {
+  white-space: pre-line;
+  overflow-wrap: anywhere; /* long URLs/emails wrap instead of widening the pane */
+}
+
+/* "Pop out" when the selected job changes. */
+.job-detail-content { animation: detail-pop 220ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes detail-pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+.job-detail-back { display: none; }
+
+/* Below lg: list only; the detail pane slides up as a full-screen sheet. */
+@media (max-width: 1023.98px) {
+  .job-detail-pane {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    border: 0;
+    border-radius: 0;
+    transform: translateY(100%);
+    visibility: hidden;
+    transition: transform 250ms ease, visibility 0s linear 250ms;
+  }
+  .job-detail-pane.is-open {
+    transform: none;
+    visibility: visible;
+    transition: transform 250ms ease;
+  }
+  .job-detail-back { display: inline-flex; }
+  body.detail-open { overflow: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-detail-content { animation: none; }
+  .job-detail-pane, .job-item::before { transition: none; }
+}
