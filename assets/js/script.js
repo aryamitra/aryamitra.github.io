@@ -257,9 +257,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("closeImageBtn");
   if (!modal || !modalImg) return;
 
+  const prevBtn = document.getElementById("prevImageBtn");
+  const nextBtn = document.getElementById("nextImageBtn");
   let lastFocused = null;
+  let gallery = [];      // thumbnails that can be cycled through (cooking grid only)
+  let galleryIndex = 0;
 
-  function openImage(img) {
+  function showImage(img) {
     lastFocused = img;
     modalImg.src = img.currentSrc || img.src;
     modalImg.alt = img.alt;
@@ -269,9 +273,25 @@ document.addEventListener("DOMContentLoaded", () => {
       ? frame.nextElementSibling.textContent.trim()
       : "";
     modalCaption.textContent = caption;
+  }
+
+  function openImage(img) {
+    gallery = img.classList.contains("food-tile")
+      ? Array.from(document.querySelectorAll(".food-tile"))
+      : [];
+    galleryIndex = gallery.indexOf(img);
+    prevBtn.hidden = nextBtn.hidden = gallery.length < 2;
+    modal.querySelector(".image-modal-content").classList.toggle("has-gallery", gallery.length > 1);
+    showImage(img);
     modal.classList.add("is-active");
     document.body.style.overflow = "hidden";
     closeBtn.focus();
+  }
+
+  function step(delta) {
+    if (gallery.length < 2) return;
+    galleryIndex = (galleryIndex + delta + gallery.length) % gallery.length;
+    showImage(gallery[galleryIndex]);
   }
 
   function closeImage() {
@@ -296,9 +316,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Cooking grid: build square thumbnails from food.js, click to expand in the lightbox
+  const foodGrid = document.getElementById("foodGrid");
+  if (foodGrid && typeof FOOD_IMAGES !== "undefined") {
+    FOOD_IMAGES.forEach((src, i) => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "Cooking photo " + (i + 1);
+      img.loading = "lazy";
+      img.className = "food-tile";
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.setAttribute("aria-label", "View larger: " + img.alt);
+      img.addEventListener("click", () => openImage(img));
+      img.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openImage(img);
+        }
+      });
+      foodGrid.appendChild(img);
+    });
+  }
+
   closeBtn.addEventListener("click", closeImage);
   modal.addEventListener("click", (e) => {
     if (e.target === modal) closeImage();
+  });
+  prevBtn.addEventListener("click", () => step(-1));
+  nextBtn.addEventListener("click", () => step(1));
+  document.addEventListener("keydown", (e) => {
+    if (!modal.classList.contains("is-active")) return;
+    if (e.key === "ArrowLeft") step(-1);
+    else if (e.key === "ArrowRight") step(1);
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeImage();

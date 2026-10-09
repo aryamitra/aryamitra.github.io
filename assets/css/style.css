@@ -1465,3 +1465,90 @@ p {
         padding: 2rem 1.25rem;
     }
 }
+
+/* ----------------------------------
+   Cooking: dense grid of small square thumbnails (3DS-home-screen style).
+   Tiles stay square and open in the shared image lightbox on click.
+   ---------------------------------- */
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 0.5rem;
+}
+
+.food-tile {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    cursor: zoom-in;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 4px;
+    background-color: var(--color-panel-tint);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Enlarge on hover only: closing the lightbox returns focus to the tile, and a
+   focus-based enlarge would leave it stuck big. Focus gets a border instead. */
+.food-tile:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 12px var(--color-glow);
+    position: relative;
+    z-index: 1;
+}
+
+.food-tile:hover,
+.food-tile:focus-visible {
+    border-color: var(--color-accent);
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    .food-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+}
+
+/* Prev/next arrows in the lightbox: bare < > glyphs inside the panel, flanking
+   the photo (cooking gallery only). The panel gets extra side padding for them. */
+.image-modal-content.has-gallery {
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+.image-modal-content.has-gallery img {
+    max-width: calc(90vw - 8rem);
+}
+
+.image-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 5rem;
+    border: none;
+    background: none;
+    color: var(--color-text-strong);
+    font-family: inherit;
+    font-size: 2.2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.image-nav:hover,
+.image-nav:focus-visible {
+    color: var(--color-accent);
+    text-shadow: 0 0 10px var(--color-glow);
+    outline: none;
+}
+
+.image-nav[hidden] { display: none; }
+.image-nav-prev { left: 0.5rem; }
+.image-nav-next { right: 0.5rem; }
+
+@media (max-width: 600px) {
+    .image-modal-content.has-gallery { padding-left: 2.5rem; padding-right: 2.5rem; }
+    .image-modal-content.has-gallery img { max-width: calc(90vw - 5rem); }
+    .image-nav { width: 2rem; font-size: 1.7rem; }
+    .image-nav-prev { left: 0.25rem; }
+    .image-nav-next { right: 0.25rem; }
+}
