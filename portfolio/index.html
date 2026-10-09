@@ -20,7 +20,7 @@
     <a class="back-btn" id="backBtn" href="/" aria-label="Back to card"><span aria-hidden="true">&larr;</span> back</a>
     <script>
       document.getElementById('backBtn').addEventListener('click', function () {
-        try { sessionStorage.setItem('splash-return', '1'); } catch (e) {}
+        try { sessionStorage.setItem('splash-return', String(window.scrollY)); } catch (e) {}
       });
     </script>
 
