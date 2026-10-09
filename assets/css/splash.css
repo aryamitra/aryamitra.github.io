@@ -53,9 +53,11 @@ body.splash .theme-toggle {
   margin: 0;
 }
 
+/* --k (set on the flip card's front copy) scales the fixed-px minimums with the
+   card, so the enlarged copy keeps the same proportions as the real card. */
 .splash-email {
   color: var(--color-text-dim);
-  font-size: max(11px, 3.3cqw);
+  font-size: max(calc(11px * var(--k, 1)), 3.3cqw);
 }
 
 .splash-name {
@@ -73,13 +75,13 @@ body.splash .theme-toggle {
 
 .splash-divider {
   width: 7.6cqw;
-  height: 2px;
+  height: calc(2px * var(--k, 1));
   background: var(--color-accent);
 }
 
 .splash-tagline {
   color: var(--color-text-dim);
-  font-size: max(11px, 3.3cqw);
+  font-size: max(calc(11px * var(--k, 1)), 3.3cqw);
 }
 
 .splash-links {
@@ -135,23 +137,51 @@ body.splash .theme-toggle {
   transform: translateX(4px);
 }
 
-.splash-card-back {
+/* --- The flipping card (see index.html) ---
+   Laid out at full viewport size and animated from a scaled-down pose that sits
+   exactly on .splash-card up to scale(1). The browser rasterizes an animating layer
+   at the largest scale it will reach, so this one stays sharp throughout. */
+.flip-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  visibility: hidden;
+  /* A perspective property (rather than perspective() inside the animated
+     transform) keeps the animation's scale computable for the compositor. Its
+     origin is the stage centre, which the stage's translate keeps on the card. */
+  perspective: 1400px;
+}
+
+.flip-card,
+.flip-back {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+}
+
+.flip-back {
   opacity: 0;
-  pointer-events: none;
   transform: rotateY(180deg); /* un-mirrors the back once the card has flipped */
 }
 
-.splash-card-back iframe {
+.flip-back iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.flip-front {
+  container-type: inline-size;
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  border: 0;
+  width: 100%;
+  height: var(--front-h, 100%);
+  background: var(--color-panel);
+  box-shadow: inset 0 0 0 calc(1px * var(--k, 1)) var(--color-border-strong);
   transform-origin: 0 0;
+  transform: scaleY(var(--fy, 1));
 }
 
 /* --- Leave animation: the card flips over to reveal the site on its back --- */
@@ -168,26 +198,38 @@ body.splash.leaving .theme-toggle {
   transition: opacity 0.3s ease;
 }
 
+/* The flip card takes over from the real one for the duration */
 body.splash.leaving .splash-card,
 body.splash.returning .splash-card {
-  z-index: 10;
+  visibility: hidden;
+}
+
+body.splash.leaving .flip-stage,
+body.splash.returning .flip-stage {
+  visibility: visible;
+  animation: card-flip-move 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+body.splash.leaving .flip-card,
+body.splash.returning .flip-card {
   animation: card-flip-zoom 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
-body.splash.leaving .splash-card-inner,
-body.splash.returning .splash-card-inner {
+body.splash.leaving .flip-front,
+body.splash.returning .flip-front {
   animation: card-front-out 1.2s linear forwards;
 }
 
-body.splash.leaving .splash-card-back,
-body.splash.returning .splash-card-back {
+body.splash.leaving .flip-back,
+body.splash.returning .flip-back {
   animation: card-back-in 1.2s linear forwards;
 }
 
 /* Coming back from the site: the same animations, played in reverse */
-body.splash.returning .splash-card,
-body.splash.returning .splash-card-inner,
-body.splash.returning .splash-card-back {
+body.splash.returning .flip-stage,
+body.splash.returning .flip-card,
+body.splash.returning .flip-front,
+body.splash.returning .flip-back {
   animation-direction: reverse;
 }
 
@@ -197,8 +239,10 @@ body.splash.returning .theme-toggle {
   animation: splash-fade-in 0.4s ease 1s backwards;
 }
 
-/* Hidden until the return animation has been set up (see index.html) */
-html.splash-returning body.splash:not(.returning) .splash-main {
+/* Nothing is painted until the return animation can start (see index.html), so the
+   browser keeps the portfolio on screen meanwhile instead of flashing this page */
+html.splash-returning body.splash .splash-main,
+html.splash-returning body.splash .theme-toggle {
   visibility: hidden;
 }
 
@@ -206,12 +250,22 @@ html.splash-returning body.splash:not(.returning) .splash-main {
   from { opacity: 0; }
 }
 
-@keyframes card-flip-zoom {
+/* Moves the card to the centre; split from the turn so the perspective origin follows it */
+@keyframes card-flip-move {
   0% {
-    transform: translate(0, 0) perspective(1400px) rotateY(0deg) scale(1, 1);
+    transform: translate(var(--tx, 0), var(--ty, 0));
   }
   100% {
-    transform: translate(var(--dx, 0), var(--dy, 0)) perspective(1400px) rotateY(180deg) scale(var(--sx, 1), var(--sy, 1));
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes card-flip-zoom {
+  0% {
+    transform: rotateY(0deg) scale(var(--sx, 1), var(--sy, 1));
+  }
+  100% {
+    transform: rotateY(180deg) scale(1, 1);
   }
 }
 
