@@ -63,6 +63,7 @@
     <a href="#projects">> Projects</a>
     <a href="#athletics">> Athletics</a>
     <a href="#guitar">> Guitar</a>
+    <a href="#cooking">> Cooking</a>
     
     
 
@@ -168,15 +169,16 @@
                     <div class="skill-row">
                         <span class="skill-label">Math</span>
                         <div class="tech-list">
-                            <span class="tech-node">Calc II / Multivar Calc</span>
                             <span class="tech-node">Linear Algebra</span>
+                            <span class="tech-node">Multivariable Calc</span>
+                            <span class="tech-node">Calc II</span>      
                         </div>
                     </div>
                     <div class="skill-row">
                         <span class="skill-label">Languages</span>
                         <div class="tech-list">
-                            <span class="tech-node">Python</span>
                             <span class="tech-node">Java</span>
+                            <span class="tech-node">Python</span>
                             <span class="tech-node">C#</span>
                         </div>
                     </div>
@@ -522,6 +524,12 @@ Resolved customer issues with patience and professionalism.
                 </div>
             </section>
 
+            <!-- COOKING SECTION: tiles are built from assets/js/food.js (run ./update-food.sh after adding photos) -->
+            <section id="cooking">
+                <h2>Cooking</h2>
+                <div class="food-grid" id="foodGrid"></div>
+            </section>
+
             <!-- Mobile-only copyright line; mirrors the .accent-text treatment used for "UMass-Amherst" in the sidebar -->
             <div class="mobile-copyright">© 2026 Arya Mitra</div>
 
@@ -549,12 +557,15 @@ Resolved customer issues with patience and professionalism.
     <div class="email-modal-overlay image-modal-overlay" id="imageModal" role="dialog" aria-modal="true" aria-label="Image preview">
       <div class="image-modal-content">
         <button type="button" class="btn-close-modal" id="closeImageBtn" aria-label="Close image">&times;</button>
+        <button type="button" class="image-nav image-nav-prev" id="prevImageBtn" aria-label="Previous image">&lt;</button>
+        <button type="button" class="image-nav image-nav-next" id="nextImageBtn" aria-label="Next image">&gt;</button>
         <img id="imageModalImg" src="" alt="">
         <p class="image-modal-caption" id="imageModalCaption"></p>
       </div>
     </div>
 
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="assets/js/food.js"></script>
         <script src="assets/js/script.js"></script>
         <script src="assets/js/spotify.js"></script>
 
