@@ -229,7 +229,9 @@ html {
 .sidebar-inner {
   width: 300px;    /* Original sidebar content width - nothing inside moves or resizes */
   height: 100%;
-  padding-bottom: 10px;
+  /* Reserves room so the last nav item never ends up hidden behind the
+     fixed .sidebar-footer pinned over the bottom of this scroll area. */
+  padding-bottom: 100px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -278,10 +280,19 @@ html {
 }
 
 .sidebar-footer {
-  margin-top: auto;       /* The anchor trick! Pushes this whole block to the bottom edge */
+  /* Pinned to the viewport corner (not the scrollable nav column above it) so the
+     social icons/clock stay put without needing to scroll the sidebar to reach them,
+     no matter how tall the nav list above gets or how short the window is. */
+  position: fixed;
+  left: 2rem;
+  bottom: 2rem;
+  width: 300px;
   display: flex;
   flex-direction: column; /* Stacks the icons cleanly above the clock text */
   gap: 12px;              /* Creates some breathing space between icons and text */
+  background-color: var(--color-bg);
+  padding-top: 10px;
+  z-index: 20;
 }
 
 .name-block {
@@ -460,168 +471,6 @@ html {
     font-size: 0.75rem;
 }
 
-/* --- Sidebar: Travel Status --- */
-.travel-status {
-  margin: 25px 0;
-  padding: 12px 15px;
-  background-color: var(--color-panel-tint);
-  border: 3px solid var(--color-accent-soft);
-  margin-top: clamp(0.75rem, 5vh, 3rem);
-}
-
-.travel-header {
-  font-size: 0.85rem;
-  color: var(--color-text-dim);
-  margin-bottom: 6px;
-}
-
-.travel-location {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: var(--color-text-strong);
-  display: flex;
-  align-items: center;
-}
-
-.travel-date {
-  font-size: 0.85rem;
-  color: var(--color-text-strong);
-  margin-top: 4px;
-}
-
-.travel-itinerary {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px dashed var(--color-border);
-}
-
-.itinerary-item {
-  font-size: 0.85rem;
-  color: var(--color-text);
-  line-height: 1.5;
-}
-
-/* --- Sidebar: Contact Form --- */
-.email-header {
-  font-size: 0.85rem;
-  color: var(--color-text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: clamp(0.75rem, 3.5vh, 2rem);
-  margin-bottom: 6px;
-}
-
-.sidebar-email-box {
-  margin-top: clamp(6px, 2.5vh, 15px);
-  margin-bottom: clamp(0.75rem, 3vh, 1.5rem);
-  background-color: var(--color-panel-tint);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  padding: 10px;
-}
-
-.email-input-wrapper {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-
-.sidebar-email-box input,
-.sidebar-email-box textarea,
-.email-modal-content input,
-.email-modal-content textarea {
-  width: 100%;
-  background-color: var(--color-panel);
-  border: 1px solid var(--color-border-strong);
-  color: var(--color-text-strong);
-  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
-  font-size: 0.8rem;
-  padding: 6px 8px;
-  border-radius: 4px;
-}
-
-.sidebar-email-box input:focus,
-.sidebar-email-box textarea:focus,
-.email-modal-content input:focus,
-.email-modal-content textarea:focus {
-  outline: none;
-  border-color: var(--color-accent-muted);
-  box-shadow: 0 0 8px var(--color-glow);
-}
-
-.sidebar-email-box textarea {
-  resize: none;
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-
-.btn-send {
-  width: 100%;
-  background: none;
-  color: var(--color-text-strong);
-  border: 1px solid var(--color-border-strong);
-  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 6px 0;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-send:hover,
-.btn-send:focus-visible {
-  border-color: var(--color-accent-muted);
-  color: var(--color-accent);
-  background-color: var(--color-hover-bg);
-}
-
-.btn-send:focus-visible {
-  outline: 2px solid var(--color-accent-muted);
-  outline-offset: 2px;
-}
-
-.btn-expand {
-  background-color: var(--color-panel);
-  border: 1px solid var(--color-border-strong);
-  border-radius: 4px;
-  padding: 0 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-dim);
-  transition: all 0.2s ease;
-}
-
-.btn-expand:hover,
-.btn-expand:focus-visible {
-  color: var(--color-accent);
-  border-color: var(--color-accent-muted);
-}
-
-.btn-expand:focus-visible {
-  outline: 2px solid var(--color-accent-muted);
-  outline-offset: 2px;
-}
-
-/* Smooth transition animation for the success button state */
-.btn-send.success-state,
-.btn-send-large.success-state {
-    background-color: #2e7d32 !important; /* Universal "success" green - kept independent of the decorative palette */
-    color: #ffffff !important;
-    border-color: #2e7d32 !important;
-    font-weight: bold;
-    animation: buttonPulse 0.4s ease-in-out;
-}
-
-@keyframes buttonPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
 /* --- Contact Modal --- */
 .email-modal-overlay {
   display: none; /* Hidden by default, toggled through JS */
@@ -639,57 +488,6 @@ html {
 
 .email-modal-overlay.is-active {
   display: flex;
-}
-
-.email-modal-content {
-  background-color: var(--color-panel);
-  border: 1px solid var(--color-border);
-  padding: 3rem;
-  width: 90%;
-  max-width: 600px;
-  border-radius: 4px;
-  position: relative;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-}
-
-.email-modal-content h2 {
-  border-bottom: 1px dashed var(--color-border-strong);
-  margin-bottom: 2rem;
-}
-
-.email-modal-content input,
-.email-modal-content textarea {
-  font-size: 0.9rem;
-  padding: 10px 12px;
-  margin-bottom: 1.2rem;
-}
-
-.btn-send-large {
-  text-decoration: none;
-  color: var(--color-text-strong);
-  background-color: var(--color-panel);
-  border: 1px solid var(--color-border-strong);
-  width: 100%;
-  padding: 0.8rem;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-send-large:hover,
-.btn-send-large:focus-visible {
-  border-color: var(--color-accent-muted);
-  color: var(--color-accent);
-  background-color: var(--color-hover-bg);
-}
-
-.btn-send-large:focus-visible {
-  outline: 2px solid var(--color-accent-muted);
-  outline-offset: 2px;
 }
 
 .btn-close-modal {
@@ -741,6 +539,21 @@ html {
   background-color: rgba(3, 18, 17, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  /* Stay in the render tree and fade instead of popping from display:none.
+     Flipping display builds the overlay and its full-viewport blur in the same
+     frame the scale-in starts, which is what made opening hitch. */
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, visibility 0s linear 0.22s;
+}
+
+.image-modal-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.22s ease, visibility 0s;
 }
 
 .image-modal-content {
@@ -755,7 +568,13 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: imageModalIn 0.2s ease-out;
+  transform: scale(0.96);
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform; /* own compositor layer so the scale-in doesn't contend with the backdrop blur */
+}
+
+.image-modal-overlay.is-active .image-modal-content {
+  transform: scale(1);
 }
 
 .image-modal-content img {
@@ -764,11 +583,131 @@ html {
   max-height: calc(90vh - 8rem);
   object-fit: contain;
   border-radius: 2px;
+  transition: opacity 0.15s ease;
+}
+
+/* Never let an empty lightbox image fall back to drawing its alt text
+   (e.g. "Arya Mitra Profile") while the overlay fades out */
+.image-modal-content img:not([src]),
+.image-modal-content img[src=""] {
+  visibility: hidden;
+}
+
+/* Gallery step: fade the outgoing photo while the next one decodes */
+.image-modal-content img.is-swapping {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-modal-overlay,
+  .image-modal-overlay.is-active,
+  .image-modal-content,
+  .image-modal-content img {
+    transition: none;
+  }
 }
 
 .image-modal-content .btn-close-modal {
   top: 0.8rem;
   right: 1rem;
+}
+
+/* --- Last-Played Overlay ---
+   Reuses .email-modal-overlay for the blurred backdrop, same as the image lightbox. */
+.spotify-modal-content {
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--spotify-green, #1db954);
+  padding: 2.5rem 1.75rem 1.75rem;
+  width: 90%;
+  max-width: 420px;
+  max-height: 85vh;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  animation: imageModalIn 0.2s ease-out;
+}
+
+.spotify-modal-content h2 {
+  margin: 0 0 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed var(--color-border-strong);
+  font-size: 1rem;
+}
+
+.spotify-track-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.spotify-track-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.spotify-track-row:hover,
+.spotify-track-row:focus-visible {
+  background-color: rgba(29, 185, 84, 0.12);
+  border-color: var(--spotify-green, #1db954);
+}
+
+.spotify-track-row:active {
+  transform: scale(0.97);
+}
+
+.spotify-track-row:focus-visible {
+  outline: 2px solid var(--color-accent-muted);
+  outline-offset: 2px;
+}
+
+.spotify-track-art {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.spotify-track-info {
+  min-width: 0;
+}
+
+.spotify-track-title,
+.spotify-track-artist {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.spotify-track-title {
+  color: var(--color-text-strong);
+  font-size: 0.85rem;
+}
+
+.spotify-track-artist {
+  margin-top: 2px;
+  color: var(--color-text-dim);
+  font-size: 0.75rem;
+}
+
+.spotify-track-empty {
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1.5rem 0;
 }
 
 .image-modal-caption {
@@ -1428,21 +1367,26 @@ p {
     .sidebar-inner {
         width: 100%;      /* Desktop pins this to 300px for the scrollbar trick; mobile just wants full width */
         height: auto;
+        padding-bottom: 0;   /* Desktop reserves space for the fixed footer; mobile's footer is inline, needs none */
         display: flex;
         flex-direction: column;
     }
 
-    /* Hidden on mobile: nav links, travel status, and the contact form all
-       drop out so the icon row (next visible child after status-tags) sits
-       directly under the status line instead of at the bottom of the screen. */
-    .sidebar-nav,
-    .travel-status,
-    #unifiedEmailForm {
+    /* Hidden on mobile: nav links drop out so the icon row (next visible
+       child after status-tags) sits directly under the status line instead
+       of at the bottom of the screen. */
+    .sidebar-nav {
         display: none;
     }
 
     .sidebar-footer {
+        position: static;     /* Desktop pins this to the viewport corner; mobile wants it inline */
+        width: auto;
+        left: auto;
+        bottom: auto;
+        background-color: transparent;
         margin-top: 1.5rem;   /* No longer pinned to the screen bottom - just breathing room under status-tags */
+        padding-top: 0;
         padding-bottom: 1.5rem;
         gap: 16px;
     }
