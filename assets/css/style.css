@@ -285,7 +285,10 @@ html {
      no matter how tall the nav list above gets or how short the window is. */
   position: fixed;
   left: 2rem;
-  bottom: 2rem;
+  /* Anchored to the very bottom with the 2rem gap as padding, so the opaque
+     background covers the strip below it and scrolled nav links can't peek out. */
+  bottom: 0;
+  padding-bottom: 2rem;
   width: 300px;
   display: flex;
   flex-direction: column; /* Stacks the icons cleanly above the clock text */
