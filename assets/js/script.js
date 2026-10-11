@@ -96,132 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 /* ==========================================
-   PERFECT SINGLE-FORM MODAL TOGGLE, SYNC & ANIMATION AJAX
-   ========================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const emailModal = document.getElementById('emailModal');
-  const openFullscreenBtn = document.getElementById('openFullscreenBtn');
-  const closeFullscreenBtn = document.getElementById('closeFullscreenBtn');
-  const unifiedForm = document.getElementById('unifiedEmailForm');
-
-  // Input fields for syncing
-  const sidebarEmail = document.getElementById('sharedEmail');
-  const sidebarText = document.getElementById('sharedMessage');
-  const modalEmail = document.getElementById('modalEmail');
-  const modalText = document.getElementById('modalMessage');
-
-  // 1. Handle opening, closing, and text syncing
-  if (openFullscreenBtn && emailModal) {
-    openFullscreenBtn.addEventListener('click', () => {
-      if(modalEmail && sidebarEmail) modalEmail.value = sidebarEmail.value;
-      if(modalText && sidebarText) modalText.value = sidebarText.value;
-      emailModal.classList.add('is-active');
-    });
-  }
-
-  const DEMO_TEMPLATE = "Hi Arya,\n\nCan you send me a demo of your UMass job overlay?\n\nThanks!";
-
-  // "Request a Demo" opens the fullscreen modal with a prefilled message
-  const requestDemoBtn = document.getElementById('requestDemoBtn');
-  if (requestDemoBtn && emailModal) {
-    requestDemoBtn.addEventListener('click', () => {
-      if (modalEmail && sidebarEmail) modalEmail.value = sidebarEmail.value;
-      if (modalText) modalText.value = DEMO_TEMPLATE;
-      emailModal.classList.add('is-active');
-      if (modalEmail && !modalEmail.value) modalEmail.focus();
-    });
-  }
-
-  function closeModalAndSync() {
-    if(sidebarEmail && modalEmail) sidebarEmail.value = modalEmail.value;
-    // Untouched template -> leave the sidebar form clean
-    if(sidebarText && modalText) sidebarText.value = (modalText.value === DEMO_TEMPLATE) ? '' : modalText.value;
-    emailModal.classList.remove('is-active');
-  }
-
-  if (closeFullscreenBtn && emailModal) {
-    closeFullscreenBtn.addEventListener('click', closeModalAndSync);
-  }
-
-  window.addEventListener('click', (e) => {
-    if (e.target === emailModal) {
-      closeModalAndSync();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && emailModal && emailModal.classList.contains('is-active')) {
-      closeModalAndSync();
-    }
-  });
-
-  // 2. Handle the silent Formspree submission with animations
-  if (unifiedForm) {
-    unifiedForm.addEventListener("submit", function(event) {
-      event.preventDefault(); // Stop page refresh
-      
-      // Target BOTH submit buttons so they both visually animate if open
-      const sidebarBtn = unifiedForm.querySelector('.btn-send');
-      // .btn-send-large lives outside <form> now (linked via form="unifiedEmailForm"
-      // so it still submits this form), so it can't be found with unifiedForm.querySelector.
-      const modalBtn = document.querySelector('.btn-send-large');
-      
-      const originalSidebarText = sidebarBtn ? sidebarBtn.textContent : "Send Message";
-      const originalModalText = modalBtn ? modalBtn.textContent : "Send Message";
-      
-      // Put buttons into a loading state
-      if(sidebarBtn) { sidebarBtn.textContent = "Sending..."; sidebarBtn.disabled = true; }
-      if(modalBtn) { modalBtn.textContent = "Sending..."; modalBtn.disabled = true; }
-      
-      // Before submitting, ensure both sets of fields have the same data
-      if (emailModal.classList.contains('is-active')) {
-        if(sidebarEmail && modalEmail) sidebarEmail.value = modalEmail.value;
-        if(sidebarText && modalText) sidebarText.value = modalText.value;
-      } else {
-        if(modalEmail && sidebarEmail) modalEmail.value = sidebarEmail.value;
-        if(modalText && sidebarText) modalText.value = sidebarText.value;
-      }
-
-      const data = new FormData(unifiedForm);
-
-      fetch(unifiedForm.action, {
-        method: unifiedForm.method,
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      }).then(response => {
-        if (response.ok) {
-          // 🎉 SUCCESS STATE TRIGGER (No more alert!)
-          if(sidebarBtn) { sidebarBtn.textContent = "Sent ✓"; sidebarBtn.classList.add('success-state'); }
-          if(modalBtn) { modalBtn.textContent = "Sent ✓"; modalBtn.classList.add('success-state'); }
-          
-          unifiedForm.reset();
-
-          // Wait 1.5 seconds, then close the fullscreen modal if it's open
-          setTimeout(() => {
-            if (emailModal) emailModal.classList.remove('is-active');
-          }, 1500);
-
-          // Wait 3 seconds, then turn buttons back to normal
-          setTimeout(() => {
-            if(sidebarBtn) { sidebarBtn.textContent = originalSidebarText; sidebarBtn.classList.remove('success-state'); sidebarBtn.disabled = false; }
-            if(modalBtn) { modalBtn.textContent = originalModalText; modalBtn.classList.remove('success-state'); modalBtn.disabled = false; }
-          }, 3000);
-
-        } else {
-          alert("Oops! There was a problem sending your message.");
-          if(sidebarBtn) { sidebarBtn.textContent = originalSidebarText; sidebarBtn.disabled = false; }
-          if(modalBtn) { modalBtn.textContent = originalModalText; modalBtn.disabled = false; }
-        }
-      }).catch(error => {
-        alert("Oops! There was a network error.");
-        if(sidebarBtn) { sidebarBtn.textContent = originalSidebarText; sidebarBtn.disabled = false; }
-        if(modalBtn) { modalBtn.textContent = originalModalText; modalBtn.disabled = false; }
-      });
-    });
-  }
-});
-
-/* ==========================================
    LIGHT / DARK THEME TOGGLE
    ========================================== */
 document.addEventListener("DOMContentLoaded", () => {
@@ -269,16 +143,34 @@ document.addEventListener("DOMContentLoaded", () => {
   let gallery = [];      // thumbnails that can be cycled through (cooking grid only)
   let galleryIndex = 0;
 
-  function showImage(img) {
-    lastFocused = img;
-    modalImg.src = img.currentSrc || img.src;
-    modalImg.alt = img.alt;
-    // Prefer the visible caption under the photo; fall back to its alt text
+  let swapToken = 0;     // drops stale decodes when arrows are pressed quickly
+
+  function setCaption(img) {
+    // Prefer the visible caption under the photo; fall back to nothing
     const frame = img.closest(".media-frame");
     const caption = frame && frame.nextElementSibling && frame.nextElementSibling.classList.contains("media-caption")
       ? frame.nextElementSibling.textContent.trim()
       : "";
     modalCaption.textContent = caption;
+  }
+
+  // Decode off-screen so the swap into the lightbox never waits on the main thread
+  function decoded(src) {
+    const probe = new Image();
+    probe.src = src;
+    return probe.decode ? probe.decode().catch(() => {}) : Promise.resolve();
+  }
+
+  function lockScroll() {
+    // Pad by the scrollbar width so hiding it doesn't shift and reflow the page
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbar > 0) document.body.style.paddingRight = scrollbar + "px";
+    document.body.style.overflow = "hidden";
+  }
+
+  function unlockScroll() {
+    document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
   }
 
   function openImage(img) {
@@ -288,24 +180,48 @@ document.addEventListener("DOMContentLoaded", () => {
     galleryIndex = gallery.indexOf(img);
     prevBtn.hidden = nextBtn.hidden = gallery.length < 2;
     modal.querySelector(".image-modal-content").classList.toggle("has-gallery", gallery.length > 1);
-    showImage(img);
-    modal.classList.add("is-active");
-    document.body.style.overflow = "hidden";
-    closeBtn.focus();
+
+    lastFocused = img;
+    const src = img.currentSrc || img.src;
+    const token = ++swapToken;
+    decoded(src).then(() => {
+      if (token !== swapToken) return;
+      modalImg.classList.remove("is-swapping");
+      modalImg.src = src;
+      modalImg.alt = img.alt;
+      setCaption(img);
+      lockScroll();
+      // Next frame, so the new src is painted before the fade/scale begins
+      requestAnimationFrame(() => {
+        modal.classList.add("is-active");
+        closeBtn.focus({ preventScroll: true });
+      });
+    });
   }
 
   function step(delta) {
     if (gallery.length < 2) return;
     galleryIndex = (galleryIndex + delta + gallery.length) % gallery.length;
-    showImage(gallery[galleryIndex]);
+    const img = gallery[galleryIndex];
+    lastFocused = img;
+    const src = img.currentSrc || img.src;
+    const token = ++swapToken;
+    modalImg.classList.add("is-swapping");
+    Promise.all([decoded(src), new Promise(r => setTimeout(r, 150))]).then(() => {
+      if (token !== swapToken) return;
+      modalImg.src = src;
+      modalImg.alt = img.alt;
+      setCaption(img);
+      requestAnimationFrame(() => modalImg.classList.remove("is-swapping"));
+    });
   }
 
   function closeImage() {
     if (!modal.classList.contains("is-active")) return;
+    swapToken++;
     modal.classList.remove("is-active");
-    document.body.style.overflow = "";
-    modalImg.src = "";
-    if (lastFocused) lastFocused.focus();
+    unlockScroll();
+    if (lastFocused) lastFocused.focus({ preventScroll: true });
   }
 
   document.querySelectorAll(".media-frame img, .profile-frame img").forEach(img => {

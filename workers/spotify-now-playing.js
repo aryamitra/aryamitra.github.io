@@ -27,13 +27,14 @@ async function getAccessToken(env) {
   return (await res.json()).access_token;
 }
 
-function shape(track, isPlaying) {
+function shape(track, isPlaying, playedAt) {
   return {
     isPlaying,
     title: track.name,
     artist: track.artists.map((a) => a.name).join(", "),
     albumArt: (track.album.images[1] || track.album.images[0] || {}).url || "",
     url: track.external_urls.spotify,
+    playedAt: playedAt || null,
   };
 }
 
@@ -46,9 +47,19 @@ export default {
       "Content-Type": "application/json",
       "Cache-Control": "public, max-age=15",
     };
+    const { pathname } = new URL(request.url);
     try {
       const token = await getAccessToken(env);
       const auth = { headers: { Authorization: "Bearer " + token } };
+
+      if (pathname === "/recent") {
+        const recent = await fetch(API + "/recently-played?limit=5", auth);
+        const items = recent.ok ? (await recent.json()).items : [];
+        const tracks = (items || [])
+          .map((it) => shape(it.track, false, it.played_at))
+          .sort((a, b) => new Date(b.playedAt) - new Date(a.playedAt));
+        return new Response(JSON.stringify({ tracks }), { headers });
+      }
 
       const now = await fetch(API + "/currently-playing", auth);
       if (now.status === 200) {
