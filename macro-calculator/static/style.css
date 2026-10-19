@@ -1,0 +1,50 @@
+:root { color-scheme: light; }
+body { font-family: system-ui, sans-serif; margin: 24px; color: #222; background: #fff; max-width: 1150px; }
+h2 { margin: 28px 0 8px; font-size: 1.1rem; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: right; vertical-align: middle; }
+th { background: #f3f3f3; font-weight: 600; cursor: pointer; user-select: none; }
+th:hover { background: #e6e6e6; }
+td:first-child, th:first-child { text-align: left; }
+input, select, textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 3px; }
+input[type=number] { text-align: right; min-width: 60px; }
+textarea.name { resize: none; overflow: hidden; min-width: 150px; line-height: 1.3; }
+tfoot td { background: #fafafa; font-weight: 600; }
+tr.plan td { background: #eef6ff; }
+.sug { background: #eef6ff; font-weight: 700; font-size: 1.1rem; min-width: 90px; }
+.met { color: #1a7f37; font-weight: 600; }
+.unmet { color: #b42318; font-weight: 600; }
+button { font: inherit; padding: 6px 12px; cursor: pointer; }
+button.primary { background: #1f6feb; color: #fff; border: 0; border-radius: 4px; }
+.bar { margin: 10px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+#msg { margin-top: 10px; }
+.err { color: #b42318; }
+.warn { color: #9a6700; }
+.hint { color: #666; font-size: 0.9rem; }
+.namecell { display: flex; align-items: flex-start; gap: 4px; }
+.namecell button { padding: 2px 8px; }
+
+/* tooltip (shown after a 0.3 s hover) */
+#tip { position: fixed; z-index: 10; display: none; pointer-events: none; background: #222; color: #fff;
+       padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; max-width: 260px; }
+th small { font-weight: 400; color: #666; }
+
+/* go-to list: collapses with a height animation */
+#gototoggle { all: unset; cursor: pointer; font-weight: 600; font-size: 1.1rem; }
+#gototoggle .arrow { display: inline-block; width: 1em; transition: transform 0.25s ease; }
+#gototoggle.closed .arrow { transform: rotate(-90deg); }
+#gotowrap { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.25s ease; }
+#gotowrap.closed { grid-template-rows: 0fr; }
+#gotoinner { overflow: hidden; min-height: 0; }
+#gotolist { border: 1px solid #ccc; border-radius: 4px; }
+.goto { display: flex; align-items: center; gap: 12px; padding: 6px 10px; border-bottom: 1px solid #eee; }
+.goto:last-child { border-bottom: 0; }
+.goto .info { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.goto .macros { color: #666; font-size: 0.85rem; }
+.goto button { padding: 4px 14px; white-space: nowrap; }
+.goto button.added { color: #1a7f37; background: #f3f3f3; border: 1px solid #ccc; }
+
+tbody#goalrows td { background: #fff8e6; }
+tbody#goalrows td:first-child { font-weight: 600; }
+.bar label { display: flex; align-items: center; gap: 6px; }
+.bar select { width: auto; }

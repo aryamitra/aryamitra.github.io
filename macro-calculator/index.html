@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Macro Calculator</title>
+<link rel="stylesheet" href="static/style.css">
+<style id="collapse-css"></style>
+</head>
+<body>
+<div id="tip" role="tooltip"></div>
+<h1>Macro Calculator</h1>
+
+<h2>
+  <button id="gototoggle" class="closed" aria-expanded="false" aria-controls="gotowrap"><span class="arrow">▾</span> Arya's go-tos</button>
+</h2>
+<div id="gotowrap" class="closed"><div id="gotoinner">
+  <div id="gotolist"><div class="goto hint">Loading…</div></div>
+</div></div>
+
+<h2>Foods &amp; today's log <small>(values are per serving)</small></h2>
+<div class="bar sortbar">
+  <label>Sort foods by
+    <select id="sort">
+      <option value="">Added order</option>
+      <option value="az">Name A–Z</option>
+      <option value="za">Name Z–A</option>
+      <option value="calories">Calories (high → low)</option>
+      <option value="protein">Protein (high → low)</option>
+      <option value="fat">Fat (high → low)</option>
+      <option value="fiber">Fiber (high → low)</option>
+      <option value="carbs">Carbs (high → low)</option>
+      <option value="sodium">Sodium (high → low)</option>
+      <option value="cal_per_protein">Calories per g protein (low → high)</option>
+      <option value="protein_per_cal">Protein per calorie (high → low)</option>
+    </select>
+  </label>
+</div>
+<div class="hint">Click a column header to collapse it.</div>
+<div style="overflow-x:auto">
+<table id="foods">
+  <thead>
+    <tr>
+      <th>Food</th><th>Serving</th><th>Eaten (servings)</th>
+      <th data-label="Max servings">Max servings<br><small>(-1 or blank = no limit)</small></th>
+      <th>Suggested (servings)</th>
+      <th>Calories</th><th>Protein (g)</th><th>Fat (g)</th><th>Fiber (g)</th>
+      <th>Carbs (g)</th><th>Sodium (mg)</th>
+    </tr>
+  </thead>
+  <tbody id="goalrows"></tbody>
+  <tbody id="foodbody"></tbody>
+  <tfoot>
+    <tr id="logged"><td>Logged total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr id="plan" class="plan"><td>Total with suggestions</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr id="status"><td>Goal status</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </tfoot>
+</table>
+</div>
+<p id="empty" class="hint">No foods yet. Add some from Arya's go-tos above, or use "+ Add entry".</p>
+<div class="bar">
+  <button id="add">+ Add entry</button>
+  <button id="calc" class="primary">Calculate</button>
+  <button id="showall">Show all columns</button>
+</div>
+
+<p><small>Type: <b>min</b> = at least, <b>max</b> = at most, <b>exact</b> = land on it, <b>off</b> = ignore.</small></p>
+
+<div id="msg"></div>
+
+<script src="static/vendor/highs.js"></script>
+<script src="static/solver.js"></script>
+<script src="static/app.js"></script>
+</body>
+</html>

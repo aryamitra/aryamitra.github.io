@@ -1,0 +1,81 @@
+{
+ "foods": [
+  {
+   "name": "Fairlife Fat-Free Ultra-Filtered Milk",
+   "serving_size": "1 cup",
+   "max_servings": 4.0,
+   "calories": 80.0,
+   "protein": 13.0,
+   "fat": 0.0,
+   "fiber": 0.0,
+   "carbs": 6.0,
+   "sodium": 120.0
+  },
+  {
+   "name": "Fairlife Chocolate 2% Ultra-Filtered Milk",
+   "serving_size": "1 cup",
+   "max_servings": 4.0,
+   "calories": 140.0,
+   "protein": 13.0,
+   "fat": 4.5,
+   "fiber": 0.0,
+   "carbs": 13.0,
+   "sodium": 280.0
+  },
+  {
+   "name": "Good 2% Cottage Cheese",
+   "serving_size": "1/2 cup",
+   "max_servings": 4.0,
+   "calories": 90.0,
+   "protein": 14.0,
+   "fat": 2.0,
+   "fiber": 0.0,
+   "carbs": 4.0,
+   "sodium": 380.0
+  },
+  {
+   "name": "365 Organic Chia Seeds",
+   "serving_size": "3 tbsp",
+   "max_servings": 4.0,
+   "calories": 160.0,
+   "protein": 3.5,
+   "fat": 11.0,
+   "fiber": 9.0,
+   "carbs": 9.0,
+   "sodium": 0.0
+  },
+  {
+   "name": "Chobani Fat-Free Greek Yogurt",
+   "serving_size": "3/4 cup",
+   "max_servings": 4.0,
+   "calories": 90.0,
+   "protein": 16.0,
+   "fat": 0.0,
+   "fiber": 0.0,
+   "carbs": 6.0,
+   "sodium": 65.0
+  },
+  {
+   "name": "Organic Chicken Breast",
+   "serving_size": "4 oz",
+   "max_servings": 4.0,
+   "calories": 130.0,
+   "protein": 25.0,
+   "fat": 3.0,
+   "fiber": 0.0,
+   "carbs": 0.0,
+   "sodium": 50.0
+  },
+  {
+   "name": "Vita Coconut Water",
+   "serving_size": "8 fl oz",
+   "max_servings": 4.0,
+   "calories": 45.0,
+   "protein": 0.0,
+   "fat": 0.0,
+   "fiber": 0.0,
+   "carbs": 11.0,
+   "sodium": 50.0
+  }
+ ]
+}
