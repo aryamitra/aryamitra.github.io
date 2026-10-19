@@ -2,7 +2,7 @@
 # Run after dropping new photos into assets/images/food/.
 # Converts HEIC -> JPG (browsers other than Safari can't show HEIC), caps size at
 # 1600px, and rewrites assets/js/food.js, the list the Cooking grid is built from.
-cd "$(dirname "$0")/assets/images/food" || exit 1
+cd "$(dirname "$0")/../assets/images/food" || exit 1
 
 for f in *.[Hh][Ee][Ii][Cc]; do
   [ -e "$f" ] || continue
