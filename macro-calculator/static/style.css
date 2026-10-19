@@ -50,3 +50,7 @@ tbody#goalrows td { background: #fff8e6; }
 tbody#goalrows td:first-child { font-weight: 600; }
 .bar label { display: flex; align-items: center; gap: 6px; }
 .bar select { width: auto; }
+
+.backlink { position: absolute; top: 8px; left: 16px; font-size: 0.875rem; font-weight: 500; color: #78716c; text-decoration: none; }
+.backlink:hover, .backlink:focus-visible { color: #1f6feb; }
+@media (max-width: 639px) { .backlink span { display: none; } }
