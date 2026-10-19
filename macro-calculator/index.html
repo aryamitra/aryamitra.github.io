@@ -6,11 +6,23 @@
 <title>Macro Calculator</title>
 <link rel="stylesheet" href="static/style.css">
 <style id="collapse-css"></style>
+<script>
+  (function () {
+    try { if (localStorage.getItem('portfolio-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 <div id="tip" role="tooltip"></div>
-<a href="/portfolio#projects" aria-label="Back to portfolio" class="backlink">←<span> Portfolio</span></a>
-<h1>Macro Calculator</h1>
+<a class="back-btn" href="/portfolio#projects" aria-label="Back to portfolio"><span aria-hidden="true">←</span> back</a>
+<button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
+  <svg class="theme-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"></circle>
+    <path d="M12 3A9 9 0 0 0 12 21Z" fill="currentColor"></path>
+  </svg>
+</button>
+<h1>Macro <span>Calculator</span></h1>
+<div class="name-divider"></div>
 
 <h2>
   <button id="gototoggle" class="closed" aria-expanded="false" aria-controls="gotowrap"><span class="arrow">▾</span><span>Arya's go-tos</span></button>
