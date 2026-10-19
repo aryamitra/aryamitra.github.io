@@ -18,7 +18,6 @@ function foodNames() {
 }
 
 function refreshTable() {
-  $("#empty").style.display = document.querySelector("#foodbody tr") ? "none" : "";
   const present = foodNames();
   document.querySelectorAll("#gotolist button").forEach((b) => {
     const isAdded = present.has(b.dataset.name);

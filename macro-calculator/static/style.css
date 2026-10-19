@@ -30,8 +30,10 @@ button.primary { background: #1f6feb; color: #fff; border: 0; border-radius: 4px
 th small { font-weight: 400; color: #666; }
 
 /* go-to list: collapses with a height animation */
-#gototoggle { all: unset; cursor: pointer; font-weight: 600; font-size: 1.1rem; }
-#gototoggle .arrow { display: inline-block; width: 1em; transition: transform 0.25s ease; }
+#gototoggle { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-weight: 700; font-size: 1.3rem; }
+#gototoggle:hover { background: #f3f3f3; }
+#gototoggle:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
+#gototoggle .arrow { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; line-height: 1; transition: transform 0.25s ease; }
 #gototoggle.closed .arrow { transform: rotate(-90deg); }
 #gotowrap { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.25s ease; }
 #gotowrap.closed { grid-template-rows: 0fr; }
