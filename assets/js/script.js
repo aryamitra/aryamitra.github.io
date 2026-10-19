@@ -196,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.classList.add("is-active");
         closeBtn.focus({ preventScroll: true });
       });
+      if (gallery.length > 1) preloadNeighbors();
     });
   }
 
@@ -206,13 +207,21 @@ document.addEventListener("DOMContentLoaded", () => {
     lastFocused = img;
     const src = img.currentSrc || img.src;
     const token = ++swapToken;
-    modalImg.classList.add("is-swapping");
-    Promise.all([decoded(src), new Promise(r => setTimeout(r, 150))]).then(() => {
+    // Keep the current photo up until the next one is decoded, then swap in one frame
+    decoded(src).then(() => {
       if (token !== swapToken) return;
       modalImg.src = src;
       modalImg.alt = img.alt;
       setCaption(img);
-      requestAnimationFrame(() => modalImg.classList.remove("is-swapping"));
+      preloadNeighbors();
+    });
+  }
+
+  // Warm the cache for the photos either side so arrow presses swap instantly
+  function preloadNeighbors() {
+    [-1, 1].forEach(d => {
+      const n = gallery[(galleryIndex + d + gallery.length) % gallery.length];
+      if (n) decoded(n.currentSrc || n.src);
     });
   }
 
