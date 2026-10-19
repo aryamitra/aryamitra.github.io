@@ -323,12 +323,24 @@ async function calculate() {
     tr.querySelector(".sug").textContent = !name ? "" : s ? (s.servings[name] ?? 0) : "–";
   });
 
-  const stCells = $("#status").children;
-  NUTRIENTS.forEach((n, i) => {
-    const st = s && s.statuses.find((x) => x.nutrient === n);
-    const cell = stCells[i + 5];
-    cell.className = st ? (st.met ? "met" : "unmet") : "";
-    cell.textContent = st ? (st.met ? "met" : "not met") : "–";
+  const setStatus = (id, statusOf) => {
+    const cells = $(id).children;
+    NUTRIENTS.forEach((n, i) => {
+      const st = statusOf(n);
+      cells[i + 5].className = st ? (st.met ? "met" : "unmet") : "";
+      cells[i + 5].textContent = st ? (st.met ? "met" : "not met") : "–";
+    });
+  };
+  setStatus("#status", (n) => s && s.statuses.find((x) => x.nutrient === n));
+
+  const tol = 0.05;
+  const goals = payload().goals;
+  setStatus("#loggedstatus", (n) => {
+    const g = goals.find((x) => x.nutrient === n);
+    const v = parseFloat(g.value);
+    if (g.kind === "none" || !(v > 0)) return null;
+    const a = data.logged_total[n];
+    return { met: g.kind === "exact" ? Math.abs(a - v) <= tol * v : g.kind === "min" ? a >= v * (1 - tol) : a <= v + 1e-9 };
   });
 
   if (!s) {

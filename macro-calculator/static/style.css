@@ -76,7 +76,7 @@ tbody tr:nth-child(even) td { background: var(--color-row-dark); }
 tfoot td { font-weight: 700; color: var(--color-text-strong); }
 tfoot tr#logged td { background: var(--color-row-light); border-top: 2px solid var(--color-outline); }
 tfoot tr.plan td { background: var(--color-plan-bg); font-size: 1.05rem; }
-tfoot tr#status td { background: var(--color-status-bg); }
+tfoot tr.status td { background: var(--color-status-bg); }
 tbody#goalrows tr:last-child td { border-bottom: 2px solid var(--color-outline); }
 tbody#goalrows td:first-child { font-weight: 700; color: var(--color-text-strong); }
 .sug { background: var(--color-sug) !important; font-weight: 800; font-size: 1.05rem; min-width: 90px; color: var(--color-text-strong); }

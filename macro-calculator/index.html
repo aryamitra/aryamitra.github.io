@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Macro Calculator</title>
-<link rel="stylesheet" href="static/style.css?v=ecca7ada">
+<link rel="stylesheet" href="static/style.css">
 <style id="collapse-css"></style>
 <script>
   (function () {
@@ -65,8 +65,9 @@
   <tbody id="foodbody"></tbody>
   <tfoot>
     <tr id="logged"><td>Logged total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr id="loggedstatus" class="status"><td>Goal status (logged)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
     <tr id="plan" class="plan"><td>Total with suggestions</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-    <tr id="status"><td>Goal status</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr id="status" class="status"><td>Goal status (theoretical)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
   </tfoot>
 </table>
 </div>
@@ -80,8 +81,8 @@
 
 <div id="msg"></div>
 
-<script src="static/vendor/highs.js?v=9904d6bb"></script>
-<script src="static/solver.js?v=2b8c3855"></script>
-<script src="static/app.js?v=4c846116"></script>
+<script src="static/vendor/highs.js"></script>
+<script src="static/solver.js"></script>
+<script src="static/app.js"></script>
 </body>
 </html>
