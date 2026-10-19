@@ -123,9 +123,9 @@ function buildGoals() {
     const sel = (t) => `table[data-hidden~="${n}"] ${t}:nth-child(${n})`;
     css.push(`${sel("th")}, ${sel("td")} { width: 14px; min-width: 0; max-width: 14px; padding: 0; overflow: hidden;
       font-size: 0; color: transparent; cursor: pointer;
-      background: repeating-linear-gradient(45deg, #eee, #eee 4px, #f8f8f8 4px, #f8f8f8 8px); }
+      background: repeating-linear-gradient(45deg, var(--color-hover-bg), var(--color-hover-bg) 4px, var(--color-panel) 4px, var(--color-panel) 8px); }
     ${sel("td")} > * { display: none; }
-    ${sel("th")}::after { content: "▸"; font-size: 12px; color: #555; }`);
+    ${sel("th")}::after { content: "▸"; font-size: 12px; color: var(--color-text-dim); }`);
   }
   $("#collapse-css").textContent = css.join("\n");
 
@@ -359,3 +359,12 @@ loadGoTos();
 $("#add").onclick = () => addRow();
 $("#calc").onclick = calculate;
 $("#sort").onchange = (e) => sortFoods(e.target.value);
+
+// theme toggle (shares the "portfolio-theme" key with aryamitra.me)
+$("#themeToggle").onclick = () => {
+  const dark = document.documentElement.getAttribute("data-theme") !== "dark";
+  if (dark) document.documentElement.setAttribute("data-theme", "dark");
+  else document.documentElement.removeAttribute("data-theme");
+  $("#themeToggle").setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  try { localStorage.setItem("portfolio-theme", dark ? "dark" : "light"); } catch (e) {}
+};
