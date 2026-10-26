@@ -1335,6 +1335,5 @@ p {
 }
 
 @media (max-width: 900px) {
-    .comfortable-block { display: none; }
-    .comfortable-block + .list-header { margin-top: 0; padding-top: 0; border-top: 0; }
+    .skills-group { display: none; }
 }
