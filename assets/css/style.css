@@ -1333,3 +1333,8 @@ p {
     .image-nav-prev { left: 0.25rem; }
     .image-nav-next { right: 0.25rem; }
 }
+
+@media (max-width: 900px) {
+    .comfortable-block { display: none; }
+    .comfortable-block + .list-header { margin-top: 0; padding-top: 0; border-top: 0; }
+}
