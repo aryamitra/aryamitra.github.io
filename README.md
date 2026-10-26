@@ -18,13 +18,12 @@ index.html            splash page
 portfolio/index.html  portfolio page
 assets/
   css/   style.css (shared), splash.css (splash only)
-  js/    script.js, spotify.js, food.js (portfolio), splash.js (splash)
+  js/    script.js, food.js (portfolio), splash.js (splash)
   fonts/ images/ videos/
 job-overlay/          standalone project, its own css/js/assets
 linear-regression/    standalone project
 scripts/
   update-food.sh      run after adding photos to assets/images/food/; regenerates assets/js/food.js
-workers/              Cloudflare Worker for the Spotify card, deployed separately (see workers/README.md)
 ```
 
 Shared files under `assets/` are referenced with root-absolute paths (`/assets/...`) so they work from any page.

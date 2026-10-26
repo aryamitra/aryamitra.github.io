@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arya Mitra | Portfolio</title>
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/assets/css/style.css?v=a85150f9">
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba09bcff">
     <script>
       (function () {
         if (localStorage.getItem('portfolio-theme') === 'dark') {
@@ -41,19 +41,6 @@
   <div class="status-tags">
     <span class="status-item">Hnrs CS + Math @ <span class="accent-text">UMass-Amherst</span></span>
   </div>
-
-  <!-- Spotify now-playing card: stays hidden until assets/js/spotify.js gets data from the worker -->
-  <a class="spotify-card" id="spotifyCard" href="#" target="_blank" rel="noopener" hidden>
-    <img class="spotify-art" id="spotifyArt" alt="" width="52" height="52">
-    <div class="spotify-info">
-      <div class="spotify-label">
-        <svg class="spotify-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-.99-.12-1.11-.6-.12-.48.12-.99.6-1.11 4.38-1.32 9.78-.66 13.5 1.62.36.18.54.78.21 1.17zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.62.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
-        <span id="spotifyStatus">I'm listening to</span>
-      </div>
-      <div class="spotify-title" id="spotifyTitle"></div>
-      <div class="spotify-artist" id="spotifyArtist"></div>
-    </div>
-  </a>
 
   <nav class="sidebar-nav">
     <a href="#about">> About</a>
@@ -528,20 +515,9 @@ Resolved customer issues with patience and professionalism.
       </div>
     </div>
 
-    <!-- Last-played overlay: opens from the sidebar Spotify card and lists the last 5
-         tracks; each row pops out to that track on Spotify in a new tab. -->
-    <div class="email-modal-overlay spotify-modal-overlay" id="spotifyModal" role="dialog" aria-modal="true" aria-label="Last played tracks">
-      <div class="spotify-modal-content">
-        <button type="button" class="btn-close-modal" id="closeSpotifyBtn" aria-label="Close">&times;</button>
-        <h2>Recently Played</h2>
-        <ul class="spotify-track-list" id="spotifyTrackList"></ul>
-      </div>
-    </div>
-
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="/assets/js/food.js?v=12dc7919"></script>
         <script src="/assets/js/script.js?v=babf2b56"></script>
-        <script src="/assets/js/spotify.js?v=c6488005"></script>
 
 </body>
 </html>
