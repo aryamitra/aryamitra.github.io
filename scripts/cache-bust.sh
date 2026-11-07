@@ -2,6 +2,9 @@
 # Run before pushing. Stamps ?v=<content hash> onto every local CSS/JS link in the
 # HTML pages so browsers refetch a file as soon as it changes (GitHub Pages caches
 # assets for 10 minutes otherwise). Safe to re-run; unchanged files keep their hash.
+#
+# Usage (from the repo root):  bash scripts/cache-bust.sh
+#   or, after `chmod +x scripts/cache-bust.sh`:  ./scripts/cache-bust.sh
 cd "$(dirname "$0")/.." || exit 1
 python3 - <<'PY'
 import hashlib, os, re, glob
