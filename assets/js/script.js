@@ -14,21 +14,13 @@ document.querySelectorAll('.academic-tab').forEach(tab => {
         });
 
         // Accordion: clicking a term header smoothly expands/collapses its course list.
-        // Only one term stays open per group at a time.
+        // Multiple terms can be open at the same time.
         document.querySelectorAll('.term-header').forEach(header => {
             header.addEventListener('click', function () {
-                const isOpen = this.classList.contains('open');
-                const accordion = this.closest('.term-accordion');
-
-                accordion.querySelectorAll('.term-header').forEach(h => {
-                    h.classList.remove('open');
-                    h.nextElementSibling.style.maxHeight = null;
-                });
-
-                if (!isOpen) {
-                    this.classList.add('open');
-                    this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 'px';
-                }
+                const isOpen = this.classList.toggle('open');
+                this.nextElementSibling.style.maxHeight = isOpen
+                    ? this.nextElementSibling.scrollHeight + 'px'
+                    : null;
             });
         });
 
