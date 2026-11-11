@@ -156,6 +156,15 @@ html {
   transform: scaleX(-1);
 }
 
+/* Set for one frame while the theme flips (see script.js / splash.js) so hover
+   transitions on color, background and border don't animate the palette swap and
+   lag behind everything else. The toggle icon keeps its flip. */
+.theme-switching *:not(.theme-toggle-icon),
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
 @media (max-width: 900px) {
   .theme-toggle {
     position: static;   /* Drops out of the fixed corner to flow inline with the social icons */

@@ -106,15 +106,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // this just syncs the button's a11y state to whatever it landed on.
   syncButton(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
 
+  // .theme-switching (style.css) turns transitions off so the swap is instant;
+  // otherwise elements with hover transitions fade to the new palette 0.2s late.
+  // Reading a computed style commits the new colors before the class comes off.
+  function setTheme(theme) {
+    root.classList.add("theme-switching");
+    if (theme === "dark") root.setAttribute("data-theme", "dark");
+    else root.removeAttribute("data-theme");
+    syncButton(theme);
+    window.getComputedStyle(document.body).color;
+    setTimeout(() => root.classList.remove("theme-switching"), 1);
+  }
+
   toggleBtn.addEventListener("click", () => {
     const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    if (nextTheme === "dark") {
-      root.setAttribute("data-theme", "dark");
-    } else {
-      root.removeAttribute("data-theme");
-    }
     localStorage.setItem(THEME_KEY, nextTheme);
-    syncButton(nextTheme);
+    setTheme(nextTheme);
+  });
+
+  // Theme changed elsewhere: another tab, or the splash page this is embedded in
+  // (the flip card's back face) or was restored from the back/forward cache after.
+  function applyStored() {
+    setTheme(localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light");
+  }
+  window.addEventListener("storage", (e) => {
+    if (e.key === THEME_KEY) applyStored();
+  });
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) applyStored();
   });
 });
 

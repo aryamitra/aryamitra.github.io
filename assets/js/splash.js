@@ -95,13 +95,52 @@
 })();
 
 (function () {
+  var KEY = 'portfolio-theme';
   var root = document.documentElement;
   var btn = document.getElementById('themeToggle');
+  var iframe = document.querySelector('.flip-back iframe');
+
+  // .theme-switching (style.css) turns transitions off so the swap is instant.
+  // Reading a computed style commits the new colors before the class comes off.
+  function setTheme(doc, theme) {
+    if (!doc) return;
+    var el = doc.documentElement;
+    el.classList.add('theme-switching');
+    if (theme === 'dark') el.setAttribute('data-theme', 'dark');
+    else el.removeAttribute('data-theme');
+    if (doc.body) doc.defaultView.getComputedStyle(doc.body).color;
+    setTimeout(function () { el.classList.remove('theme-switching'); }, 1);
+  }
+
+  function stored() {
+    try { return localStorage.getItem(KEY) === 'dark' ? 'dark' : 'light'; } catch (e) { return 'light'; }
+  }
+
+  // Applies the theme here AND to the preloaded portfolio on the back of the flip
+  // card. That iframe loaded with whatever theme was stored at page load, so without
+  // this the flip shows the old theme and the real portfolio then flashes to the new one.
+  function apply(theme) {
+    setTheme(document, theme);
+    try { setTheme(iframe.contentDocument, theme); } catch (e) {}
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  btn.setAttribute('aria-label', root.getAttribute('data-theme') === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+
   btn.addEventListener('click', function () {
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    if (next === 'dark') root.setAttribute('data-theme', 'dark');
-    else root.removeAttribute('data-theme');
-    try { localStorage.setItem('portfolio-theme', next); } catch (e) {}
-    btn.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    apply(next);
+  });
+
+  // Theme changed in another tab
+  window.addEventListener('storage', function (e) {
+    if (e.key === KEY) apply(stored());
+  });
+
+  // Restored from the back/forward cache (e.g. browser back after toggling on the
+  // portfolio): this page and its iframe still hold the theme from before.
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) apply(stored());
   });
 })();
